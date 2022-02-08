@@ -1,0 +1,64 @@
+Class Player
+Collaborators: Account, QRCode, Profile
+Responsibilities: 
+	- Adds QR Codes
+	- Removes QR codes
+	- Comments on QR Codes
+	- Browses own account
+	- Browses other player accounts
+	- Generates game status QR codes
+	- Generates QR code to log in from another device 
+
+
+Class Account
+Collaborators: QRCode, Player
+Responsibilities:
+	- Store QR codes
+	- Display QR codes
+
+Class Stats
+Collaborators: Account, QRCode
+Responsibilities: 
+	- Find highest and lowest QR code
+	- Find sum of QR code
+	- Find total number of QR codes
+
+Class QRCode
+Collaborators: 
+Responsibilities: 
+	- Represent a QR Code
+	- Has score
+	- Has geolocation
+	- Has photo of object/location
+
+Class Profile
+Collaborators: Player 
+Responsibilities:
+	- Stores player username
+	- Stores player contact info
+	- Stores player device
+
+Class Search
+Collaborators: Player, 
+Responsibilities:
+
+Class 
+Collaborators: 
+Responsibilities:
+
+Class 
+Collaborators: 
+Responsibilities:
+
+Class 
+Collaborators: 
+Responsibilities:
+
+Class 
+Collaborators: 
+Responsibilities:
+
+Class 
+Collaborators: 
+Responsibilities:
+
