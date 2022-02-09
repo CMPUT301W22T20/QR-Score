@@ -65,11 +65,3 @@ Responsibilities:
 	- Can delete players
 	- Can delete QR codes
 
-Class 
-Collaborators: 
-Responsibilities:
-
-Class 
-Collaborators: 
-Responsibilities:
-
