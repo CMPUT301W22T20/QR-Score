@@ -8,6 +8,7 @@ Responsibilities:
 	- Browses other player accounts
 	- Generates game status QR codes
 	- Generates QR code to log in from another device 
+	- Has stats
 
 
 Class Account
@@ -19,9 +20,9 @@ Responsibilities:
 Class Stats
 Collaborators: Account, QRCode
 Responsibilities: 
-	- Find highest and lowest QR code
-	- Find sum of QR code
-	- Find total number of QR codes
+	- Find highest and lowest QR code of player
+	- Find sum of QR code of player
+	- Find total number of QR codes of player
 
 Class QRCode
 Collaborators: 
@@ -39,20 +40,30 @@ Responsibilities:
 	- Stores player device
 
 Class Search
-Collaborators: Player, 
+Collaborators: Profile, Location
 Responsibilities:
+	- Searches for profiles
+	- Searches for nearby QR codes
 
-Class 
-Collaborators: 
+Class Location
+Collaborators: QRCode
 Responsibilities:
+	- Finds QR codes nearby
+	- Shows map of nearby QR codes
 
-Class 
-Collaborators: 
+Class Scoring
+Collaborators: Player
 Responsibilities:
+	- Finds game wide high score of all players
+	- Ranks players for high scoring unique QR codes
+	- Ranks players based on number of QR Codes scanned
+	- Ranks players based on sum of QR Codes 
 
-Class 
-Collaborators: 
+Class Owner
+Collaborators: Player, QRCode
 Responsibilities:
+	- Can delete players
+	- Can delete QR codes
 
 Class 
 Collaborators: 
