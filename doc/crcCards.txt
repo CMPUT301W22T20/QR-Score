@@ -44,7 +44,7 @@ Responsibilities:
 	- Display comments
 
 Class Profile
-Collaborators: None
+Collaborators: Account
 Responsibilities:
 	- Stores player username
 	- Stores player contact info
