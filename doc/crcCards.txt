@@ -10,7 +10,6 @@ Responsibilities:
 	- Generates game status QR codes
 	- Generates QR code to log in from another device 
 	- Views other player profiles
-	- Has profile
 	- Has stats
 
 
@@ -45,7 +44,7 @@ Responsibilities:
 	- Display comments
 
 Class Profile
-Collaborators: Player 
+Collaborators: None
 Responsibilities:
 	- Stores player username
 	- Stores player contact info
