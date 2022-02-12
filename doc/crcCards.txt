@@ -25,12 +25,13 @@ Responsibilities:
 	- Find total number of QR codes of player
 
 Class QRCode
-Collaborators: 
+Collaborators: Player
 Responsibilities: 
 	- Represent a QR Code
 	- Has score
 	- Has geolocation
 	- Has photo of object/location
+	- Tracks players that have scanned it
 
 Class Profile
 Collaborators: Player 
