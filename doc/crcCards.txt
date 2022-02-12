@@ -1,5 +1,5 @@
 Class Player
-Collaborators: Account, QRCode, Profile
+Collaborators: Account, QRCode, Profile, Stats
 Responsibilities: 
 	- Adds QR Codes
 	- Removes QR codes
@@ -8,6 +8,8 @@ Responsibilities:
 	- Browses other player accounts
 	- Generates game status QR codes
 	- Generates QR code to log in from another device 
+	- Views other player profiles
+	- Has profile
 	- Has stats
 
 
