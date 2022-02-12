@@ -4,6 +4,7 @@ Responsibilities:
 	- Adds QR Codes
 	- Removes QR codes
 	- Comments on QR Codes
+	- Has account
 	- Browses own account
 	- Browses other player accounts
 	- Generates game status QR codes
