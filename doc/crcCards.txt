@@ -1,21 +1,24 @@
 Class Player
-Collaborators: Account, QRCode, Profile
+Collaborators: Account, QRCode, Profile, Stats
 Responsibilities: 
-	- Adds QR Codes
+	- Adds QR Codes, including photo and geolocation
 	- Removes QR codes
 	- Comments on QR Codes
+	- Has account
 	- Browses own account
 	- Browses other player accounts
 	- Generates game status QR codes
 	- Generates QR code to log in from another device 
+	- Views other player profiles
 	- Has stats
 
 
 Class Account
-Collaborators: QRCode, Player
+Collaborators: QRCode, Player, Profile
 Responsibilities:
 	- Store QR codes
-	- Display QR codes
+	- Stores player device
+	- Has profile
 
 Class Stats
 Collaborators: Account, QRCode
@@ -25,19 +28,27 @@ Responsibilities:
 	- Find total number of QR codes of player
 
 Class QRCode
-Collaborators: 
+Collaborators: Player, Comments
 Responsibilities: 
 	- Represent a QR Code
 	- Has score
 	- Has geolocation
 	- Has photo of object/location
+	- Tracks players that have scanned it
+	- Has comments
+	
+Class Comments
+Collaborators: None
+Responsibilities:
+	- Add comments
+	- Display comments
 
 Class Profile
-Collaborators: Player 
+Collaborators: Account
 Responsibilities:
 	- Stores player username
 	- Stores player contact info
-	- Stores player device
+	- Displays QR Codes
 
 Class Search
 Collaborators: Profile, Location
