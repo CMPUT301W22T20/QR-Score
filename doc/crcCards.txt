@@ -15,10 +15,11 @@ Responsibilities:
 
 
 Class Account
-Collaborators: QRCode, Player
+Collaborators: QRCode, Player, Profile
 Responsibilities:
 	- Store QR codes
-	- Display QR codes
+	- Stores player device
+	- Has profile
 
 Class Stats
 Collaborators: Account, QRCode
@@ -48,7 +49,7 @@ Collaborators: Player
 Responsibilities:
 	- Stores player username
 	- Stores player contact info
-	- Stores player device
+	- Displays QR Codes
 
 Class Search
 Collaborators: Profile, Location
