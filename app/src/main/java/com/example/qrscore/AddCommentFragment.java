@@ -49,6 +49,7 @@ public class AddCommentFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String newComment = commentText.getText().toString();
+                        // TODO: Replace Player1 with profile player name when possible
                         listener.onOkPressed(new Comment("Player1", newComment));
                     }
                 }).create();
