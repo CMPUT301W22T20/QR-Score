@@ -2,10 +2,7 @@ package com.example.qrscore;
 
 import java.util.List;
 
-// TODO: As a player, I want to add new QR codes to my account.
-// TODO: As a player, I want to see what QR codes I have added to my account.
-// TODO: As a player, I want to remove QR codes from my account.
-// TODO: As a player, I want to see my highest and lowest scoring QR codes.
+//  As a player, I want to see that other players have scanned the same QR code.
 public class Account {
     private List<QRCode> qrCodes;
     private String device;
