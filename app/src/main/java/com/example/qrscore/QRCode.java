@@ -14,7 +14,7 @@ public class QRCode {
     private Integer score;
     private String location;
     private ArrayList<Player> hasScanned;
-    private ArrayList<String> comments;
+    private ArrayList<Comment> comments;
 
     /**
      * Constructor for the QR code.
@@ -80,7 +80,7 @@ public class QRCode {
      * @param comment
      *      the comment to add.
      */
-    public void addComment(String comment) {
+    public void addComment(Comment comment) {
         comments.add(comment);
     }
 
@@ -90,7 +90,7 @@ public class QRCode {
      * @param comment
      *      the comment to remove.
      */
-    public void deleteComment(String comment) {
+    public void deleteComment(Comment comment) {
         comments.remove(comment);
     }
 
@@ -102,7 +102,7 @@ public class QRCode {
      * @return
      *      true if the comment is in the list, false otherwise.
      */
-    public boolean findComment(String comment) {
+    public boolean findComment(Comment comment) {
         return comments.contains(comment);
     }
 
@@ -112,7 +112,7 @@ public class QRCode {
      * return
      *      an ArrayList of Strings.
      */
-    public ArrayList<String> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 }
