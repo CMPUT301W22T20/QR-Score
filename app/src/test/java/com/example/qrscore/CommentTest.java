@@ -10,7 +10,7 @@ public class CommentTest {
 
     @Test
     public void testCreateComment() {
-        Comment comment = new Comment("Player1", "This is a test comment");
+        Comment comment = new Comment("Player1", "This is a test comment", "temp");
 
         assertEquals(0, comments.size());
 
@@ -20,7 +20,7 @@ public class CommentTest {
 
     @Test
     public void testGetters() {
-        Comment newComment = new Comment("Player1", "This is a test comment");
+        Comment newComment = new Comment("Player1", "This is a test comment", "temp");
         comments.add(newComment);
 
         String player1 = comments.get(0).getCommenter();

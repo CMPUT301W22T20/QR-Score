@@ -15,7 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 public class AddCommentFragment extends DialogFragment {
     private EditText commentText;
-
     private OnFragmentInteractionListener listener;
 
     public interface OnFragmentInteractionListener {
@@ -50,7 +49,7 @@ public class AddCommentFragment extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String newComment = commentText.getText().toString();
                         // TODO: Replace Player1 with profile player name when possible
-                        listener.onOkPressed(new Comment("Player1", newComment));
+                        listener.onOkPressed(new Comment("Player1", newComment, "tempQRID"));
                     }
                 }).create();
     }

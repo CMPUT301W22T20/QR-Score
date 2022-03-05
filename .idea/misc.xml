@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.18860626220703125" />
+        <entry key="app/src/main/res/layout/comment_content.xml" value="0.11956521739130435" />
         <entry key="app/src/main/res/layout/comment_fragment.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.11956521739130435" />
       </map>
     </option>
