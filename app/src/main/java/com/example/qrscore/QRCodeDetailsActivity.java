@@ -4,7 +4,7 @@ Shows players that have commented on the QRCode and allows user to click on the 
 Allow user to click add comment from this screen.
 
 Outstanding issues:
- */
+*/
 
 package com.example.qrscore;
 

@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/scroll_view_black_border.xml" value="0.1435" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22395833333333334" />
-        <entry key="app/src/main/res/layout/activity_qrcode_details.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/layout/activity_qrcode_details.xml" value="0.2569402058919271" />
         <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.30932971014492755" />
       </map>
     </option>
