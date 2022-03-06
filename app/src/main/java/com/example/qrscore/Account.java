@@ -29,4 +29,13 @@ public class Account {
 //    public QRCode getLowest() {
 //        return stats.getLowscore(qrCodes);
 //    }
+
+    /** Gets the Username of the player
+     *
+     * @return
+     *      username of the player
+     */
+    public String getUsername() {
+        return profile.getUsername();
+    }
 }

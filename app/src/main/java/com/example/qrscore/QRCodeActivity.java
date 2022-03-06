@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
@@ -28,11 +30,18 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
+    private ListView playerList;
+    private ArrayAdapter<Player> playerAdapter;
+    private ArrayList<Player> playerDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
+
+        // Access a Cloud Firestore instance
+        db = FirebaseFirestore.getInstance();
+        final CollectionReference collectionReference = db.collection("Cities");
 
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
@@ -43,10 +52,21 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         addButton.setOnClickListener((v) -> {
             new AddCommentFragment().show(getSupportFragmentManager(), "ADD_COMMENT");
         });
+
+        // Create array adapter for players who have scanned a specific QR code
+        playerDataList = new ArrayList<>();
+        playerList = findViewById(R.id.scanned_by_list_view);
+        playerAdapter = new PlayerCustomList(this, playerDataList);
+        playerList.setAdapter(playerAdapter);
     }
 
     @Override
     public void onOkPressed(Comment newComment) {
         commentAdapter.add(newComment);
     }
+
+
+
+
+
 }
