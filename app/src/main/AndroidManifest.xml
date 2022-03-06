@@ -10,7 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRScore">
         <activity
+<<<<<<< HEAD
             android:name=".QRCodeDetailsActivity"
+=======
+            android:name=".QRCodeActivity"
+>>>>>>> 26c896e508439196699673cb5198b9ee9a2b7d45
             android:exported="false" />
         <activity
             android:name=".MainActivity"
