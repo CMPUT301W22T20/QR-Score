@@ -10,8 +10,8 @@ import java.util.ArrayList;
  * Outstanding issues:
  */
 public class QRCode {
-    private String codeRepr;
-    private Integer score;
+    private String hash;
+    private Integer qrScore;
     private String location;
     private ArrayList<Player> hasScanned;
     private ArrayList<Comment> comments;
@@ -25,11 +25,33 @@ public class QRCode {
      *      a String representing the location of the QR code.
      */
     public QRCode(String hash, String loc) {
-        this.codeRepr = hash;
+        this.hash = hash;
         // this.score = new Score(hash);
         this.location = loc;
         this.hasScanned = new ArrayList<>();
         this.comments  = new ArrayList<>();
+        calculateQRScore(this.hash);
+    }
+
+    /**
+     * Calculates QR Score from hash
+     *
+     * @param hash
+     *      the hash of the QR code.
+     */
+    public void calculateQRScore(String hash) {
+        Integer score;
+        //TODO
+        score = 1;
+        this.qrScore = score;
+    }
+
+    /**
+     * Get QR Score from member
+     *
+     */
+    public Integer getQRScore() {
+        return this.qrScore;
     }
 
     /**
