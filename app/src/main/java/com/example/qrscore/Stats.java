@@ -7,6 +7,10 @@ public class Stats {
     private Integer totalQRCodesScanned;
     private Integer sumOfScoresScanned;
 
+    /**
+     * Constructor for Stats class
+     *
+     */
     public Stats() {
         this.totalQRCodesScanned = 0;
         this.sumOfScoresScanned = 0;
@@ -43,22 +47,42 @@ public class Stats {
         qrCodes.remove(toRemove);
     }
 
+    /**
+     * Returns the total number of QR codes a user has scanned.
+     *
+     * @return
+     *      the sum of a user's scanned QR codes.
+     */
     public Integer getTotalQRCodesScanned() {
         return this.totalQRCodesScanned;
     }
 
+    /**
+     * Returns the total sum of QR scores a user has scanned.
+     *
+     * @return
+     *      the sum of a user's scanned QR scores.
+     */
     public Integer getSumOfScoresScanned() {
         return this.sumOfScoresScanned;
     }
 
+    /**
+     * Calculates the total number of QR codes a user has scanned and updates the totalQRCodesScanned attribute.
+     *
+     */
     public void calculateTotalQRCodesScanned() {
-        this.totalQRCodesScanned = qrCodes.size();
+        this.totalQRCodesScanned = this.qrCodes.size();
     }
 
+    /**
+     * Calculates the total sum of QR scores a user has scanned and updates the sumOfScoresScanned attribute.
+     *
+     */
     public void calculateSumOfScoresScanned() {
         Integer sum = 0;
-        for (int i=0; i<qrCodes.size(); i++) {
-            sum += qrCodes.get(i).getQRScore();
+        for (int i=0; i<(this.qrCodes.size()); i++) {
+            sum += this.qrCodes.get(i).getQRScore();
         }
         this.sumOfScoresScanned = sum;
     }

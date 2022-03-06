@@ -37,7 +37,7 @@ public class QRCode {
      * Calculates QR Score from hash
      *
      * @param hash
-     *      the hash of the QR code.
+     *      a String identifier for the QR code.
      */
     public void calculateQRScore(String hash) {
         Integer score;
