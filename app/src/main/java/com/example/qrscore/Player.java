@@ -1,7 +1,7 @@
 package com.example.qrscore;
 
 public class Player {
-    private Account currPlayer;
+    private Account account;
 
     /** Gets the Username of the player
      *
@@ -9,6 +9,6 @@ public class Player {
      *      username of the player
      */
     public String getUsername() {
-        return currPlayer.getUsername();
+        return account.getUsername();
     }
 }

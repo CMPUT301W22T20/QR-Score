@@ -8,9 +8,11 @@ Outstanding issues:
 
 package com.example.qrscore;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,13 +20,15 @@ import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-// TODO: Implement opening up comments
-// TODO: Player names
-// TODO: Change little icon placeholder
+// TODO: When Player scans a QR Code, add them to hasScanned in QRCode class
 
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
     private ListView commentList;
@@ -33,15 +37,16 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     private ListView playerList;
     private ArrayAdapter<Player> playerAdapter;
     private ArrayList<Player> playerDataList;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
-        // Access a Cloud Firestore instance
+        // Access a Cloud Firestore instance and get reference to collection
         db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("Cities");
+        final CollectionReference qrCodeCollectionReference = db.collection("QRCode");
 
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
@@ -58,7 +63,14 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         playerList = findViewById(R.id.scanned_by_list_view);
         playerAdapter = new PlayerCustomList(this, playerDataList);
         playerList.setAdapter(playerAdapter);
-    }
+
+        // Snapshot listener for qrCodeCollectionReference for realtime Firestore updates
+        qrCodeCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
+                    FirebaseFirestoreException error) {
+            }
+        });
 
     @Override
     public void onOkPressed(Comment newComment) {
