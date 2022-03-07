@@ -106,23 +106,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         commentData.put("Date", newComment.getDate());
         commentData.put("qrID", newComment.getID());
 
-        collectionReference
-                .document("testComment")
-                .set(commentData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                    // These are a method which gets executed when the task is succeeded
-
-                        Log.d("Sample", "Data has been added successfully!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // These are a method which gets executed if there’s any problem
-                        Log.d("Sample", "Data could not be added!" + e.toString());
-                    }
-                });
+        collectionReference.add(commentData);
     }
 }
