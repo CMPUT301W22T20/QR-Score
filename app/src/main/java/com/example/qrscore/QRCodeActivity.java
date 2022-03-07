@@ -34,6 +34,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
     private FirebaseFirestore db;
+    private CollectionReference collectionReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
 
         // Initialize the DB
         db = FirebaseFirestore.getInstance();
-        final CollectionReference collectionReference = db.collection("Comment");
+        collectionReference = db.collection("Comment");
 
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
@@ -99,16 +100,11 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     public void onOkPressed(Comment newComment) {
         commentAdapter.add(newComment);
         HashMap<String, String> commentData = new HashMap<>();
-        HashMap<String, String> dateData = new HashMap<>();
-        HashMap<String, String> ownerData = new HashMap<>();
-        HashMap<String, String> qrIDData = new HashMap<>();
 
         commentData.put("Comment", newComment.getComment());
         commentData.put("Owner", newComment.getCommenter());
         commentData.put("Date", newComment.getDate());
         commentData.put("qrID", newComment.getID());
-
-        final CollectionReference collectionReference = db.collection("Comment");
 
         collectionReference
                 .document("testComment")
