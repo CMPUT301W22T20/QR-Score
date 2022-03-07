@@ -19,6 +19,13 @@ public class Comment {
         this.date = sdf.format(c);
     }
 
+    public Comment(String commenter, String comment, String qrID, String date) {
+        this.commenter = commenter;
+        this.comment = comment;
+        this.qrID = qrID;
+        this.date = date;
+    }
+
     public String getCommenter() {
         return commenter;
     }
@@ -29,5 +36,9 @@ public class Comment {
 
     public String getDate() {
         return date;
+    }
+
+    public String getID() {
+        return qrID;
     }
 }
