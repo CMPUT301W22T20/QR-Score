@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: As a player, I want to add new QR codes to my account.
@@ -14,16 +15,19 @@ import java.util.List;
  * Outstanding issues:
  */
 public class Account {
-    private String device;
-    private Profile profile;
-    private Stats stats;
+    private List<String> devices;
+    public Stats stats;
+    public Profile profile;
     // private Permissions permissions;
 
-//    public QRCode getHighest() {
-//        return stats.getHighscore(qrCodes);
-//    }
+    public Account(String device, String userName) {
+        this.devices = new ArrayList<String>();
+        this.addDevice(device);
+        this.profile = new Profile(userName);
+        this.stats = new Stats();
+    }
 
-//    public QRCode getLowest() {
-//        return stats.getLowscore(qrCodes);
-//    }
+    private void addDevice(String toAdd) {
+        this.devices.add(toAdd);
+    }
 }
