@@ -2,17 +2,15 @@ package com.example.qrscore;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * This class creates a dialog fragment to display a string of comments
+ */
 public class DisplayCommentFragment extends DialogFragment {
     @NonNull
     @Override

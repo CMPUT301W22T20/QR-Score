@@ -1,20 +1,15 @@
 package com.example.qrscore;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +20,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO: Implement opening up comments
 // TODO: Player names
 // TODO: Change little icon placeholder
 
@@ -56,6 +50,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
             new AddCommentFragment().show(getSupportFragmentManager(), "ADD_COMMENT");
         });
 
+        // Reading data and outputting to screen
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
@@ -77,7 +72,9 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
             }
         });
 
-        // Displaying the comments
+        // TODO: Remove when done testing
+
+        // Displaying the comments when someone presses
         commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -96,6 +93,11 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         });
     }
 
+    /**
+     * This adds a new comment to the list and also adds it to our db
+     * @param newComment
+     *      Comment to add
+     */
     @Override
     public void onOkPressed(Comment newComment) {
         commentAdapter.add(newComment);
@@ -107,5 +109,13 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         commentData.put("qrID", newComment.getID());
 
         collectionReference.add(commentData);
+    }
+
+    /**
+     * Returns the commentList to use for our tests
+     * @return
+     */
+    public ListView getCommentList() {
+        return commentList;
     }
 }
