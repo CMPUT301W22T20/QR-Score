@@ -4,6 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_home.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_leaderboard.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/back.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/ic_baseline_qr_code_24.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_round.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_selector.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_fragment_layout.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_profile.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1965" />
       </map>
     </option>
   </component>
