@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * This class creates a dialog fragment for the user to input a string into
+ */
 public class AddCommentFragment extends DialogFragment {
     private EditText commentText;
     private OnFragmentInteractionListener listener;
