@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,8 +30,7 @@ public class CustomLocationFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private double latitude;
     private double longitude;
-    private TextView longitudeText;
-    private TextView latitudeText;
+    private Button scanButton;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
 
@@ -57,7 +57,7 @@ public class CustomLocationFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static CustomLocationFragment newInstance(String param1, String param2) {
-        CustomLocationFragment fragment = new CustomLocationManager();
+        CustomLocationFragment fragment = new CustomLocationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -94,6 +94,7 @@ public class CustomLocationFragment extends Fragment {
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
                     System.out.println(latitude);
+
                 }
             }
         };
@@ -105,8 +106,18 @@ public class CustomLocationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_location, container, false);
 
-        longitudeText = view.findViewById(R.id.longitude_text_view);
-        latitudeText = view.findViewById(R.id.latitude_text_view);
+        scanButton = view.findViewById(R.id.button_scan);
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("tempKey1", String.valueOf(latitude));
+                bundle.putString("tempKey2", String.valueOf(longitude));
+                getParentFragmentManager().setFragmentResult("tempKey", bundle);
+                System.out.println("hiiiiiiiiiiiiiiiiiiiiiii");
+            }
+        });
 
         return view;
     }

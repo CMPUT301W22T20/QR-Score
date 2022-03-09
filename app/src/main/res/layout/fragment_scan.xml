@@ -21,15 +21,23 @@
         android:layout_gravity="center"
         android:text="Take Photo" />
 
-    <Button
-        android:id="@+id/button_scan"
+    <LinearLayout
+        android:id="@+id/button_to_replace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Scan" />
+        android:orientation="vertical" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/longitude_text_view"
+        android:text="Longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/latitude_text_view"
+        android:text="Latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>

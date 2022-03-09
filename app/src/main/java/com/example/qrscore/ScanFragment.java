@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -87,6 +88,8 @@ public class ScanFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        getFragmentManager().beginTransaction().replace(R.id.button_to_replace, new CustomLocationFragment()).commit();
+
         ActivityResultLauncher<String[]> locationPermissionRequest =
                 registerForActivityResult(new ActivityResultContracts
                                 .RequestMultiplePermissions(), result -> {
@@ -121,13 +124,25 @@ public class ScanFragment extends Fragment {
 
         imageView = view.findViewById(R.id.qr_image_view);
         Button cameraButton = view.findViewById(R.id.button_take_photo);
-        Button scanButton = view.findViewById(R.id.button_scan);
+        TextView latitudeText = view.findViewById(R.id.latitude_text_view);
+        TextView longitudeText = view.findViewById(R.id.longitude_text_view);
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 startActivityForResult(intent, 8008);
+            }
+        });
+
+        getParentFragmentManager().setFragmentResultListener("tempKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                String result1 = bundle.getString("tempKey1");
+                String result2 = bundle.getString("tempKey2");
+
+                longitudeText.setText(result2);
+                latitudeText.setText(result1);
             }
         });
 
