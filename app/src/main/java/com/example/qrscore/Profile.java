@@ -4,13 +4,33 @@ public class Profile {
 
     private String firstName;
     private String lastName;
-    private String username;
     private String email;
     private String phoneNumber;
-    private String UserUID;
+    private String userUID;
 
     // For new user
     public Profile() {
+        this.firstName = null;
+        this.lastName = null;
+        this.email = null;
+        this.phoneNumber = null;
+        this.userUID = null;
+    }
+
+    public Profile(String userUID) {
+        this.firstName = null;
+        this.lastName = null;
+        this.email = null;
+        this.phoneNumber = null;
+        this.userUID = userUID;
+    }
+
+    public Profile(String firstName, String lastName, String email, String phoneNumber, String userUID) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.userUID = userUID;
     }
 
     public String getFirstName() {
@@ -27,14 +47,6 @@ public class Profile {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
@@ -54,10 +66,10 @@ public class Profile {
     }
 
     public String getUserUID() {
-        return UserUID;
+        return userUID;
     }
 
     public void setUserUID(String userUID) {
-        UserUID = userUID;
+        this.userUID = userUID;
     }
 }
