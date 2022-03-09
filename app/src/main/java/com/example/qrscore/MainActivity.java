@@ -1,9 +1,13 @@
 package com.example.qrscore;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -19,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return false;
             }
+
         });
     }
 }
