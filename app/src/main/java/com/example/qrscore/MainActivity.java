@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        startActivity(new Intent(MainActivity.this, ProfileAuthActivity.class));
         // Bottom Nav selector.
         // https://www.youtube.com/watch?v=OV25x3a55pk
         bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
