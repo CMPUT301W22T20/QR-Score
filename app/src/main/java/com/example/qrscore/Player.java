@@ -3,7 +3,18 @@ package com.example.qrscore;
 public class Player {
     private Account account;
 
-    /** Gets the Username of the player
+    /**
+     * Constructor for player
+     *
+     * @param account
+     *      The player's account
+     */
+    public Player(Account account) {
+        this.account = account;
+    }
+
+    /**
+     * Gets the Username of the player
      *
      * @return
      *      username of the player

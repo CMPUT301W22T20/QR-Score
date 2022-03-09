@@ -22,20 +22,23 @@ public class Account {
         qrCodes.remove(toRemove);
     }
 
-//    public QRCode getHighest() {
-//        return stats.getHighscore(qrCodes);
-//    }
+    /**
+     * Constructor for the account
+     *
+     * @param profile
+     *      The account's profile
+     */
+    public Account(Profile profile) {
+        this.profile = profile;
+    }
 
-//    public QRCode getLowest() {
-//        return stats.getLowscore(qrCodes);
-//    }
-
-    /** Gets the Username of the player
+    /** Gets the Username of the profile
      *
      * @return
-     *      username of the player
+     *      username of the profile
      */
     public String getUsername() {
         return profile.getUsername();
     }
+
 }
