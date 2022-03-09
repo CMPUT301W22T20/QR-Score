@@ -52,8 +52,6 @@ public class ScanFragment extends Fragment {
     private ImageView imageView;
     private Boolean fineLocationGranted;
     private Boolean coarseLocationGranted;
-    private LocationCallback locationCallback;
-    private FusedLocationProviderClient fusedLocationClient;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -89,8 +87,6 @@ public class ScanFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
         ActivityResultLauncher<String[]> locationPermissionRequest =
                 registerForActivityResult(new ActivityResultContracts
                                 .RequestMultiplePermissions(), result -> {
@@ -118,26 +114,6 @@ public class ScanFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        if (true) {
-            startLocationUpdates();
-        }
-    }
-
-    private void startLocationUpdates() {
-        createLocationRequest();
-    }
-
-    protected void createLocationRequest() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -146,8 +122,6 @@ public class ScanFragment extends Fragment {
         imageView = view.findViewById(R.id.qr_image_view);
         Button cameraButton = view.findViewById(R.id.button_take_photo);
         Button scanButton = view.findViewById(R.id.button_scan);
-        TextView longitudeText = view.findViewById(R.id.longitude_text_view);
-        TextView latitudeText = view.findViewById(R.id.latitude_text_view);
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,40 +130,6 @@ public class ScanFragment extends Fragment {
                 startActivityForResult(intent, 8008);
             }
         });
-
-        scanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                }
-                else {
-                    fusedLocationClient.getLastLocation()
-                            .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                                @Override
-                                public void onSuccess(Location location) {
-                                    if (location != null) {
-                                        latitudeText.setText(String.valueOf(location.getLatitude()));                                    }
-                                }
-                            });
-                }
-            }
-        });
-
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location: locationResult.getLocations()) {
-                    latitudeText.setText(String.valueOf(location.getLatitude()));
-                    longitudeText.setText(String.valueOf(location.getLongitude()));
-                }
-            }
-        };
 
         return view;
     }
