@@ -1,8 +1,11 @@
 package com.example.qrscore;
 
+import android.util.Log;
+
 import java.util.List;
 
 public class Stats {
+    private static final String TAG = "STATS";
     private List<QRCode> qrCodes;
     private Integer totalQRCodesScanned;
     private Integer sumOfScoresScanned;
@@ -29,22 +32,29 @@ public class Stats {
     /**
      * Adds a QR code to the list.
      *
-     * @param toAdd
+     * @param qr
      *      the QR code to add.
      */
-    public void addQRCode(QRCode toAdd) {
-        qrCodes.add(toAdd);
+    public void addQRCode(QRCode qr) {
+        if (!qrCodes.contains(qr)) {
+            qrCodes.add(qr);
+        } else {
+            Log.d(TAG, "Duplicate QR code. Skipped adding.");
+        }
     }
 
     /**
      * Removes a QR code from the list if it exists.
      *
-     * @param toRemove
+     * @param qr
      *      the QR code to remove.
      */
-    public void removeQRCode(QRCode toRemove) {
-        // Check if the QR code is in the list or not, throw exception if it isn't.
-        qrCodes.remove(toRemove);
+    public void removeQRCode(QRCode qr) {
+        if (qrCodes.contains(qr)) {
+            qrCodes.remove(qr);
+        } else {
+            Log.d(TAG, "QR code not in list.");
+        }
     }
 
     /**
