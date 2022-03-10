@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * This is a class that is a custom list to display various info
+ */
 public class CommentCustomList extends ArrayAdapter<Comment> {
     private ArrayList<Comment> comments;
     private Context context;

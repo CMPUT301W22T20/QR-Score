@@ -5,25 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.errorprone.annotations.Var;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNavView;
+    HomeFragment homeFragment = new HomeFragment();
+    MapFragment mapFragment = new MapFragment();
+    ScanFragment scanFragment = new ScanFragment();
+    LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +27,35 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, QRCodeActivity.class);
         startActivity(intent);
 
+        setContentView(R.layout.activity_main);
+
+        // Bottom Nav selector.
+        // https://www.youtube.com/watch?v=OV25x3a55pk
+        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+                        return true;
+                    case R.id.map_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
+                        return true;
+                    case R.id.scan_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
+                        return true;
+                    case R.id.leaderboard_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
+                        return true;
+                    case R.id.profile_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 }
 

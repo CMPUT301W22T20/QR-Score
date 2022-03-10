@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< HEAD
         <entry key="app/src/main/res/drawable/back.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/scroll_view_black_border.xml" value="0.1435" />
@@ -12,6 +13,18 @@
         <entry key="app/src/main/res/layout/comment_content.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.30932971014492755" />
         <entry key="app/src/main/res/layout/scanned_by_content.xml" value="0.26902173913043476" />
+=======
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
+        <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/activity_profile_auth.xml" value="0.39633941650390625" />
+        <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.18860626220703125" />
+        <entry key="app/src/main/res/layout/comment_content.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/comment_fragment.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26916198730468743" />
+>>>>>>> 38566dc9f48094bd170305f5924a8b56ecf3c928
       </map>
     </option>
   </component>
