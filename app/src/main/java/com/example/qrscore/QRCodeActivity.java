@@ -20,11 +20,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -57,21 +60,20 @@ public class QRCodeActivity extends AppCompatActivity{
 
         // Create array adapter for players who have scanned a specific QR code
         playerDataList = new ArrayList<String>();
-        playerDataList.add("user02");
+/*        playerDataList.add("user02");
         playerDataList.add("user01");
         playerDataList.add("user03");
         playerDataList.add("user01");
         playerDataList.add("user01");
+        playerDataList.add("user40");
+        playerDataList.add("user45");*/
         playerList = findViewById(R.id.scanned_by_list_view);
         playerAdapter = new ArrayAdapter<>(this,
-                com.example.qrscore.R.layout.scanned_by_content,
-                playerDataList);
+                com.example.qrscore.R.layout.scanned_by_content, playerDataList);
         playerList.setAdapter(playerAdapter);
-        playerDataList.add("user50");
-        playerAdapter.notifyDataSetChanged();
 
         //test data
-        Profile profile1 = new Profile("user001");
+        Profile profile1 = new Profile("usernameok");
         Account account1 = new Account(profile1);
         Player player1 = new Player(account1);
         Profile profile2 = new Profile("user001");
@@ -80,9 +82,9 @@ public class QRCodeActivity extends AppCompatActivity{
         String[] hasScannedArray = {player1.getUsername()};
         List<String> hasScanned = Arrays.asList(hasScannedArray);
         QRCode code = new QRCode(hasScanned);
+
         code = addToHasScanned(code, player1);
-        String sid = code.getId();
-        //loadHasScanned(playerDataList);
+        loadHasScanned(code);
         //updateHasScanned(code, player2);
     }
 
@@ -93,7 +95,19 @@ public class QRCodeActivity extends AppCompatActivity{
     public QRCode addToHasScanned(QRCode code, Player player) {
 
         qrCodeRef.add(code)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+/*                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                        if (task.isSuccessful()) {
+                            DocumentReference reference = task.getResult();
+                            Log.d(TAG, "onSuccess: task was successful");
+                            Log.d(TAG, "onSuccess: " + reference.getId());
+                            code.setId(reference.getId());  // set id of qrCode
+                     }  else {
+                            Log.d(TAG, "onFailure: task was NOT successful");
+                        }
+                }});*/
+               .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "onSuccess: task was successful");
@@ -120,19 +134,48 @@ public class QRCodeActivity extends AppCompatActivity{
         id.update("hasScanned", FieldValue.arrayUnion(player.getUsername()));
     }
 
-    public void loadHasScanned(ArrayList<String> playerDataList) {
-        qrCodeRef.whereArrayContains("hasScanned", "tag").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+    public void loadHasScanned(QRCode code) {
+        qrCodeRef.document(code.getId()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        QRCode code = document.toObject(QRCode.class);
+
+                        // Add each player from hasScanned to playerDataList
+                        for (String username : code.getHasScanned()) {
+                            playerDataList.add(username); }
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
+              /*  .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
+                        // loop through each document
                         for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             QRCode code = documentSnapshot.toObject(QRCode.class);
                             code.setId(documentSnapshot.getId()); // set QRCode id to documentID
+
+                            // Add each player from hasScanned to playerDataList
+                            for (String username : code.getHasScanned()) {
+                                playerDataList.add(username);
+                            }
+                            playerAdapter.notifyDataSetChanged();
                         }
 
                     }
-                });
+                });*/
     }
 
 
