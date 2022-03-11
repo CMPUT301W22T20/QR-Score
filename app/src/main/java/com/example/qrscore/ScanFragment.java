@@ -6,8 +6,10 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -37,6 +44,9 @@ public class ScanFragment extends Fragment {
     private CustomLocation locationFragment;
     private static Boolean fineLocationGranted;
     private static Boolean coarseLocationGranted;
+    private String longitude;
+    private String latitude;
+    private FirebaseFirestore db;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -72,6 +82,8 @@ public class ScanFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        db = FirebaseFirestore.getInstance();
+
         // Requesting location permissions
         ActivityResultLauncher<String[]> locationPermissionRequest =
                 registerForActivityResult(new ActivityResultContracts
@@ -82,6 +94,7 @@ public class ScanFragment extends Fragment {
                                     Manifest.permission.ACCESS_COARSE_LOCATION);
                             if (fineLocationGranted != null && fineLocationGranted) {
                                 // Precise location access granted.
+                                // Start getting location updates
                                 locationFragment = new CustomLocation(getActivity());
                                 Toast.makeText(getActivity(), "Recording location", Toast.LENGTH_LONG).show();
                                 System.out.println("1");
@@ -116,16 +129,37 @@ public class ScanFragment extends Fragment {
                 result -> {
                     if (result.getContents() == null) {
                         Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         // Guava library hashing utilities
                         final String hashed = Hashing.sha256()
                                 .hashString(result.getContents(), StandardCharsets.UTF_8)
                                 .toString();
 
                         longitudeText.setText(hashed);
+
+                        // Try to get document from db, if cant get then create a new one
+                        // so we don't overwrite existing data
+                        CollectionReference collectionReference = db.collection("QRCode");
+                        collectionReference.document(hashed)
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            if (document.exists()) {
+                                                Log.d("Sample", "DocumentSnapshot data: " + document.getData());
+                                            } else {
+                                                Log.d("Sample", "No such document");
+                                                collectionReference.document(hashed).set(new QRCode(hashed, longitude, latitude));
+                                            }
+                                        } else {
+                                            Log.d("Sample", "get failed with ", task.getException());
+                                        }
+                                    }
+                                });
                     }
-        });
+                });
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,16 +173,18 @@ public class ScanFragment extends Fragment {
                 barcodeLauncher.launch(options);
             }
         });
-        /* TODO: Crashes when location services denied but thats because we set it like that.
-                 Will not crash when it is implemented properly.
-        */
+
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Location result = locationFragment.getLocation();
-
-                String longitude = String.valueOf(result.getLongitude());
-                longitudeText.setText(longitude);
+                try {
+                    Location result = locationFragment.getLocation();
+                    String longitude = String.valueOf(result.getLongitude());
+                    longitudeText.setText(longitude);
+                }
+                catch (NullPointerException e) {
+                    Toast.makeText(getActivity(), "An Error Occurred", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

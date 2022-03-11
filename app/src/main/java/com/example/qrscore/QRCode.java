@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class QRCode {
     private String hash;
     private Integer qrScore;
-    private String location;
+    private String longitude;
+    private String latitude;
     private ArrayList<Player> hasScanned;
     private ArrayList<Comment> comments;
 
@@ -24,10 +25,11 @@ public class QRCode {
      * @param loc
      *      a String representing the location of the QR code.
      */
-    public QRCode(String hash, String loc) {
+    public QRCode(String hash, String longitude, String latitude) {
         this.hash = hash;
         // this.score = new Score(hash);
-        this.location = loc;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.hasScanned = new ArrayList<>();
         this.comments  = new ArrayList<>();
         calculateQRScore(this.hash);
@@ -136,5 +138,17 @@ public class QRCode {
      */
     public ArrayList<Comment> getComments() {
         return comments;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
     }
 }
