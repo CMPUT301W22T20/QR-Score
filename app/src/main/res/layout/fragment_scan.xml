@@ -27,6 +27,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
+
+    <Button
+        android:id="@+id/button_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Scan" />
+
     <TextView
         android:id="@+id/longitude_text_view"
         android:text="Longitude"

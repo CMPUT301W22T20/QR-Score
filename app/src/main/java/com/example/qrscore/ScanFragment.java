@@ -1,43 +1,26 @@
 package com.example.qrscore;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.location.LocationRequest;
+import com.google.common.hash.Hashing;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.io.ByteArrayOutputStream;
-import java.util.function.Consumer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,8 +34,9 @@ public class ScanFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ImageView imageView;
-    private Boolean fineLocationGranted;
-    private Boolean coarseLocationGranted;
+    private CustomLocation locationFragment;
+    private static Boolean fineLocationGranted;
+    private static Boolean coarseLocationGranted;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -88,23 +72,23 @@ public class ScanFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        getFragmentManager().beginTransaction().replace(R.id.button_to_replace, new CustomLocationFragment()).commit();
-
+        // Requesting location permissions
         ActivityResultLauncher<String[]> locationPermissionRequest =
                 registerForActivityResult(new ActivityResultContracts
                                 .RequestMultiplePermissions(), result -> {
-                            fineLocationGranted = result.getOrDefault(
-                                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-                            coarseLocationGranted = result.getOrDefault(
-                                    Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                            fineLocationGranted = result.get(
+                                    Manifest.permission.ACCESS_FINE_LOCATION);
+                            coarseLocationGranted = result.get(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION);
                             if (fineLocationGranted != null && fineLocationGranted) {
                                 // Precise location access granted.
+                                locationFragment = new CustomLocation(getActivity());
+                                Toast.makeText(getActivity(), "Recording location", Toast.LENGTH_LONG).show();
                                 System.out.println("1");
-                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                                // Only approximate location access granted.
-                                System.out.println("2");
-                            } else {
-                                // No location access granted.
+                            }
+                            else {
+                                // Location not granted
+                                Toast.makeText(getActivity(), "Not recording location", Toast.LENGTH_LONG).show();
                                 System.out.println("3");
                             }
                         }
@@ -113,7 +97,6 @@ public class ScanFragment extends Fragment {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
-
     }
 
     @Override
@@ -126,23 +109,46 @@ public class ScanFragment extends Fragment {
         Button cameraButton = view.findViewById(R.id.button_take_photo);
         TextView latitudeText = view.findViewById(R.id.latitude_text_view);
         TextView longitudeText = view.findViewById(R.id.longitude_text_view);
+        Button scanButton = view.findViewById(R.id.button_scan);
+
+        // Start activity for scanning QR code
+        final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
+                result -> {
+                    if (result.getContents() == null) {
+                        Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        // Guava library hashing utilities
+                        final String hashed = Hashing.sha256()
+                                .hashString(result.getContents(), StandardCharsets.UTF_8)
+                                .toString();
+
+                        longitudeText.setText(hashed);
+                    }
+        });
 
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                startActivityForResult(intent, 8008);
+//                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                startActivityForResult(intent, 8008);
+                ScanOptions options = new ScanOptions();
+                options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+                options.setPrompt("Scan a barcode");
+                options.setBarcodeImageEnabled(true);
+                barcodeLauncher.launch(options);
             }
         });
-
-        getParentFragmentManager().setFragmentResultListener("tempKey", this, new FragmentResultListener() {
+        /* TODO: Crashes when location services denied but thats because we set it like that.
+                 Will not crash when it is implemented properly.
+        */
+        scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                String result1 = bundle.getString("tempKey1");
-                String result2 = bundle.getString("tempKey2");
+            public void onClick(View view) {
+                Location result = locationFragment.getLocation();
 
-                longitudeText.setText(result2);
-                latitudeText.setText(result1);
+                String longitude = String.valueOf(result.getLongitude());
+                longitudeText.setText(longitude);
             }
         });
 
@@ -150,10 +156,28 @@ public class ScanFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 8008 && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(photo);
+    public void onResume() {
+        super.onResume();
+
+        if (locationFragment != null) {
+            locationFragment.startLocationUpdates();
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (locationFragment != null) {
+            locationFragment.stopLocationUpdates();
+        }
+    }
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == 8008 && resultCode == Activity.RESULT_OK) {
+//            Bitmap photo = (Bitmap) data.getExtras().get("data");
+//            imageView.setImageBitmap(photo);
+//        }
+//    }
 }
