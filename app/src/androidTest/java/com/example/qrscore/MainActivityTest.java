@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -91,6 +92,11 @@ public class MainActivityTest {
         solo.searchText("testcase@qrscore.io");
         solo.searchText("7803012022");
         solo.searchText(firebaseUser.getUid());    // Checks for UserUID/username
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
     }
 
 }
