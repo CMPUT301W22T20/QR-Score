@@ -10,7 +10,6 @@ public class Player {
 
     /**
      * Constructor for player
-     *
      * @param account
      *      The player's account
      */
@@ -20,7 +19,6 @@ public class Player {
 
     /**
      * Gets the Username of the player
-     *
      * @return
      *      username of the player
      */
