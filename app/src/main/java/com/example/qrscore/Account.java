@@ -26,4 +26,12 @@ public class Account {
 //    public QRCode getLowest() {
 //        return stats.getLowscore(qrCodes);
 //    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile newProfile) {
+        this.profile = profile;
+    }
 }
