@@ -37,29 +37,6 @@ public class MainActivityTest {
     public void start() throws Exception {
         Activity activity = rule.getActivity();
     }
-    
-    @Test
-    public void checkBottomNavBar() {
-//        View homeFragmentItem = solo.getView((R.id.home_fragment_item));
-//        solo.clickOnView(homeFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.home_fragment, 2000));
-//
-//        View mapFragmentItem = solo.getView((R.id.map_fragment_item));
-//        solo.clickOnView(mapFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.map_fragment, 2000));
-//
-//        View scanFragmentItem = solo.getView((R.id.scan_fragment_item));
-//        solo.clickOnView(scanFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.scan_fragment, 2000));
-//
-//        View leaderboardFragmentItem = solo.getView((R.id.leaderboard_fragment_item));
-//        solo.clickOnView(leaderboardFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.leaderboard_fragment, 2000));
-
-//        View profileFragmentItem = solo.getView((R.id.profile_fragment_item));
-//        solo.clickOnView(profileFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.profile_fragment, 2000));
-    }
 
     @Test
     public void testLogin() {
