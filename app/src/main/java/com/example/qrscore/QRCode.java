@@ -140,11 +140,6 @@ public class QRCode {
         this.hasScanned = hasScanned;
     }
 
-    /**
-     * Empty constructor for firebase
-     */
-    public QRCode() {
-    }
 
     /**
      * Gets the players that have scanned the QRCode
