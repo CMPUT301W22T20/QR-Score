@@ -7,8 +7,6 @@ package com.example.qrscore;
 
 // TODO: UI--navbar with "add" button to add QR codes.
 
-import android.util.Log;
-
 import java.util.List;
 
 /* Purpose: This class represents an account in the system.
@@ -22,13 +20,13 @@ public class Account {
     private String userID;
     private String device;
     private Profile profile;
-    private Stats stats; // Rename Stats to QRList?
+    private QRList qrList;
     // private Permissions permissions;
 
     public Account(String userID, String device) {
         this.userID = userID;
         this.device = device;
-        this.stats = new Stats();
+        this.qrList = new QRList();
     }
 
     public String getUserID() {
@@ -40,15 +38,15 @@ public class Account {
     }
 
     public void addQR(QRCode qr) {
-        this.stats.addQRCode(qr);
+        qrList.addQRCode(qr);
     }
 
     public List<QRCode> getQR() {
-        return this.stats.getQRCodes();
+        return qrList.getQRCodes();
     }
 
     public void removeQR(QRCode qr) {
-        this.stats.removeQRCode(qr);
+        qrList.removeQRCode(qr);
     }
 
 //    public QRCode getHighest() {

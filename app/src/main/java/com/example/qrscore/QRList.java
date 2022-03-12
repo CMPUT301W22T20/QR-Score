@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.util.List;
 
-public class Stats {
+public class QRList {
     private static final String TAG = "STATS";
     private List<QRCode> qrCodes;
     private Integer totalQRCodesScanned;
@@ -14,7 +14,7 @@ public class Stats {
      * Constructor for Stats class
      *
      */
-    public Stats() {
+    public QRList() {
         this.totalQRCodesScanned = 0;
         this.sumOfScoresScanned = 0;
     }
