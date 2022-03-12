@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +12,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.qrscore.Comment;
+import com.example.qrscore.R;
 
 public class AddCommentFragment extends DialogFragment {
     private EditText commentText;

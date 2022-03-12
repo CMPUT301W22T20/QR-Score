@@ -1,22 +1,20 @@
 package com.example.qrscore;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.example.qrscore.fragment.HomeFragment;
+import com.example.qrscore.fragment.LeaderboardFragment;
+import com.example.qrscore.fragment.MapFragment;
+import com.example.qrscore.fragment.ProfileFragment;
+import com.example.qrscore.fragment.ScanFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

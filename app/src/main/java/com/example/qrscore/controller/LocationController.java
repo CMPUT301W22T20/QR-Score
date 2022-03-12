@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.Manifest;
 import android.app.Activity;

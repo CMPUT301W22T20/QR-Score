@@ -3,12 +3,11 @@ package com.example.qrscore;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.qrscore.fragment.AddCommentFragment;
 
 import java.util.ArrayList;
 
