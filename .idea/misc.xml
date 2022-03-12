@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.188" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/activity_background.xml" value="0.253" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/back.xml" value="0.253" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/ic_launcher_background.xml" value="0.253" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.188" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_qrcode.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/comment_content.xml" value="0.17844202898550723" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/comment_fragment_layout.xml" value="0.17844202898550723" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/home_fragment_layour.xml" value="0.17502532928064843" />
+        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/home_fragment_layout.xml" value="0.1796875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

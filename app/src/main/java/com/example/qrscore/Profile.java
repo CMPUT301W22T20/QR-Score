@@ -1,5 +1,14 @@
 package com.example.qrscore;
 
+/**
+ * Purpose: This class represents a user's public profile.
+ *
+ * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: Unit tests
+ * TODO: Javadocs
+ * TODO: Merge with William's Profile
+ */
 public class Profile {
     private String firstName;
     private String lastName;

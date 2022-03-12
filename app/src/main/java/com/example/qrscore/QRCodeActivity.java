@@ -12,10 +12,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-// TODO: Implement opening up comments
-// TODO: Player names
-// TODO: Change little icon placeholder
-
+/**
+ * Purpose: This class is the QR Code activity
+ *
+ * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: Implement opening up comments
+ * TODO: Player names
+ * TODO: Change little icon placeholder
+ * TODO: UI tests
+ */
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
