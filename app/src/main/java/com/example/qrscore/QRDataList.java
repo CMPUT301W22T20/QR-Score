@@ -5,7 +5,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-//TODO: implement ranking system
+/* Purpose: This class contains a list of a player's QR Codes and their respective stats.
+ * Stores a list of QR codes the player has scanned
+ * Stores the total # of QR codes scanned
+ * Stores the score sum of the player's scanned QR codes
+ * Stores the player's rank relative to other players
+ * Outstanding issues:
+ * TODO: implement ranking system
+ * TODO: connect to firebase for ranks
+ */
 
 public class QRDataList {
     private List<QRCode> qrCodes;
