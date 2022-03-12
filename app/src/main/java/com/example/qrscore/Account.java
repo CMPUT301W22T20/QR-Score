@@ -29,22 +29,52 @@ public class Account {
         this.qrList = new QRList();
     }
 
+    /**
+     * Returns the Account's user ID.
+     *
+     * @return
+     *      user ID as a string.
+     */
     public String getUserID() {
         return userID;
     }
 
+    /**
+     * Returns the Account's device.
+     *
+     * @return
+     *      device as a string.
+     */
     public String getDevice() {
         return device;
     }
 
+    /**
+     * Adds a QR code to the list.
+     *
+     * @param qr
+     *      the QR code to add.
+     */
     public void addQR(QRCode qr) {
         qrList.addQRCode(qr);
     }
 
+    /**
+     * Returns the array of QR codes.
+     *
+     * @return
+     *      a List of QR codes.
+     */
     public List<QRCode> getQR() {
         return qrList.getQRCodes();
     }
 
+    /**
+     * Removes a QR code from the list if it exists.
+     *
+     * @param qr
+     *      the QR code to remove.
+     */
     public void removeQR(QRCode qr) {
         qrList.removeQRCode(qr);
     }
