@@ -22,7 +22,7 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param loc
+     * @param longitude
      *      a String representing the location of the QR code.
      */
     public QRCode(String hash, String longitude, String latitude) {

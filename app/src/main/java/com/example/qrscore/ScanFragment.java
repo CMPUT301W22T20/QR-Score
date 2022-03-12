@@ -41,7 +41,7 @@ public class ScanFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ImageView imageView;
-    private CustomLocation locationFragment;
+    private LocationController locationController;
     private static Boolean fineLocationGranted;
     private static Boolean coarseLocationGranted;
     private String longitude;
@@ -84,32 +84,7 @@ public class ScanFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        // Requesting location permissions
-        ActivityResultLauncher<String[]> locationPermissionRequest =
-                registerForActivityResult(new ActivityResultContracts
-                                .RequestMultiplePermissions(), result -> {
-                            fineLocationGranted = result.get(
-                                    Manifest.permission.ACCESS_FINE_LOCATION);
-                            coarseLocationGranted = result.get(
-                                    Manifest.permission.ACCESS_COARSE_LOCATION);
-                            if (fineLocationGranted != null && fineLocationGranted) {
-                                // Precise location access granted.
-                                // Start getting location updates
-                                locationFragment = new CustomLocation(getActivity());
-                                Toast.makeText(getActivity(), "Recording location", Toast.LENGTH_LONG).show();
-                                System.out.println("1");
-                            }
-                            else {
-                                // Location not granted
-                                Toast.makeText(getActivity(), "Not recording location", Toast.LENGTH_LONG).show();
-                                System.out.println("3");
-                            }
-                        }
-                );
-        locationPermissionRequest.launch(new String[] {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-        });
+        this.requestPermissions();
     }
 
     @Override
@@ -151,6 +126,8 @@ public class ScanFragment extends Fragment {
                                                 Log.d("Sample", "DocumentSnapshot data: " + document.getData());
                                             } else {
                                                 Log.d("Sample", "No such document");
+                                                longitude = String.valueOf(locationController.getLocation().getLongitude());
+                                                latitude = String.valueOf(locationController.getLocation().getLatitude());
                                                 collectionReference.document(hashed).set(new QRCode(hashed, longitude, latitude));
                                             }
                                         } else {
@@ -178,7 +155,7 @@ public class ScanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    Location result = locationFragment.getLocation();
+                    Location result = locationController.getLocation();
                     String longitude = String.valueOf(result.getLongitude());
                     longitudeText.setText(longitude);
                 }
@@ -195,8 +172,8 @@ public class ScanFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (locationFragment != null) {
-            locationFragment.startLocationUpdates();
+        if (locationController != null) {
+            locationController.startLocationUpdates();
         }
     }
 
@@ -204,9 +181,38 @@ public class ScanFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if (locationFragment != null) {
-            locationFragment.stopLocationUpdates();
+        if (locationController != null) {
+            locationController.stopLocationUpdates();
         }
+    }
+
+    private void requestPermissions() {
+        // Requesting location permissions
+        ActivityResultLauncher<String[]> locationPermissionRequest =
+                registerForActivityResult(new ActivityResultContracts
+                        .RequestMultiplePermissions(), result -> {
+                            fineLocationGranted = result.get(
+                                    Manifest.permission.ACCESS_FINE_LOCATION);
+                            coarseLocationGranted = result.get(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION);
+                            if (fineLocationGranted != null && fineLocationGranted) {
+                                // Precise location access granted.
+                                // Start getting location updates
+                                locationController = new LocationController(getActivity());
+                                Toast.makeText(getActivity(), "Recording location", Toast.LENGTH_LONG).show();
+                                System.out.println("1");
+                            }
+                            else {
+                                // Location not granted
+                                Toast.makeText(getActivity(), "Not recording location", Toast.LENGTH_LONG).show();
+                                System.out.println("3");
+                            }
+                        }
+                );
+        locationPermissionRequest.launch(new String[] {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        });
     }
 
 //    @Override

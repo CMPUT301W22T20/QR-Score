@@ -17,7 +17,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class CustomLocation {
+public class LocationController {
     private FusedLocationProviderClient fusedLocationClient;
     private double latitude;
     private double longitude;
@@ -26,7 +26,7 @@ public class CustomLocation {
     private Activity activity;
     private Location currLocation;
 
-    public CustomLocation(Activity activity) {
+    public LocationController(Activity activity) {
         this.activity = activity;
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
