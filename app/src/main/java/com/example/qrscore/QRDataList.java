@@ -7,7 +7,7 @@ import java.util.List;
 
 //TODO: implement ranking system
 
-public class Stats {
+public class QRDataList {
     private List<QRCode> qrCodes;
     private Integer totalQRCodesScanned;
     private Integer sumOfScoresScanned;
@@ -17,7 +17,7 @@ public class Stats {
      * Constructor for Stats class
      *
      */
-    public Stats() {
+    public QRDataList() {
         this.qrCodes = new ArrayList<QRCode>();
         this.updateStats();
     }

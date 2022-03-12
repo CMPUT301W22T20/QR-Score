@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Account {
     private List<String> devices;
-    public Stats stats;
+    public QRDataList qrDataList;
     public Profile profile;
     // private Permissions permissions;
 
@@ -24,7 +24,7 @@ public class Account {
         this.devices = new ArrayList<String>();
         this.addDevice(device);
         this.profile = new Profile(userName);
-        this.stats = new Stats();
+        this.qrDataList = new QRDataList();
     }
 
     private void addDevice(String toAdd) {
