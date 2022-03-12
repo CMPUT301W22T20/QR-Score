@@ -19,4 +19,12 @@
     <string name="profile_phone_number">Phone Number</string>
     <string name="profile_refreshQR">Refresh QR</string>
     <string name="profile_save_button">SAVE</string>
+
+    <!--  Leaderboard  -->
+    <string name="leaderboard_top_qr_codes">TOP QR CODES</string>
+    <string name="leaderboard_top_players">TOP PLAYERS</string>
+    <string name="leaderboard_rank">Rank</string>
+    <string name="leaderboard_score">Score</string>
+    <string name="leaderboard_player">Player</string>
+    <string name="leaderboard_search_player">Search Player by username</string>
 </resources>

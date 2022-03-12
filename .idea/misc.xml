@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/round_button_selected.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/round_button_text.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/round_button_unselected.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/tab_layout_selector.xml" value="0.2315" />
         <entry key="app/src/main/res/drawable/username_box.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/useruid_text_box.xml" value="0.2315" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
@@ -21,7 +22,11 @@
         <entry key="app/src/main/res/layout/comment_fragment.xml" value="0.11956521739130435" />
         <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/fragment_leaderboard_player_fragment.xml" value="0.3108695652173913" />
+        <entry key="app/src/main/res/layout/fragment_leaderboard_qrcode_fragment.xml" value="0.24270477294921877" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/leaderboard_list_items.xml" value="0.9473007202148438" />
         <entry key="app/src/main/res/layout/profile_actionbar.xml" value="0.3765625" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26916198730468743" />
       </map>
