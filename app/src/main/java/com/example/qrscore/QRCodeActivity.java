@@ -20,10 +20,24 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+<<<<<<< HEAD
+/**
+ * Purpose: This class is the QR Code activity
+ *
+ * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: Implement opening up comments
+ * TODO: Player names
+ * TODO: Change little icon placeholder
+ * TODO: UI tests
+ */
+public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
+=======
 // TODO: Player names
 // TODO: Change little icon placeholder
 
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener{
+>>>>>>> main
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;

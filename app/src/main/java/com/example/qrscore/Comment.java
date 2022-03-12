@@ -6,7 +6,23 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
+<<<<<<< HEAD
+ * Purpose: This class represents a comment on a QR Code.
+ * Stores the comment posted
+ * Stores the user who posted the comment
+ * Stores a timestamp of when the comment was posted
+ * Stores the ID of the QR Code commented on
+ *
+ * Outstanding issues:
+ * TODO: As a player, I want to add new QR codes to my account.
+ * TODO: As a player, I want to see what QR codes I have added to my account.
+ * TODO: As a player, I want to remove QR codes from my account.
+ * TODO: As a player, I want to see my highest and lowest scoring QR codes.
+ * TODO: Unit tests
+ * TODO: Javadocs
+=======
  * This is a class that contains the info of comments
+>>>>>>> main
  */
 public class Comment {
     private final String commenter;

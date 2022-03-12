@@ -1,5 +1,13 @@
 package com.example.qrscore;
 
+<<<<<<< HEAD
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+=======
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,9 +17,19 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+>>>>>>> main
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+<<<<<<< HEAD
+/**
+ * Purpose: This class is the main activity
+ *
+ * Outstanding issues:
+ * TODO: Merge with William's MainActivity
+ */
+public class MainActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
+=======
     BottomNavigationView bottomNavView;
     HomeFragment homeFragment = new HomeFragment();
     MapFragment mapFragment = new MapFragment();
@@ -19,10 +37,17 @@ public class MainActivity extends AppCompatActivity {
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
+>>>>>>> main
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
+    }
+
+    @Override
+    public void onOkPressed(Comment newComment) {
+=======
 
         // Bottom Nav selector.
         // https://www.youtube.com/watch?v=OV25x3a55pk
@@ -51,5 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+>>>>>>> main
     }
 }
