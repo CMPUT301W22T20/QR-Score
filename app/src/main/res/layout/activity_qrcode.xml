@@ -81,7 +81,11 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
+<<<<<<< HEAD
         android:background="@drawable/rectangle_bordered_background">
+=======
+        android:foreground="@drawable/back">
+>>>>>>> main
 
         <Button
             android:id="@+id/add_button"

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+=======
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> main
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/activity_background">
 
+<<<<<<< HEAD
     <TextView
         android:id="@+id/username_text_view"
         android:layout_width="match_parent"
@@ -16,3 +23,25 @@
         android:textSize="45sp"
         android:textStyle="bold" />
 </LinearLayout>
+=======
+    <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_container"
+    android:layout_above="@+id/bottom_nav_view"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_nav_menu"
+        android:background="@drawable/nav_bar_round"
+        app:itemRippleColor="@color/white"
+        app:labelVisibilityMode="labeled"
+        app:itemTextAppearanceActive="@color/black"
+        app:itemIconTint="@drawable/nav_bar_selector"
+        app:itemTextColor="@drawable/nav_bar_selector"/>
+
+    </RelativeLayout>
+>>>>>>> main
