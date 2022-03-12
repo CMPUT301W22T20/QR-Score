@@ -1,9 +1,11 @@
 package com.example.qrscore;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,35 +25,25 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
         private TextView rank;
         private TextView score;
         private TextView username;
-        private ImageButton playerMenu;
+        private ImageButton playerMenuButton;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
             rank = itemView.findViewById(R.id.leaderboard_item_rank);
             score = itemView.findViewById(R.id.leaderboard_item_score);
             username = itemView.findViewById(R.id.leaderboard_item_username);
-            playerMenu = itemView.findViewById(R.id.leaderboard_item_button);
+            playerMenuButton = itemView.findViewById(R.id.leaderboard_item_button);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull LeaderboardRecyclerAdapter.MyViewHolder holder, int position) {
 
-        for (int i = 0; i < getItemCount(); i++) {
-
-            String rank = "893";
-            holder.rank.setText(rank);
-
-//        String username = players.get(position).getUsername();
-            String username = "Xm0Z8ZAEljVRPT9EGA2uphT86bh1";
-            holder.username.setText(username);
-//
-//        String score = players.get(position).getScore();
-            String score = "15000";
-            holder.score.setText(score);
-        }
-//
-//        holder.playerMenu.setOnClickListener(new MenuButtonOnClickListener());
+        Player player = players.get(position);
+        holder.rank.setText(player.getScore());
+        holder.score.setText(player.getScore());
+        holder.username.setText(player.getUsername());
+        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
     }
 
     @Override
@@ -67,11 +59,27 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
     }
 
     private class MenuButtonOnClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View view) {
-
+            PopupMenu popupMenu = new PopupMenu(view.getContext(),  view);
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    return false;
+                }
+            });
+            popupMenu.inflate(R.menu.leaderboard_profile_menu);
+            popupMenu.show();
         }
+    }
+
+//    public void showPopup(View view) {
+//
+//    }
+
+    public void filterList(ArrayList<Player> playersFiltered) {
+        players = playersFiltered;
+        notifyDataSetChanged();
     }
 
 }
