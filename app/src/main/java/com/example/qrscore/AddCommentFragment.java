@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * Purpose: This class is a fragment to add comments
+ * Purpose: This class creates a dialog fragment for the user to input a string into
  * Displays EditText for user to write a comment
  * Has "OK" and "Cancel" button
  * Posts comment when OK pressed

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
- * Purpose: This class represents the data list of Comments on a QRCode.
+ * Purpose: This class represents a custom data list of Comments on a QRCode and context.
  * Stores all the comments posted
  * Stores context
  *

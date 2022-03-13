@@ -1,15 +1,14 @@
 package com.example.qrscore;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -90,7 +89,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         TextView myRank = (TextView) root.findViewById(R.id.rank_text_view);
 
         // Instantiate Account class
-        // TODO: Connect to Firevase
+        // TODO: Connect to Firebase
         Account myAccount = new Account("id1", "Gregg");
 
         // Instantiate a String to set a TextView to

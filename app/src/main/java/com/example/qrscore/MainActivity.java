@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -8,16 +9,19 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
 import java.util.ArrayList;
 
 /**
  * Purpose: This class is the main activity
  *
  * Outstanding issues:
+ * TODO: Merge with William's MainActivity
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
     BottomNavigationView bottomNavView;
     HomeFragment homeFragment = new HomeFragment();
     MapFragment mapFragment = new MapFragment();
@@ -29,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void onOkPressed(Comment newComment) {
 
         // Bottom Nav selector.
         // https://www.youtube.com/watch?v=OV25x3a55pk

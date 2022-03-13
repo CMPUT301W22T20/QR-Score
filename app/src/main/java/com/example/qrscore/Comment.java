@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Purpose: This class represents a comment on a QR Code.
+ * Purpose: This class represents a comment on a QR Code and contains the info of comments.
  * Stores the comment posted
  * Stores the user who posted the comment
  * Stores a timestamp of when the comment was posted

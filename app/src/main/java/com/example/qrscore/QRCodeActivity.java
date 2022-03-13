@@ -46,6 +46,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Comment");
 
+        // Initialize comments list
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
         commentAdapter = new CommentCustomList(this, commentDataList);
@@ -80,7 +81,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         });
 
         // TODO: Remove when done testing
-
         // Displaying the comments when someone presses
         commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
