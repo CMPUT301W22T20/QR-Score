@@ -7,13 +7,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.qrscore.fragment.AddCommentFragment;
-
 import java.util.ArrayList;
 
-// TODO: Implement opening up comments
-// TODO: Player names
-// TODO: Change little icon placeholder
+// Comments collection
+// Geolocation collection
+// QRCode collection
+// Photos storage
+// Photo collection
 
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
     private ListView commentList;

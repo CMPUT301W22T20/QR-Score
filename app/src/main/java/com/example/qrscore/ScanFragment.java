@@ -1,4 +1,4 @@
-package com.example.qrscore.fragment;
+package com.example.qrscore;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,22 +19,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.qrscore.Photo;
-import com.example.qrscore.QRCode;
-import com.example.qrscore.R;
-import com.example.qrscore.controller.LocationController;
-import com.example.qrscore.controller.PhotoController;
-import com.example.qrscore.controller.QRCodeController;
 import com.google.common.hash.Hashing;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
+// TODO: Replace tempUUID with actual UUID
 public class ScanFragment extends Fragment {
     private ImageView imageView;
     private LocationController locationController;
@@ -95,13 +87,15 @@ public class ScanFragment extends Fragment {
                     // so we don't overwrite existing data
                     if (!qrCodeController.qrExists(qrHashed)) {
                         // Qr code doesn't exist in the database
-                        locationController.saveLocation();
+                        locationController.saveLocation(qrHashed);
                         qrCodeController.add(qrHashed, new QRCode(qrHashed, longitude, latitude));
                     }
 
                     if (imageUri != null) {
-                        Photo photo = new Photo(imageUri);
-                        photoController.uploadPhoto(photo);
+                        final String imageKey = UUID.randomUUID().toString();
+                        Photo photo = new Photo("images/" + imageKey, qrHashed, "tempUUID");
+                        photoController.uploadPhoto(photo, imageUri);
+                        // TODO: Remove this line later
                         photoController.downloadPhoto();
                         Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
                     }

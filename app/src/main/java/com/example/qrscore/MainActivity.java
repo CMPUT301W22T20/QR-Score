@@ -8,11 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.qrscore.fragment.HomeFragment;
-import com.example.qrscore.fragment.LeaderboardFragment;
-import com.example.qrscore.fragment.MapFragment;
-import com.example.qrscore.fragment.ProfileFragment;
-import com.example.qrscore.fragment.ScanFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

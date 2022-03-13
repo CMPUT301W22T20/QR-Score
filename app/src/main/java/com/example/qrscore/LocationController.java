@@ -1,4 +1,4 @@
-package com.example.qrscore.controller;
+package com.example.qrscore;
 
 import android.Manifest;
 import android.app.Activity;
@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,8 +33,6 @@ public class LocationController {
     private Location currLocation;
     private FirebaseFirestore db;
     private CollectionReference locationRef;
-    private double lowerBound = 0.005;
-    private double upperBound = 0.005;
 
     public LocationController(Activity activity) {
         this.activity = activity;
@@ -81,7 +80,7 @@ public class LocationController {
         return currLocation;
     }
 
-    public void saveLocation() {
+    public void saveLocation(String qrID) {
         if (currLocation != null) {
             locationRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -92,20 +91,21 @@ public class LocationController {
                             double currLat = currLocation.getLatitude();
                             double currLon = currLocation.getLongitude();
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                double savedLat = (double) doc.get("lat");
-                                double savedLon = (double) doc.get("lon");
+                                GeoPoint geoPoint = (GeoPoint) doc.get("geoPoint");
+                                double savedLat = geoPoint.getLatitude();
+                                double savedLon = geoPoint.getLongitude();
                                 double diffLat = Math.abs(currLat - savedLat);
                                 double diffLon = Math.abs(currLon - savedLon);
 
                                 // Check if a saved location is already close to the current one
-                                if (diffLat < 0.005 && diffLon < 0.005) {
+                                if (diffLat < 0.0025 && diffLon < 0.0025) {
                                     // Saved location is already close to current
                                     return;
                                 }
                             }
                         }
                         // Add a new location to the database
-                        locationRef.add(new Geolocation(currLocation.getLatitude(), currLocation.getLongitude()));
+                        locationRef.add(new Geolocation(new GeoPoint(currLocation.getLatitude(), currLocation.getLongitude()), qrID, "temp"));
                     }
                 }
             });

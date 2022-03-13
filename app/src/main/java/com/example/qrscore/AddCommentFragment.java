@@ -1,4 +1,4 @@
-package com.example.qrscore.fragment;
+package com.example.qrscore;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

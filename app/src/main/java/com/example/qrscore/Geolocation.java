@@ -1,19 +1,39 @@
 package com.example.qrscore;
 
+import com.google.firebase.firestore.GeoPoint;
+
 public class Geolocation {
-    private double lat;
-    private double lon;
+    private GeoPoint geoPoint;
+    private String qrID;
+    private String uUID;
 
-    public Geolocation (double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
+    public Geolocation (GeoPoint geoPoint, String qrID, String uUID) {
+        this.geoPoint = geoPoint;
+        this. qrID = qrID;
+        this .uUID = uUID;
     }
 
-    public double getLat() {
-        return lat;
+    public GeoPoint getGeoPoint() {
+        return geoPoint;
     }
 
-    public double getLon() {
-        return lon;
+    public String getQrID() {
+        return qrID;
+    }
+
+    public void setQrID(String qrID) {
+        this.qrID = qrID;
+    }
+
+    public String getuUID() {
+        return uUID;
+    }
+
+    public void setuUID(String uUID) {
+        this.uUID = uUID;
+    }
+
+    public void setGeoPoint(GeoPoint geoPoint) {
+        this.geoPoint = geoPoint;
     }
 }
