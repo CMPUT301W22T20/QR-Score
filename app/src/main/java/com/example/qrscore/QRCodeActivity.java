@@ -20,7 +20,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-<<<<<<< HEAD
 /**
  * Purpose: This class is the QR Code activity
  *
@@ -32,12 +31,6 @@ import java.util.HashMap;
  * TODO: UI tests
  */
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
-=======
-// TODO: Player names
-// TODO: Change little icon placeholder
-
-public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener{
->>>>>>> main
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
@@ -53,6 +46,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Comment");
 
+        // Initialize comments list
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
         commentAdapter = new CommentCustomList(this, commentDataList);
@@ -87,7 +81,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         });
 
         // TODO: Remove when done testing
-
         // Displaying the comments when someone presses
         commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

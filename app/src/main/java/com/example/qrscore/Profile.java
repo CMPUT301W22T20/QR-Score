@@ -7,7 +7,6 @@ package com.example.qrscore;
  * TODO: Finish Purpose
  * TODO: Unit tests
  * TODO: Javadocs
- * TODO: Merge with William's Profile
  */
 public class Profile {
     private String firstName;

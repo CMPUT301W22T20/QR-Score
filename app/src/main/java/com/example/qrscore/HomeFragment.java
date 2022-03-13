@@ -1,20 +1,21 @@
 package com.example.qrscore;
 
-<<<<<<< HEAD
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
 /**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link HomeFragment#newInstance} factory method to
+ * create an instance of this fragment.
  * Purpose: This class is the home fragment which shows some of your player information
  * Shows player's username
  * Shows player's first an last name
@@ -29,54 +30,11 @@ import java.util.ArrayList;
  * TODO: Get unique device ID
  * TODO: Add header + footer
  * TODO: UI tests
- * TODO: Merge with William's HomeFragment
  */
-public class HomeFragment extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
+public class HomeFragment extends Fragment implements AddCommentFragment.OnFragmentInteractionListener {
 
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_fragment_layout);
-        TextView userName = (TextView) findViewById(R.id.username_text_view);
-        TextView usernamesQRCodes = (TextView) findViewById(R.id.qr_code_title_text_view);
-        TextView myScannedCodes = (TextView) findViewById(R.id.scanned_text_view);
-        TextView myQRScore = (TextView) findViewById(R.id.score_text_view);
-        TextView myRank = (TextView) findViewById(R.id.rank_text_view);
-
-        Account myAccount = new Account("id1", "Gregg");
-        userName.setText(myAccount.profile.getUserName());
-        String usernamesQRCodesString = (myAccount.profile.getUserName() + "'s QR Codes");
-        usernamesQRCodes.setText(usernamesQRCodesString);
-        myScannedCodes.setText(myAccount.qrDataList.getTotalQRCodesScanned().toString());
-        myQRScore.setText(myAccount.qrDataList.getSumOfScoresScanned().toString());
-        myRank.setText(myAccount.qrDataList.getRank().toString());
-
-        final Button addButton = findViewById(R.id.sort_by_button);
-        addButton.setOnClickListener((v) -> {
-        });
-    }
-
-    @Override
-    public void onOkPressed(Comment newComment) {
-=======
-import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -121,7 +79,42 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
->>>>>>> main
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Instantiate Textview classes to fill layout parameters
+        TextView userName = (TextView) root.findViewById(R.id.username_text_view);
+        TextView usernamesQRCodes = (TextView) root.findViewById(R.id.qr_code_title_text_view);
+        TextView myScannedCodes = (TextView) root.findViewById(R.id.scanned_text_view);
+        TextView myQRScore = (TextView) root.findViewById(R.id.score_text_view);
+        TextView myRank = (TextView) root.findViewById(R.id.rank_text_view);
+
+        // Instantiate Account class
+        // TODO: Connect to Firebase
+        Account myAccount = new Account("id1", "Gregg");
+
+        // Instantiate a String to set a TextView to
+        String usernamesQRCodesString = (myAccount.profile.getUserName() + "'s QR Codes");
+
+        // Set the text of all TextViews
+        userName.setText(myAccount.profile.getUserName());
+        usernamesQRCodes.setText(usernamesQRCodesString);
+        myScannedCodes.setText(myAccount.qrDataList.getTotalQRCodesScanned().toString());
+        myQRScore.setText(myAccount.qrDataList.getSumOfScoresScanned().toString());
+        myRank.setText(myAccount.qrDataList.getRank().toString());
+
+        // Instantiate button
+        // TODO:
+        final Button sortByButton = root.findViewById(R.id.sort_by_button);
+        sortByButton.setOnClickListener((v) -> {
+        });
+
+//        setContentView(R.layout.fragment_home);
+
+        return root;
+    }
+
+    @Override
+    public void onOkPressed(Comment newComment) {
+
     }
 }
