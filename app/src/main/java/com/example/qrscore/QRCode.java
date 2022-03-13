@@ -1,6 +1,7 @@
 package com.example.qrscore;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Purpose: This class represents a QR code.
@@ -12,10 +13,12 @@ import java.util.ArrayList;
  * TODO: Unit tests
  */
 public class QRCode {
+
+    private String id;   // firestore document ID
     private String hash;
     private Integer qrScore;
     private String location;
-    private ArrayList<Player> hasScanned;
+    private List<String> hasScanned;
     private ArrayList<Comment> comments;
 
     /**
@@ -30,7 +33,6 @@ public class QRCode {
         this.hash = hash;
         // this.score = new Score(hash);
         this.location = loc;
-        this.hasScanned = new ArrayList<>();
         this.comments  = new ArrayList<>();
         calculateQRScore(this.hash);
     }
@@ -59,11 +61,11 @@ public class QRCode {
     /**
      * Adds a player to the list.
      *
-     * @param player
+     * @param playerUsername
      *      the player to add.
      */
-    public void addScanned(Player player) {
-        hasScanned.add(player);
+    public void addScanned(String playerUsername) {
+        hasScanned.add(playerUsername);
     }
 
     /**
@@ -86,16 +88,6 @@ public class QRCode {
      */
     public boolean findScanned(Player player) {
         return hasScanned.contains(player);
-    }
-
-    /**
-     * Returns the list of players who have scanned the QR code.
-     *
-     * return
-     *      an ArrayList of players.
-     */
-    public ArrayList<Player> getScanned() {
-        return hasScanned;
     }
 
     /**
@@ -139,4 +131,44 @@ public class QRCode {
     public ArrayList<Comment> getComments() {
         return comments;
     }
+
+    /**
+     * Constructor for QRCode
+     *
+     * @param hasScanned
+     *      list of players that have scanned the QRCode
+     */
+    public QRCode(List<String> hasScanned) {
+        this.hasScanned = hasScanned;
+    }
+
+
+    /**
+     * Gets the players that have scanned the QRCode
+     *
+     * @return
+     *      An ArrayList of players who have scanned the QR Code
+     */
+    public List<String> getHasScanned() { return hasScanned; }
+
+    /**
+     *  Gets the id of the QR Code
+     *
+     * @return
+     *      The id of the qr code
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id for the QR Code
+     *
+     * @param id
+     *      The id that is being set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
 }
