@@ -32,6 +32,7 @@ public class ScanFragment extends Fragment {
     private LocationController locationController;
     private PhotoController photoController;
     private QRCodeController qrCodeController;
+    private ProfileController profileController;
     private static Boolean fineLocationGranted;
     private static Boolean coarseLocationGranted;
     private Uri imageUri;
@@ -48,6 +49,7 @@ public class ScanFragment extends Fragment {
 
         photoController = new PhotoController();
         qrCodeController = new QRCodeController();
+        profileController = new ProfileController(getContext());
     }
 
     @Override
@@ -85,11 +87,12 @@ public class ScanFragment extends Fragment {
 
                     // Try to get document from db, if cant get then create a new one
                     // so we don't overwrite existing data
-                    if (!qrCodeController.qrExists(qrHashed)) {
-                        // Qr code doesn't exist in the database
-                        locationController.saveLocation(qrHashed);
-                        qrCodeController.add(qrHashed, new QRCode(qrHashed, longitude, latitude));
-                    }
+                    String userID = profileController.getProfile().getUserUID();
+                    QRCode qrCode = new QRCode(qrHashed);
+                    qrCode.addScanned(userID);
+                    qrCodeController.add(qrHashed, qrCode, userID);
+
+                    locationController.saveLocation(qrHashed, userID);
 
                     if (imageUri != null) {
                         final String imageKey = UUID.randomUUID().toString();

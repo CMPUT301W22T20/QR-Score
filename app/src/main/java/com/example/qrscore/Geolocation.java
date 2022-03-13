@@ -2,15 +2,17 @@ package com.example.qrscore;
 
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.ArrayList;
+
 public class Geolocation {
     private GeoPoint geoPoint;
     private String qrID;
-    private String uUID;
+    private ArrayList<String> UUIDs;
 
-    public Geolocation (GeoPoint geoPoint, String qrID, String uUID) {
+    public Geolocation (GeoPoint geoPoint, String qrID, ArrayList<String> UUIDs) {
         this.geoPoint = geoPoint;
         this. qrID = qrID;
-        this .uUID = uUID;
+        this.UUIDs = UUIDs;
     }
 
     public GeoPoint getGeoPoint() {
@@ -25,15 +27,8 @@ public class Geolocation {
         this.qrID = qrID;
     }
 
-    public String getuUID() {
-        return uUID;
+    public ArrayList<String> getUUIDs() {
+        return UUIDs;
     }
 
-    public void setuUID(String uUID) {
-        this.uUID = uUID;
-    }
-
-    public void setGeoPoint(GeoPoint geoPoint) {
-        this.geoPoint = geoPoint;
-    }
 }

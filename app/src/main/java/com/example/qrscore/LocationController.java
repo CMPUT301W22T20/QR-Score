@@ -19,10 +19,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 
 public class LocationController {
@@ -80,7 +83,7 @@ public class LocationController {
         return currLocation;
     }
 
-    public void saveLocation(String qrID) {
+    public void saveLocation(String qrID, String UUID) {
         if (currLocation != null) {
             locationRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -98,14 +101,23 @@ public class LocationController {
                                 double diffLon = Math.abs(currLon - savedLon);
 
                                 // Check if a saved location is already close to the current one
+                                System.out.println("333333333333333333333333333333333");
                                 if (diffLat < 0.0025 && diffLon < 0.0025) {
                                     // Saved location is already close to current
+                                    // Update the array of UUIDs with new one
+                                    ArrayList<String> uuids = (ArrayList<String>) doc.get("uuids");
+                                    if (!uuids.contains(UUID)) {
+                                        // Person hasn't scanned it before
+                                        doc.getReference().update("uuids", FieldValue.arrayUnion(UUID));
+                                    }
                                     return;
                                 }
                             }
                         }
                         // Add a new location to the database
-                        locationRef.add(new Geolocation(new GeoPoint(currLocation.getLatitude(), currLocation.getLongitude()), qrID, "temp"));
+                        ArrayList<String> UUIDs = new ArrayList<>();
+                        UUIDs.add(UUID);
+                        locationRef.add(new Geolocation(new GeoPoint(currLocation.getLatitude(), currLocation.getLongitude()), qrID, UUIDs));
                     }
                 }
             });
