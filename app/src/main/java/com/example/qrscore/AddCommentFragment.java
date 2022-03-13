@@ -14,7 +14,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * This class creates a dialog fragment for the user to input a string into
+ * Purpose: This class creates a dialog fragment for the user to input a string into
+ * Displays EditText for user to write a comment
+ * Has "OK" and "Cancel" button
+ * Posts comment when OK pressed
+ *
+ * Outstanding issues:
+ * TODO: Connect to firebase
+ * TODO: UI tests
  */
 public class AddCommentFragment extends DialogFragment {
     private EditText commentText;
@@ -39,7 +46,7 @@ public class AddCommentFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.comment_fragment_layout, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_comment, null);
         commentText = view.findViewById(R.id.comment_editText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

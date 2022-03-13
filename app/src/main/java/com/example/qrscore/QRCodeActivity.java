@@ -1,44 +1,114 @@
+/* Purpose: This class represents the QR Code Details Activity.
+Shows the location of the QRCode and players that have scanned it.
+Shows players that have commented on the QRCode and allows user to click on the players to see their comments.
+Allow user to click add comment from this screen.
+
+Outstanding issues:
+*/
+
 package com.example.qrscore;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO: Player names
-// TODO: Change little icon placeholder
-
-public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener{
+/**
+ * Purpose: This class is the QR Code activity
+ *
+ * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: Implement opening up comments
+ * TODO: Player names
+ * TODO: Change little icon placeholder
+ * TODO: UI tests
+ */
+public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
+    BottomNavigationView bottomNavView;
+    HomeFragment homeFragment = new HomeFragment();
+    MapFragment mapFragment = new MapFragment();
+    ScanFragment scanFragment = new ScanFragment();
+    LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
-    private FirebaseFirestore db;
     private CollectionReference collectionReference;
+
+    private ListView playerList;
+    private ArrayAdapter<String> playerAdapter;
+    private ArrayList<String> playerDataList;
+    final String TAG = "Sample";
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference qrCodeRef = db.collection("QRCode");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
+        // Create array adapter for players who have scanned a specific QR code
+        playerDataList = new ArrayList<String>();
+        playerList = findViewById(R.id.scanned_by_list_view);
+        playerAdapter = new ArrayAdapter<>(this,
+                com.example.qrscore.R.layout.scanned_by_content, playerDataList);
+        playerList.setAdapter(playerAdapter);
+        // Bottom Nav selector.
+        // https://www.youtube.com/watch?v=OV25x3a55pk
+        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+                        return true;
+                    case R.id.map_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
+                        return true;
+                    case R.id.scan_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
+                        return true;
+                    case R.id.leaderboard_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
+                        return true;
+                    case R.id.profile_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
+
         // Initialize the DB
-        db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Comment");
 
+        // Initialize comments list
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
         commentAdapter = new CommentCustomList(this, commentDataList);
@@ -73,7 +143,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         });
 
         // TODO: Remove when done testing
-
         // Displaying the comments when someone presses
         commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,6 +160,49 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
                 displayCommentFragment.show(getSupportFragmentManager(), "DISPLAY_COMMENT");
             }
         });
+    }
+
+    /** TODO: Put this in the activity where a player scans a QRCode
+     * This adds a player to hasScanned for a specific QRCode
+     * @param codeID
+     *          firebase document ID of the QRCode
+     * @param player
+     *          The player that scanned the code
+     */
+    public void updateHasScanned(String codeID, Player player) {
+        DocumentReference id = qrCodeRef.document(codeID);
+        id.update("hasScanned", FieldValue.arrayUnion(player.getUsername()));
+    }
+
+    /**
+     * Loads who has scanned a QRCode from firebase and outputs to screen
+     * @param codeID
+     *          firebase document ID of the QRCode
+     */
+    public void loadHasScanned(String codeID) {
+        qrCodeRef.document(codeID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                QRCode code = document.toObject(QRCode.class);
+
+                                // Add each player from hasScanned to playerDataList
+                                for (String username : code.getHasScanned()) {
+                                    playerDataList.add(username);
+                                }
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                        playerAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     /**

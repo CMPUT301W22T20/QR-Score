@@ -13,7 +13,14 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
- * This is a class that is a custom list to display various info
+ * Purpose: This class represents a custom data list of Comments on a QRCode and context.
+ * Stores all the comments posted
+ * Stores context
+ *
+ * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: Unit tests
+ * TODO: Javadocs
  */
 public class CommentCustomList extends ArrayAdapter<Comment> {
     private ArrayList<Comment> comments;
@@ -31,7 +38,7 @@ public class CommentCustomList extends ArrayAdapter<Comment> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.comment_content, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.content_comment, parent, false);
         }
 
         Comment comment = comments.get(position);
