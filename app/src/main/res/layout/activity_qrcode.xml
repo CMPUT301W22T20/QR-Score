@@ -53,7 +53,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rectangle_bordered_background">
+            android:background="@drawable/background_rectangle_bordered">
         </ListView>
     </LinearLayout>
     <TextView
@@ -70,7 +70,7 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:background="@drawable/rectangle_bordered_background">
+        android:background="@drawable/background_rectangle_bordered">
         <Button
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
