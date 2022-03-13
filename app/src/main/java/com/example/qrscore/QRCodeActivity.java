@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,13 +23,10 @@ import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -48,22 +45,18 @@ import java.util.HashMap;
  *
  * Outstanding issues:
  * TODO: Finish Purpose
- * TODO: Implement opening up comments
  * TODO: Player names
  * TODO: Change little icon placeholder
  * TODO: UI tests
  */
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
-    BottomNavigationView bottomNavView;
-    HomeFragment homeFragment = new HomeFragment();
-    MapFragment mapFragment = new MapFragment();
-    ScanFragment scanFragment = new ScanFragment();
-    LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-    ProfileFragment profileFragment = new ProfileFragment();
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
     private CollectionReference collectionReference;
+
+    private ProfileController profileController;
+    private String qrID;
 
     private ListView playerList;
     private ArrayAdapter<String> playerAdapter;
@@ -77,39 +70,14 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
+        profileController = new ProfileController(this);
+
         // Create array adapter for players who have scanned a specific QR code
         playerDataList = new ArrayList<String>();
         playerList = findViewById(R.id.scanned_by_list_view);
         playerAdapter = new ArrayAdapter<>(this,
                 com.example.qrscore.R.layout.scanned_by_content, playerDataList);
         playerList.setAdapter(playerAdapter);
-//        // Bottom Nav selector.
-//        // https://www.youtube.com/watch?v=OV25x3a55pk
-//        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
-//        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
-//        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.home_fragment_item:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
-//                        return true;
-//                    case R.id.map_fragment_item:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
-//                        return true;
-//                    case R.id.scan_fragment_item:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
-//                        return true;
-//                    case R.id.leaderboard_fragment_item:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
-//                        return true;
-//                    case R.id.profile_fragment_item:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
-//                        return true;
-//                }
-//                return false;
-//            }
-//        });
 
         // Initialize the DB
         collectionReference = db.collection("Comment");
@@ -120,14 +88,22 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         commentAdapter = new CommentCustomList(this, commentDataList);
         commentList.setAdapter(commentAdapter);
 
+        Intent intent = getIntent();
+        qrID = (String) intent.getExtras().get("QR_ID");
+
         // Clicked the add button; adding comments
         final Button addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener((v) -> {
-            new AddCommentFragment().show(getSupportFragmentManager(), "ADD_COMMENT");
+            Bundle bundle = new Bundle();
+            bundle.putString("QR_ID_TO_FRAGMENT", qrID);
+            AddCommentFragment addCommentFragment = new AddCommentFragment();
+            addCommentFragment.setArguments(bundle);
+            addCommentFragment.show(getSupportFragmentManager(), "ADD_COMMENT");
         });
 
         // Reading data and outputting to screen
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        collectionReference.whereEqualTo("qrID", qrID)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException error) {

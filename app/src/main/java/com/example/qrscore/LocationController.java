@@ -101,7 +101,6 @@ public class LocationController {
                                 double diffLon = Math.abs(currLon - savedLon);
 
                                 // Check if a saved location is already close to the current one
-                                System.out.println("333333333333333333333333333333333");
                                 if (diffLat < 0.0025 && diffLon < 0.0025) {
                                     // Saved location is already close to current
                                     // Update the array of UUIDs with new one

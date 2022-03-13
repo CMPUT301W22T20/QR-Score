@@ -8,8 +8,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -41,23 +39,5 @@ public class QRCodeController {
                 }
             }
         });
-    }
-
-    public void getPlayerQRs(QRCodeCallbackList qrCodeCallbackList, String uuid) {
-        collectionReference.whereArrayContains("hasScanned", uuid).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<String> qrCodes = new ArrayList<>();
-                            for (QueryDocumentSnapshot doc : task.getResult()) {
-                                qrCodes.add((String) doc.get("hash"));
-                            }
-                            qrCodeCallbackList.onCallback(qrCodes);
-                        }
-                    }
-                });
-
-
     }
 }
