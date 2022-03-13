@@ -45,6 +45,13 @@ public class LeaderboardFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Purpose: To set the icons and text for the tabs in the leaderboardFragment.
+     * @param tab
+     *      A tab in the TabLayout.
+     * @param position
+     *      The position of the tab.
+     */
     private void setIconAndText(TabLayout.Tab tab, int position) {
         if (position == 0) {
             tab.setIcon(R.drawable.ic_qr_code);
@@ -55,5 +62,4 @@ public class LeaderboardFragment extends Fragment {
             tab.setText("Player");
         }
     }
-
 }

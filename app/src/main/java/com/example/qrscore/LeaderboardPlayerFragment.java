@@ -19,11 +19,22 @@ import java.util.ArrayList;
 
 // https://www.youtube.com/watch?v=__OMnFR-wZU
 // https://www.youtube.com/watch?v=OWwOSLfWboY
-public class LeaderboardPlayerFragment extends Fragment implements TextWatcher{
+
+/**
+ * Purpose: Represents a LeaderboardPlayerFragment.
+ *
+ * Outstanding Issues:
+ *  TODO: Implement ranking for US-07.01.01
+ *  TODO: UI Testing
+ *
+ * @author William Liu
+ */
+public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
 
     private ArrayList<Player> players;
     private RecyclerView playerRecyclerView;
-    private LeaderboardRecyclerAdapter leaderboardRA;
+    private AccountController accountController;
+    private LeaderboardPlayerRecyclerAdapter leaderboardRA;
     private RecyclerView.LayoutManager layoutManager;
     private TextInputEditText leaderboardSearchPlayerET;
 
@@ -42,7 +53,8 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher{
         View view = inflater.inflate(R.layout.fragment_leaderboard_player_fragment, container, false);
 
         playerRecyclerView = view.findViewById(R.id.leaderboard_player_recyclerview);
-        players = new ArrayList<Player>();
+        accountController = new AccountController();
+        players = accountController.getPlayers();
         leaderboardSearchPlayerET = view.findViewById(R.id.leaderboard_username_edit_text);
         leaderboardSearchPlayerET.addTextChangedListener(this);
         populatePlayerArrayList();
@@ -50,16 +62,22 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher{
         return view;
     }
 
+    /**
+     * Purpose: Populate the Player ArrayList to display on RecyclerView.
+     */
     private void populatePlayerArrayList() {
-        players.add(new Player(new Account(new Profile("4324ifjesjafieoawinvksan"), new Stats())));
-        players.add(new Player(new Account(new Profile("bgdf4ifje324ieoawinvksan"), new Stats())));
+        players.add(new Player(new Account("4324ifjesjafieoawinvksan")));
+        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan")));
         for (int i = 0; i < 20; i++) {
-            players.add(new Player(new Account(new Profile("f342faifnajsnfjowjoias"), new Stats())));
+            players.add(new Player(new Account("f342faifnajsnfjowjoias")));
         }
     }
 
+    /**
+     * Purpose: Set the LeaderboardPlayerRecyclerAdapter with current players.
+     */
     private void setAdapter() {
-        leaderboardRA = new LeaderboardRecyclerAdapter(players);
+        leaderboardRA = new LeaderboardPlayerRecyclerAdapter(players);
         layoutManager = new LinearLayoutManager(getContext());
         playerRecyclerView.setLayoutManager(layoutManager);
         playerRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -74,15 +92,27 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher{
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
     }
 
+    /**
+     * Purpose: Listener to filter the players when user search's players by username.
+     *
+     * @param editable
+     *      Represents the Editable that the player has typed in.
+     */
     @Override
     public void afterTextChanged(Editable editable) {
         filter(editable.toString());
     }
 
-    private void filter(String text) {
+    /**
+     * Purpose: Filter the ArrayList of players based on their usernames.
+     *
+     * @param username
+     *      Represents a player's username.
+     */
+    private void filter(String username) {
         ArrayList<Player> playersFiltered = new ArrayList<Player>();
         for (Player player: players) {
-            if (player.getUsername().toLowerCase().contains(text.toLowerCase())) {
+            if (player.getUsername().toLowerCase().contains(username.toLowerCase())) {
                 playersFiltered.add(player);
             }
         }

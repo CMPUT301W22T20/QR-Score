@@ -13,14 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<LeaderboardRecyclerAdapter.MyViewHolder>{
+/**
+ * Purpose: RecyclerAdapter for Player leaderboard.
+ *
+ * Outstanding Issues:
+ *
+ * @author: William Liu
+ */
+public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder>{
 
     ArrayList<Player> players;
 
-    public LeaderboardRecyclerAdapter(ArrayList<Player> players) {
+    public LeaderboardPlayerRecyclerAdapter(ArrayList<Player> players) {
         this.players = players;
     }
 
+    /**
+     * Purpose: ViewHolder of items inside the Adapter.
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView rank;
         private TextView score;
@@ -36,8 +46,16 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
         }
     }
 
+    /**
+     * Purpose: Set items on ViewHolder.
+     * @param holder
+     *      Represents a ViewHolder.
+     *
+     * @param position
+     *      Represents the position on the ViewHolder.
+     */
     @Override
-    public void onBindViewHolder(@NonNull LeaderboardRecyclerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
 
         Player player = players.get(position);
         holder.rank.setText(player.getScore());
@@ -46,6 +64,12 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
         holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
     }
 
+    /**
+     * Purpose: Returns the item count of the ViewHolder.
+     *
+     * @return
+     *      Represents the number of items on the ViewHolder.
+     */
     @Override
     public int getItemCount() {
         return players.size();
@@ -53,11 +77,14 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
 
     @NonNull
     @Override
-    public LeaderboardRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LeaderboardPlayerRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.leaderboard_list_items, parent, false);
         return new MyViewHolder(itemView);
     }
 
+    /**
+     * Purpose: Implements OnClickListener for menu button on item.
+     */
     // https://www.youtube.com/watch?v=s1fW7CpiB9c
     private class MenuButtonOnClickListener implements View.OnClickListener {
         @Override
@@ -74,9 +101,14 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
         }
     }
 
+    /**
+     * Purpose: Update Adapter with filtered players when using the search function.
+     *
+     * @param playersFiltered
+     *      Represents the players that have been filtered out.
+     */
     public void filterList(ArrayList<Player> playersFiltered) {
         players = playersFiltered;
         notifyDataSetChanged();
     }
-
 }
