@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
     android:background="@drawable/useruid_text_box">
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/list_item_rank_LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/list_item_score_LL"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/top_players_rank_textView"
+            android:id="@+id/list_item_rank_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/leaderboard_rank"
+            android:text="@string/list_item_rank"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/leaderboard_item_rank"
+            android:id="@+id/list_item_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -38,26 +38,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/list_item_score_LL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/list_item_name_LL"
+        app:layout_constraintStart_toEndOf="@+id/list_item_rank_LL"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/top_players_score_textView"
+            android:id="@+id/list_item_score_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/leaderboard_score"
+            android:text="@string/list_item_score"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/leaderboard_item_score"
+            android:id="@+id/list_item_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -67,26 +67,26 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/list_item_name_LL"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/list_item_menu_LL"
+        app:layout_constraintStart_toEndOf="@+id/list_item_score_LL"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/top_players_player_textView"
+            android:id="@+id/list_item_player_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/leaderboard_player"
+            android:text="@string/list_item_player"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/leaderboard_item_username"
+            android:id="@+id/list_item_name"
             android:textIsSelectable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,21 +97,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/list_item_menu_LL"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+        app:layout_constraintStart_toEndOf="@+id/list_item_name_LL"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/leaderboard_item_button"
+            android:id="@+id/list_item_menu_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_leaderboard_item_list" />
+            android:background="@drawable/ic_leaderboard_item_list"
+            android:contentDescription="@string/menu_button_description"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

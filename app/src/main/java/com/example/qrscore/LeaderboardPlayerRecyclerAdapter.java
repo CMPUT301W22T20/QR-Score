@@ -34,15 +34,15 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView rank;
         private TextView score;
-        private TextView username;
+        private TextView name;
         private ImageButton playerMenuButton;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
-            rank = itemView.findViewById(R.id.leaderboard_item_rank);
-            score = itemView.findViewById(R.id.leaderboard_item_score);
-            username = itemView.findViewById(R.id.leaderboard_item_username);
-            playerMenuButton = itemView.findViewById(R.id.leaderboard_item_button);
+            rank = itemView.findViewById(R.id.list_item_rank);
+            score = itemView.findViewById(R.id.list_item_score);
+            name = itemView.findViewById(R.id.list_item_name);
+            playerMenuButton = itemView.findViewById(R.id.list_item_menu_button);
         }
     }
 
@@ -58,9 +58,9 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
 
         Player player = players.get(position);
-        holder.rank.setText(player.getScore());
-        holder.score.setText(player.getScore());
-        holder.username.setText(player.getUsername());
+        holder.rank.setText("fd");
+        holder.score.setText("fd");
+        holder.name.setText("Fdsafdsfdfsdfsdfdsf");
         holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
     }
 
@@ -78,7 +78,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     @NonNull
     @Override
     public LeaderboardPlayerRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.leaderboard_list_items, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
         return new MyViewHolder(itemView);
     }
 

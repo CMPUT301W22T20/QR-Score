@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../../../layout/custom_preview.xml" value="0.2265625" />
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/nav_bar_round.xml" value="0.208" />
+        <entry key="app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.326" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/round_button_pressed.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/round_button_selected.xml" value="0.208" />
@@ -15,6 +17,7 @@
         <entry key="app/src/main/res/drawable/tab_layout_selector.xml" value="0.2315" />
         <entry key="app/src/main/res/drawable/username_box.xml" value="0.208" />
         <entry key="app/src/main/res/drawable/useruid_text_box.xml" value="0.2315" />
+        <entry key="app/src/main/res/layout/account_list_items.xml" value="0.3765625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
         <entry key="app/src/main/res/layout/activity_profile_auth.xml" value="0.39633941650390625" />
         <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.18860626220703125" />
@@ -22,66 +25,17 @@
         <entry key="app/src/main/res/layout/comment_fragment.xml" value="0.11956521739130435" />
         <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.3707692307692308" />
         <entry key="app/src/main/res/layout/fragment_leaderboard.xml" value="0.20052083333333334" />
-        <entry key="app/src/main/res/layout/fragment_leaderboard_player_fragment.xml" value="0.21081237792968752" />
+        <entry key="app/src/main/res/layout/fragment_leaderboard_player_fragment.xml" value="0.35195465087890626" />
         <entry key="app/src/main/res/layout/fragment_leaderboard_qrcode_fragment.xml" value="0.24270477294921877" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/leaderboard_list_items.xml" value="0.5014053344726564" />
+        <entry key="app/src/main/res/layout/leaderboard_list_items.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/list_items.xml" value="0.3765625" />
         <entry key="app/src/main/res/layout/profile_actionbar.xml" value="0.3765625" />
+        <entry key="app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.225" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26916198730468743" />
         <entry key="app/src/main/res/menu/leaderboard_profile_menu.xml" value="0.1578125" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable-anydpi/ic_leaderboard.xml" value="0.1745" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable-anydpi/ic_map.xml" value="0.1745" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.188" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/activity_background.xml" value="0.253" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/back.xml" value="0.253" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/ic_launcher_background.xml" value="0.253" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/nav_bar_round.xml" value="0.1745" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/nav_bar_selector.xml" value="0.1745" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.188" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_qrcode.xml" value="0.20833333333333334" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/comment_content.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/comment_fragment_layout.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/content_comment.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/fragment_comment.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/fragment_home.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/fragment_leaderboard.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/fragment_map.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/fragment_profile.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.17844202898550723" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/home_fragment_layour.xml" value="0.17502532928064843" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/home_fragment_layout.xml" value="0.1796875" />
-        <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1796875" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_home.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_leaderboard.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/back.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/background_activity.xml" value="0.1975" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/background_rectangle_bordered.xml" value="0.1975" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/button_base.xml" value="0.3055" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/ic_baseline_qr_code_24.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_round.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_selector.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_selected.xml" value="0.1975" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_selector.xml" value="0.1975" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_text.xml" value="0.1975" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_unselected.xml" value="0.1975" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_content.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_fragment_layout.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/content_comment.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_home.xml" value="0.18958333333333333" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_location.xml" value="0.2015625" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_profile.xml" value="0.18854166666666666" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.16" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.20729166666666668" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18854166666666666" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1965" />
-        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1965" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1634963768115942" />
-        <entry key="app/src/main/res/layout/fragment_custom_location_list.xml" value="0.1046875" />
-        <entry key="app/src/main/res/layout/fragment_location.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.1308876811594203" />
       </map>
     </option>
   </component>

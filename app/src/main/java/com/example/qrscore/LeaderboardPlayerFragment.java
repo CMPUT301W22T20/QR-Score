@@ -33,7 +33,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
 
     private ArrayList<Player> players;
     private RecyclerView playerRecyclerView;
-    private AccountController accountController;
     private LeaderboardPlayerRecyclerAdapter leaderboardRA;
     private RecyclerView.LayoutManager layoutManager;
     private TextInputEditText leaderboardSearchPlayerET;
@@ -53,8 +52,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         View view = inflater.inflate(R.layout.fragment_leaderboard_player_fragment, container, false);
 
         playerRecyclerView = view.findViewById(R.id.leaderboard_player_recyclerview);
-        accountController = new AccountController();
-        players = accountController.getPlayers();
+//        accountController = new AccountController();
+//        players = accountController.getPlayers();
+        players = new ArrayList<Player>();
         leaderboardSearchPlayerET = view.findViewById(R.id.leaderboard_username_edit_text);
         leaderboardSearchPlayerET.addTextChangedListener(this);
         populatePlayerArrayList();
@@ -66,10 +66,10 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      * Purpose: Populate the Player ArrayList to display on RecyclerView.
      */
     private void populatePlayerArrayList() {
-        players.add(new Player(new Account("4324ifjesjafieoawinvksan")));
-        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan")));
+        players.add(new Player(new Account("4324ifjesjafieoawinvksan", "", "")));
+        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan", "", "")));
         for (int i = 0; i < 20; i++) {
-            players.add(new Player(new Account("f342faifnajsnfjowjoias")));
+            players.add(new Player(new Account("f342faifnajsnfjowjoias", "", "")));
         }
     }
 
