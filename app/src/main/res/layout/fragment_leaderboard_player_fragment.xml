@@ -28,9 +28,10 @@
         android:layout_height="470dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/useruid_text_box"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboard_player_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_players_textView"/>
+        app:layout_constraintTop_toBottomOf="@+id/top_players_textView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/leaderboard_player_recyclerview"
@@ -40,13 +41,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/leaderboard_player_recyclerview_box"
         app:layout_constraintEnd_toEndOf="@+id/leaderboard_player_recyclerview_box"
         app:layout_constraintStart_toStartOf="@+id/leaderboard_player_recyclerview_box"
-        app:layout_constraintTop_toBottomOf="@+id/top_players_textView" />
+        app:layout_constraintTop_toTopOf="@id/leaderboard_player_recyclerview_box" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="2dp"
         app:endIconMode="clear_text"
         app:hintEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,8 +58,19 @@
             android:id="@+id/leaderboard_username_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="40"
             android:hint="@string/leaderboard_search_player" />
+
     </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leaderboard_player_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.88"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

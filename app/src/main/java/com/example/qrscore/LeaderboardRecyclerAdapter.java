@@ -58,6 +58,7 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
         return new MyViewHolder(itemView);
     }
 
+    // https://www.youtube.com/watch?v=s1fW7CpiB9c
     private class MenuButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -72,10 +73,6 @@ public class LeaderboardRecyclerAdapter extends RecyclerView.Adapter<Leaderboard
             popupMenu.show();
         }
     }
-
-//    public void showPopup(View view) {
-//
-//    }
 
     public void filterList(ArrayList<Player> playersFiltered) {
         players = playersFiltered;
