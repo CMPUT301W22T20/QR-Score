@@ -31,7 +31,7 @@ public class AccountTest {
                 .limit(20)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-        Account testAccount = new Account(key, "Pixel 2");
+        Account testAccount = new Account(key, "Pixel 2", "test_user");
         assertNotNull(testAccount);
         assertEquals(key, testAccount.getUserID());
         assertEquals("Pixel 2", testAccount.getDevice());

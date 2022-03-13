@@ -19,7 +19,7 @@ import java.util.List;
 public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
-    private Profile profile;
+    public Profile profile;
     private List<String> devices;
     public QRDataList qrDataList;
     // private Permissions permissions;
@@ -28,7 +28,7 @@ public class Account {
         this.userID = userID;
         this.devices = new ArrayList<String>();
         this.addDevice(device);
-        this.qrList = new QRList();
+        this.qrDataList = new QRDataList();
         this.profile = new Profile(userName);
     }
 
@@ -53,7 +53,7 @@ public class Account {
      *      device as a string.
      */
     public String getDevice() {
-        return device;
+        return devices.get(0);
     }
 
     /**
@@ -63,7 +63,7 @@ public class Account {
      *      the QR code to add.
      */
     public void addQR(QRCode qr) {
-        qrList.addQRCode(qr);
+        qrDataList.addQRCode(qr);
     }
 
     /**
@@ -73,7 +73,7 @@ public class Account {
      *      a List of QR codes.
      */
     public List<QRCode> getQR() {
-        return qrList.getQRCodes();
+        return qrDataList.getQRCodes();
     }
 
     /**
@@ -83,14 +83,14 @@ public class Account {
      *      the QR code to remove.
      */
     public void removeQR(QRCode qr) {
-        qrList.removeQRCode(qr);
+        qrDataList.removeQRCode(qr);
     }
 
-//    public QRCode getHighest() {
-//        return stats.getHighscore();
-//    }
+    public Integer getHighest() {
+        return qrDataList.getHighscore();
+    }
 
-//    public QRCode getLowest() {
-//        return stats.getLowscore();
-//    }
+    public Integer getLowest() {
+        return qrDataList.getLowscore();
+    }
 }

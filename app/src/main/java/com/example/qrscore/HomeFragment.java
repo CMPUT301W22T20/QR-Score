@@ -46,7 +46,7 @@ public class HomeFragment extends AppCompatActivity implements AddCommentFragmen
         TextView myQRScore = (TextView) findViewById(R.id.score_text_view);
         TextView myRank = (TextView) findViewById(R.id.rank_text_view);
 
-        Account myAccount = new Account("id1", "Gregg");
+        Account myAccount = new Account("id1", "Samsung", "test_user");
         userName.setText(myAccount.profile.getUserName());
         String usernamesQRCodesString = (myAccount.profile.getUserName() + "'s QR Codes");
         usernamesQRCodes.setText(usernamesQRCodesString);
@@ -61,7 +61,6 @@ public class HomeFragment extends AppCompatActivity implements AddCommentFragmen
 
     @Override
     public void onOkPressed(Comment newComment) {
-=======
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
