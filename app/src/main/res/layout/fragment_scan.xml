@@ -19,14 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Take Photo" />
-
-    <LinearLayout
-        android:id="@+id/button_to_replace"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
-
+        android:text="Take Photo"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/button_scan"
@@ -34,5 +28,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Scan" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
 
 </LinearLayout>

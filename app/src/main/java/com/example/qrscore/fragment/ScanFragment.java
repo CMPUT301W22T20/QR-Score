@@ -24,6 +24,7 @@ import com.example.qrscore.QRCode;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.LocationController;
 import com.example.qrscore.controller.PhotoController;
+import com.example.qrscore.controller.QRCodeController;
 import com.google.common.hash.Hashing;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -31,17 +32,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 public class ScanFragment extends Fragment {
     private ImageView imageView;
     private LocationController locationController;
     private PhotoController photoController;
+    private QRCodeController qrCodeController;
     private static Boolean fineLocationGranted;
     private static Boolean coarseLocationGranted;
+    private Uri imageUri;
     private String longitude;
     private String latitude;
-    private FirebaseFirestore db;
 
     public ScanFragment() {
         // Required empty public constructor
@@ -51,8 +54,8 @@ public class ScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
         photoController = new PhotoController();
+        qrCodeController = new QRCodeController();
     }
 
     @Override
@@ -67,6 +70,7 @@ public class ScanFragment extends Fragment {
         imageView = view.findViewById(R.id.qr_image_view);
         Button cameraButton = view.findViewById(R.id.button_take_photo);
         Button scanButton = view.findViewById(R.id.button_scan);
+        Button confirmButton = view.findViewById(R.id.button_confirm);
 
         // Start activity for scanning QR code
         final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
@@ -74,17 +78,34 @@ public class ScanFragment extends Fragment {
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 // Guava library hashing utilities
-                final String hashed = Hashing.sha256()
+                final String qrHashed = Hashing.sha256()
                         .hashString(result.getContents(), StandardCharsets.UTF_8)
                         .toString();
 
-                // Try to get document from db, if cant get then create a new one
-                // so we don't overwrite existing data
-                CollectionReference collectionReference = db.collection("QRCode");
-                DocumentReference documentReference = collectionReference.document(hashed);
-                if (!documentReference.get().isSuccessful()) {
-                    documentReference.set(new QRCode(hashed, longitude, latitude));
-                }
+                // Set camera button to visible to allow player to take pictures
+                cameraButton.setVisibility(View.VISIBLE);
+                confirmButton.setVisibility(View.VISIBLE);
+
+                confirmButton.setOnClickListener(confirmClicked -> {
+                    // Set buttons back to invisible so can't press it more than once
+                    cameraButton.setVisibility(View.INVISIBLE);
+                    confirmButton.setVisibility(View.INVISIBLE);
+
+                    // Try to get document from db, if cant get then create a new one
+                    // so we don't overwrite existing data
+                    if (!qrCodeController.qrExists(qrHashed)) {
+                        // Qr code doesn't exist in the database
+                        locationController.saveLocation();
+                        qrCodeController.add(qrHashed, new QRCode(qrHashed, longitude, latitude));
+                    }
+
+                    if (imageUri != null) {
+                        Photo photo = new Photo(imageUri);
+                        photoController.uploadPhoto(photo);
+                        photoController.downloadPhoto();
+                        Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
@@ -112,11 +133,7 @@ public class ScanFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 8008 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-            Photo photo = new Photo(imageUri);
-            photoController.uploadPhoto(photo);
-            photoController.downloadPhoto();
-            Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
+            imageUri = data.getData();
         }
     }
 

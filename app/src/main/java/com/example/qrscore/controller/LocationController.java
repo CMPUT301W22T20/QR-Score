@@ -4,32 +4,43 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.example.qrscore.Geolocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 public class LocationController {
     private FusedLocationProviderClient fusedLocationClient;
-    private double latitude;
-    private double longitude;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private Activity activity;
     private Location currLocation;
+    private FirebaseFirestore db;
+    private CollectionReference locationRef;
+    private double lowerBound = 0.005;
+    private double upperBound = 0.005;
 
     public LocationController(Activity activity) {
         this.activity = activity;
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
+        db = FirebaseFirestore.getInstance();
+        locationRef = db.collection("Location");
 
 
         if (ActivityCompat.checkSelfPermission(activity,
@@ -68,6 +79,37 @@ public class LocationController {
 
     protected Location getLocation() {
         return currLocation;
+    }
+
+    public void saveLocation() {
+        if (currLocation != null) {
+            locationRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot docs = task.getResult();
+                        if (!docs.isEmpty()) {
+                            double currLat = currLocation.getLatitude();
+                            double currLon = currLocation.getLongitude();
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                double savedLat = (double) doc.get("lat");
+                                double savedLon = (double) doc.get("lon");
+                                double diffLat = Math.abs(currLat - savedLat);
+                                double diffLon = Math.abs(currLon - savedLon);
+
+                                // Check if a saved location is already close to the current one
+                                if (diffLat < 0.005 && diffLon < 0.005) {
+                                    // Saved location is already close to current
+                                    return;
+                                }
+                            }
+                        }
+                        // Add a new location to the database
+                        locationRef.add(new Geolocation(currLocation.getLatitude(), currLocation.getLongitude()));
+                    }
+                }
+            });
+        }
     }
 
     public void startLocationUpdates() {
