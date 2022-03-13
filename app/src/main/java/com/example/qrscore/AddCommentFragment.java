@@ -29,6 +29,7 @@ import com.example.qrscore.R;
 public class AddCommentFragment extends DialogFragment {
     private EditText commentText;
     private OnFragmentInteractionListener listener;
+    private ProfileController profileController;
 
     public interface OnFragmentInteractionListener {
         void onOkPressed(Comment newComment);
@@ -50,7 +51,11 @@ public class AddCommentFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_comment, null);
+        profileController = new ProfileController(getContext());
+
         commentText = view.findViewById(R.id.comment_editText);
+
+        String qrID = getArguments().getString("QR_ID_TO_FRAGMENT");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
@@ -62,7 +67,7 @@ public class AddCommentFragment extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String newComment = commentText.getText().toString();
                         // TODO: Replace Player1 with profile player name when possible
-                        listener.onOkPressed(new Comment("Player1", newComment, "tempQRID"));
+                        listener.onOkPressed(new Comment(profileController.getProfile().getFirstName(), newComment, qrID));
                     }
                 }).create();
     }
