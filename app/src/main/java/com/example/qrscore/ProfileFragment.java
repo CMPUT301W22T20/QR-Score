@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class ProfileFragment extends Fragment {
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         populateProfile(profile, view);
+        phoneNumberEdit.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         return view;
     }
 
