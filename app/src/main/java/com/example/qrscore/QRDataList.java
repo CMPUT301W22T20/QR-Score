@@ -16,6 +16,7 @@ import java.util.List;
  * TODO: implement ranking system
  * TODO: connect to firebase for ranks
  * TODO: Unit tests
+ * TODO: Highscore/Lowscore should probably return QRCodes so they can be displayed?
  */
 public class QRDataList {
     private List<QRCode> qrCodes;
