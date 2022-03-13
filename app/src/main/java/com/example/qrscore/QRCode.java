@@ -2,12 +2,14 @@ package com.example.qrscore;
 
 import java.util.ArrayList;
 
-/* Purpose: This class represents a QR code.
+/**
+ * Purpose: This class represents a QR code.
  * Stores a representation of the QR code, as well
  * as the score, location, players that have scanned it,
  * and comments.
  *
  * Outstanding issues:
+ * TODO: Unit tests
  */
 public class QRCode {
     private String hash;

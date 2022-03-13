@@ -2,4 +2,20 @@
     <string name="app_name">QR Score</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="auth_text_view">Signing In</string>
+
+    <!--  Nav bar icon  -->
+    <string name="home_nav_ic">Home</string>
+    <string name="map_nav_ic">Map</string>
+    <string name="scan_nav_ic">Scan</string>
+    <string name="leaderboard_nav_ic">Leaderboard</string>
+    <string name="profile_nav_ic">Profile</string>
+
+    <!-- Profile  -->
+    <string name="profile_first_name">First name</string>
+    <string name="profile_last_name">Last name</string>
+    <string name="profile_username">Username</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_phone_number">Phone Number</string>
+    <string name="profile_refreshQR">Refresh QR</string>
 </resources>

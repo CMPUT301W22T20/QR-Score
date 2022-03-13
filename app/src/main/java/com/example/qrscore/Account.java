@@ -1,12 +1,6 @@
 package com.example.qrscore;
 
-// TODO: As a player, I want to add new QR codes to my account.
-//  As a player, I want to see what QR codes I have added to my account.
-//  As a player, I want to remove QR codes from my account.
-//  As a player, I want to see my highest and lowest scoring QR codes.
-
-// TODO: UI--navbar with "add" button to add QR codes.
-
+import java.util.ArrayList;
 import java.util.List;
 
 /* Purpose: This class represents an account in the system.
@@ -14,19 +8,32 @@ import java.util.List;
  * and the profile.
  *
  * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: As a player, I want to add new QR codes to my account.
+ * TODO: As a player, I want to see what QR codes I have added to my account.
+ * TODO: As a player, I want to remove QR codes from my account.
+ * TODO: As a player, I want to see my highest and lowest scoring QR codes.
+ * TODO: Unit tests
+ * TODO: UI--navbar with "add" button to add QR codes.
  */
 public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
-    private String device;
     private Profile profile;
-    private QRList qrList;
+    private List<String> devices;
+    public QRDataList qrDataList;
     // private Permissions permissions;
 
-    public Account(String userID, String device) {
+    public Account(String userID, String device, String userName) {
         this.userID = userID;
-        this.device = device;
+        this.devices = new ArrayList<String>();
+        this.addDevice(device);
         this.qrList = new QRList();
+        this.profile = new Profile(userName);
+    }
+
+    private void addDevice(String toAdd) {
+        this.devices.add(toAdd);
     }
 
     /**
