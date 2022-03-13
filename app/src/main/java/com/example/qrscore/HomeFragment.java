@@ -103,12 +103,10 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         myRank.setText(myAccount.qrDataList.getRank().toString());
 
         // Instantiate button
-        // TODO:
+        // TODO: Implement "Sort By" button
         final Button sortByButton = root.findViewById(R.id.sort_by_button);
         sortByButton.setOnClickListener((v) -> {
         });
-
-//        setContentView(R.layout.fragment_home);
 
         return root;
     }

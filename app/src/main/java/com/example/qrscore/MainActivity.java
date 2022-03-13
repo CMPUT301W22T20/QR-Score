@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * Outstanding issues:
  * TODO: Merge with William's MainActivity
  */
-public class MainActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavView;
     HomeFragment homeFragment = new HomeFragment();
     MapFragment mapFragment = new MapFragment();
@@ -33,10 +33,6 @@ public class MainActivity extends AppCompatActivity implements AddCommentFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-
-    @Override
-    public void onOkPressed(Comment newComment) {
 
         // Bottom Nav selector.
         // https://www.youtube.com/watch?v=OV25x3a55pk
