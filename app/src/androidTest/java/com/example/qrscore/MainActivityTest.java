@@ -5,10 +5,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -45,8 +48,7 @@ public class MainActivityTest {
 
     @Test
     public void testProfileFragment() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        ProfileController profileController = new ProfileController(ApplicationProvider.getApplicationContext());
         // Goto profile
         solo.clickOnView(solo.getView(R.id.profile_fragment_item));
         // Edit profile
@@ -68,7 +70,7 @@ public class MainActivityTest {
         solo.searchText("Case");
         solo.searchText("testcase@qrscore.io");
         solo.searchText("7803012022");
-        solo.searchText(firebaseUser.getUid());    // Checks for UserUID/username
+        solo.searchText(profileController.getProfile().getUserUID());    // Checks for UserUID/username
     }
 
     @After

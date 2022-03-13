@@ -62,7 +62,7 @@ public class ProfileAuthActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             currentUser = firebaseAuth.getCurrentUser();
                             // create user on firestore db.
-                            ProfileController profileController = new ProfileController();
+                            ProfileController profileController = new ProfileController(getApplicationContext());
                             profileController.createNewUser();
                             goToMainActivity();
                         }

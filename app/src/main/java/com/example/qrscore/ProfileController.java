@@ -1,6 +1,7 @@
 package com.example.qrscore;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,18 +37,24 @@ public class ProfileController {
     private FirebaseFirestore db;
     private DocumentReference profileRef;
     private Profile newProfile;
-    private Profile savedProfile;
     private String userUID;
-    private Boolean updated;
+    private ListenerRegistration profileListener;
+    private SharedPreferences profileSP;
+    private SharedPreferences.Editor profileSPEditor;
+
+    public static final String PROFILE_PREFS = "profilePrefs";
 
     /**
      * Purpose: Constructor for a profileController that contains the firebase user and their document in the db.
      */
-    public ProfileController() {
+    public ProfileController(Context context) {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         this.userUID = currentUser.getUid();
+        // https://www.youtube.com/watch?v=fJEFZ6EOM9o
+        profileSP = context.getSharedPreferences(PROFILE_PREFS, Context.MODE_PRIVATE);
+        profileSPEditor = profileSP.edit();
     }
 
     /**
@@ -63,6 +71,7 @@ public class ProfileController {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d("TAG", "Profile Created");
+                        setProfile(newProfile);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -74,17 +83,33 @@ public class ProfileController {
     }
 
     /**
-     * Purpose: Returns the profileDocumentReference from firestore db.
-     * @return
-     *      An instance of the profileReference.
+     * Purpose: Add a profileListener for firestore data.
      */
-    public DocumentReference getProfileRef() {
+    public void addProfileListener() {
         profileRef = db.collection("Profile").document(userUID);
-        return profileRef;
+        profileListener = profileRef.addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                Profile savedProfile = snapshot.toObject(Profile.class);
+                setProfile(savedProfile);    // Update profile locally
+                Log.d("TAG", savedProfile.getUserUID() + " profile snapshot exists!");
+            } else {
+                Log.d("TAG", "Current data: null");
+            }
+        });
     }
 
     /**
-     * Purpose: Updates the current players profile on firestore db.
+     * Purpose: Remove profileListener when player leaves ProfileFragment.
+     */
+    public void removeProfileListener() {
+        profileListener.remove();
+    }
+
+    /**
+     * Purpose: Updates the current players profile on firestore db and locally.
      * @param updatedProfile
      *      An instance of their updated profile.
      * @param context
@@ -107,6 +132,7 @@ public class ProfileController {
                     public void onSuccess(Void unused) {
                         Log.d("TAG", "Profile successfully updated!");
                         Toast.makeText(context, "Profile has been updated!", Toast.LENGTH_SHORT).show();
+                        setProfile(updatedProfile);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -115,6 +141,36 @@ public class ProfileController {
                         Log.w("TAG", "Profile update unsuccessful :(", e);
                         Toast.makeText(context, "Profile has not been updated. Please try again!", Toast.LENGTH_SHORT).show();
                     }
-                }); }
+                });
+    }
+
+    /**
+     * Purpose: Set/Update profile info in SharedPrefs.
+     * @param newProfile
+     *      Profile to be set/updated with locally.
+     */
+    public void setProfile(Profile newProfile) {
+        profileSPEditor.putString("firstName", newProfile.getFirstName());
+        profileSPEditor.putString("lastName", newProfile.getLastName());
+        profileSPEditor.putString("email", newProfile.getEmail());
+        profileSPEditor.putString("phoneNumber", newProfile.getPhoneNumber());
+        profileSPEditor.putString("userUID", newProfile.getUserUID());
+        profileSPEditor.commit();
+    }
+
+    /**
+     * Purpose: Return an instance of the profile saved locally
+     * @return
+     *      Represents the Profile object locally.
+     */
+    public Profile getProfile() {
+        String firstName = profileSP.getString("firstName", null);
+        String lastName = profileSP.getString("lastName", null);
+        String email = profileSP.getString("email", null);
+        String phoneNumber = profileSP.getString("phoneNumber", null);
+        String userUID = profileSP.getString("userUID", null);
+        Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID);
+        return profile;
+    }
 }
 
