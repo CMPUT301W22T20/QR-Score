@@ -2,11 +2,11 @@ package com.example.qrscore;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +15,6 @@ import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import android.util.Log;
-
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
 
 /**
  * Purpose: This class is used to represent the profile fragment.
@@ -37,10 +29,8 @@ import com.google.firebase.firestore.ListenerRegistration;
  */
 public class ProfileFragment extends Fragment {
 
-    private Profile savedProfile;
-    private DocumentReference profileRef;
     private ProfileController profileController;
-    private ListenerRegistration profileListener;
+    private Profile profile;
     private TextView usernameTextView;
     private TextInputLayout firstNameLayout;
     private TextInputEditText firstNameTextEdit;
@@ -62,14 +52,13 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        profileController = new ProfileController();
-        profileRef = profileController.getProfileRef();
-        profileListener = profileRef.addSnapshotListener(new ProfileRefEventListener());
+        profileController = new ProfileController(getContext());
+        profileController.addProfileListener();
+        profile = profileController.getProfile();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         saveButton = view.findViewById(R.id.profile_save_button);
@@ -78,13 +67,15 @@ public class ProfileFragment extends Fragment {
         toolbar.setTitle("");
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
+        populateProfile(profile, view);
+        phoneNumberEdit.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         return view;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        profileListener.remove();
+        profileController.removeProfileListener();
     }
 
     /**
@@ -129,25 +120,6 @@ public class ProfileFragment extends Fragment {
             phoneNumberEdit.setText("");
         } else {
             phoneNumberEdit.setText(profile.getPhoneNumber());
-        }
-    }
-
-    /**
-     * Purpose: Listener for "Profile" document changes in firestore db.
-     */
-    private class ProfileRefEventListener implements EventListener<DocumentSnapshot> {
-        @Override
-        public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-            if (error != null) {
-                return;
-            }
-            if (snapshot != null && snapshot.exists()) {
-                Profile savedProfile = snapshot.toObject(Profile.class);
-                populateProfile(savedProfile, getView());
-                Log.d("TAG", savedProfile.getUserUID() + " profile snapshot exists!");
-            } else {
-                Log.d("TAG", "Current data: null");
-            }
         }
     }
 

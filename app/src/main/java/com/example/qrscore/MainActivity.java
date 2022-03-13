@@ -1,16 +1,27 @@
 package com.example.qrscore;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+/**
+ * Purpose: This class is the main activity
+ *
+ * Outstanding issues:
+ * TODO: Merge with William's MainActivity
+ */
+public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavView;
     HomeFragment homeFragment = new HomeFragment();
     MapFragment mapFragment = new MapFragment();

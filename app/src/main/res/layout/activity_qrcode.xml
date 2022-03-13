@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -12,7 +11,6 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:textStyle="bold"/>
-
     <ImageView
         android:id="@+id/qr_image_view"
         android:layout_width="wrap_content"
@@ -21,7 +19,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +27,6 @@
         android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
-
     <TextView
         android:id="@+id/geolocation_text_view"
         android:layout_width="match_parent"
@@ -40,7 +36,6 @@
         android:textColor="@color/black"
         android:textStyle="italic"
         android:textSize="20sp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -48,7 +43,6 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,16 +50,12 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"/>
-
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/back">
-
+            android:background="@drawable/background_rectangle_bordered">
         </ListView>
-
     </LinearLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,7 +63,6 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:gravity="center"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -81,8 +70,7 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:foreground="@drawable/back">
-
+        android:background="@drawable/background_rectangle_bordered">
         <Button
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
@@ -93,14 +81,10 @@
             android:minWidth="0dp"
             android:textSize="11sp"
             android:layout_marginEnd="10dp"/>
-
         <ListView
             android:id="@+id/comment_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         </ListView>
-
     </LinearLayout>
-
 </LinearLayout>

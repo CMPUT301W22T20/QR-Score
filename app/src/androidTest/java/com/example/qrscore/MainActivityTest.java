@@ -5,10 +5,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -37,29 +40,6 @@ public class MainActivityTest {
     public void start() throws Exception {
         Activity activity = rule.getActivity();
     }
-    
-    @Test
-    public void checkBottomNavBar() {
-//        View homeFragmentItem = solo.getView((R.id.home_fragment_item));
-//        solo.clickOnView(homeFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.home_fragment, 2000));
-//
-//        View mapFragmentItem = solo.getView((R.id.map_fragment_item));
-//        solo.clickOnView(mapFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.map_fragment, 2000));
-//
-//        View scanFragmentItem = solo.getView((R.id.scan_fragment_item));
-//        solo.clickOnView(scanFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.scan_fragment, 2000));
-//
-//        View leaderboardFragmentItem = solo.getView((R.id.leaderboard_fragment_item));
-//        solo.clickOnView(leaderboardFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.leaderboard_fragment, 2000));
-
-//        View profileFragmentItem = solo.getView((R.id.profile_fragment_item));
-//        solo.clickOnView(profileFragmentItem);
-//        assertTrue(solo.waitForFragmentById(R.id.profile_fragment, 2000));
-    }
 
     @Test
     public void testLogin() {
@@ -68,8 +48,7 @@ public class MainActivityTest {
 
     @Test
     public void testProfileFragment() {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        ProfileController profileController = new ProfileController(ApplicationProvider.getApplicationContext());
         // Goto profile
         solo.clickOnView(solo.getView(R.id.profile_fragment_item));
         // Edit profile
@@ -80,7 +59,7 @@ public class MainActivityTest {
         solo.clearEditText((EditText) solo.getView(R.id.email_textInputEditText));
         solo.enterText((EditText) solo.getView(R.id.email_textInputEditText), "testcase@qrscore.io");
         solo.clearEditText((EditText) solo.getView(R.id.phone_number_textInputEditText));
-        solo.enterText((EditText) solo.getView(R.id.phone_number_textInputEditText), "7803012022");
+        solo.enterText((EditText) solo.getView(R.id.phone_number_textInputEditText), "(780) 301-2022");
         // Save profile
         solo.clickOnView(solo.getView(R.id.profile_save_button));
         solo.waitForText("Profile has been updated!", 1, 2000);
@@ -90,8 +69,8 @@ public class MainActivityTest {
         solo.searchText("Test");
         solo.searchText("Case");
         solo.searchText("testcase@qrscore.io");
-        solo.searchText("7803012022");
-        solo.searchText(firebaseUser.getUid());    // Checks for UserUID/username
+        solo.searchText("(780) 301-2022");
+        solo.searchText(profileController.getProfile().getUserUID());    // Checks for UserUID/username
     }
 
     @After
