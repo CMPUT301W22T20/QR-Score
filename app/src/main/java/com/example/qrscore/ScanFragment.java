@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ScanFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Purpose: This class is used to represent the scan fragment.
+ *
+ * Outstanding Issues:
+ *
+ *  @author
  */
 public class ScanFragment extends Fragment {
 

@@ -9,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link LeaderboardFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Purpose: This class is used to represent the leaderboard fragment.
+ *
+ * Outstanding Issues:
+ *
+ *  @author
  */
 public class LeaderboardFragment extends Fragment {
 

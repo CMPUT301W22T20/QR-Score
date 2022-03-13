@@ -6,8 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
-<<<<<<< HEAD
- * Purpose: This class represents a comment on a QR Code.
+ * Purpose: This class represents a comment on a QR Code and contains the info of comments.
  * Stores the comment posted
  * Stores the user who posted the comment
  * Stores a timestamp of when the comment was posted
@@ -20,9 +19,6 @@ import java.util.Date;
  * TODO: As a player, I want to see my highest and lowest scoring QR codes.
  * TODO: Unit tests
  * TODO: Javadocs
-=======
- * This is a class that contains the info of comments
->>>>>>> main
  */
 public class Comment {
     private final String commenter;
