@@ -42,7 +42,8 @@ public class ProfileController {
     private SharedPreferences profileSP;
     private SharedPreferences.Editor profileSPEditor;
 
-    public static final String PROFILE_PREFS = "profilePrefs";
+    private static final String PROFILE_PREFS = "profilePrefs";
+    private static final String TAG = "Profile";
 
     /**
      * Purpose: Constructor for a profileController that contains the firebase user and their document in the db.
@@ -70,14 +71,14 @@ public class ProfileController {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.d("TAG", "Profile Created");
+                        Log.d(TAG, "Profile Created");
                         setProfile(newProfile);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Profile Not Created :(", e);
+                        Log.w(TAG, "Profile Not Created :(", e);
                     }
                 });
     }
@@ -94,9 +95,9 @@ public class ProfileController {
             if (snapshot != null && snapshot.exists()) {
                 Profile savedProfile = snapshot.toObject(Profile.class);
                 setProfile(savedProfile);    // Update profile locally
-                Log.d("TAG", savedProfile.getUserUID() + " profile snapshot exists!");
+                Log.d(TAG, savedProfile.getUserUID() + " profile snapshot exists!");
             } else {
-                Log.d("TAG", "Current data: null");
+                Log.d(TAG, "Current data: null");
             }
         });
     }
@@ -130,7 +131,7 @@ public class ProfileController {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.d("TAG", "Profile successfully updated!");
+                        Log.d(TAG, "Profile successfully updated!");
                         Toast.makeText(context, "Profile has been updated!", Toast.LENGTH_SHORT).show();
                         setProfile(updatedProfile);
                     }
@@ -138,7 +139,7 @@ public class ProfileController {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Profile update unsuccessful :(", e);
+                        Log.w(TAG, "Profile update unsuccessful :(", e);
                         Toast.makeText(context, "Profile has not been updated. Please try again!", Toast.LENGTH_SHORT).show();
                     }
                 });
