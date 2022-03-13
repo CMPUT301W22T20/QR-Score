@@ -1,73 +1,96 @@
 package com.example.qrscore;
 
+import java.util.ArrayList;
 import java.util.List;
-
-//  As a player, I want to see that other players have scanned the same QR code.
 
 /* Purpose: This class represents an account in the system.
  * Stores the QR codes tied to the account, the device,
  * and the profile.
  *
  * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: As a player, I want to add new QR codes to my account.
+ * TODO: As a player, I want to see what QR codes I have added to my account.
+ * TODO: As a player, I want to remove QR codes from my account.
+ * TODO: As a player, I want to see my highest and lowest scoring QR codes.
+ * TODO: Unit tests
+ * TODO: UI--navbar with "add" button to add QR codes.
  */
-
 public class Account {
-    private String device;
-    private Profile profile;
-    private Stats stats;
-    List<QRCode> qrCodes;
+    private static final String TAG = "ACCOUNT";
+    private String userID;
+    public Profile profile;
+    private List<String> devices;
+    public QRDataList qrDataList;
     // private Permissions permissions;
 
+    public Account(String userID, String device, String userName) {
+        this.userID = userID;
+        this.devices = new ArrayList<String>();
+        this.addDevice(device);
+        this.qrDataList = new QRDataList();
+        this.profile = new Profile(userName);
+    }
 
-    /**
-     * Constructor for the account
-     *
-     * @param profile
-     *      The account's profile
-     */
-    public Account(Profile profile) {
-        this.profile = profile;
+    private void addDevice(String toAdd) {
+        this.devices.add(toAdd);
     }
 
     /**
-     * Gets the Username of the profile
-     *
-     * @return
-     *      username of the profile
-     */
-    public String getUsername() {
-        return profile.getUsername();
-    }
-
-    /**
-     * Gets account QR codes
+     * Returns the Account's user ID.
      *
      * @return
-     *      list of QR Codes
+     *      user ID as a string.
      */
-    public List<QRCode> getQRCodes() {
-        return qrCodes;
+    public String getUserID() {
+        return userID;
     }
 
     /**
-     * Adds QR code to account
+     * Returns the Account's device.
      *
-     * @param toAdd
-     *      The QR Code to add
+     * @return
+     *      device as a string.
      */
-    public void addQRCode(QRCode toAdd) {
-        qrCodes.add(toAdd);
+    public String getDevice() {
+        return devices.get(0);
     }
 
     /**
-     * Removes QR code from account
+     * Adds a QR code to the list.
      *
-     * @param toRemove
-     *      The QR code to remove
+     * @param qr
+     *      the QR code to add.
      */
-    public void removeQRCode(QRCode toRemove) {
-        qrCodes.remove(toRemove);
+    public void addQR(QRCode qr) {
+        qrDataList.addQRCode(qr);
     }
 
+    /**
+     * Returns the array of QR codes.
+     *
+     * @return
+     *      a List of QR codes.
+     */
+    public List<QRCode> getQR() {
+        return qrDataList.getQRCodes();
+    }
 
+    /**
+     * Removes a QR code from the list if it exists.
+     *
+     * @param qr
+     *      the QR code to remove.
+     */
+    public void removeQR(QRCode qr) {
+        qrDataList.removeQRCode(qr);
+    }
+
+    public Integer getHighest() {
+        return qrDataList.getHighscore();
+    }
+
+    public Integer getLowest() {
+        return qrDataList.getLowscore();
+    }
 }

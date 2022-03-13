@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,8 @@ import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,8 +37,23 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener{
+/**
+ * Purpose: This class is the QR Code activity
+ *
+ * Outstanding issues:
+ * TODO: Finish Purpose
+ * TODO: Implement opening up comments
+ * TODO: Player names
+ * TODO: Change little icon placeholder
+ * TODO: UI tests
+ */
+public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
+    BottomNavigationView bottomNavView;
+    HomeFragment homeFragment = new HomeFragment();
+    MapFragment mapFragment = new MapFragment();
+    ScanFragment scanFragment = new ScanFragment();
+    LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
     private ListView commentList;
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
@@ -53,17 +71,44 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
-
         // Create array adapter for players who have scanned a specific QR code
         playerDataList = new ArrayList<String>();
         playerList = findViewById(R.id.scanned_by_list_view);
         playerAdapter = new ArrayAdapter<>(this,
                 com.example.qrscore.R.layout.scanned_by_content, playerDataList);
         playerList.setAdapter(playerAdapter);
+        // Bottom Nav selector.
+        // https://www.youtube.com/watch?v=OV25x3a55pk
+        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+                        return true;
+                    case R.id.map_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
+                        return true;
+                    case R.id.scan_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
+                        return true;
+                    case R.id.leaderboard_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
+                        return true;
+                    case R.id.profile_fragment_item:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
 
         // Initialize the DB
         collectionReference = db.collection("Comment");
 
+        // Initialize comments list
         commentDataList = new ArrayList<>();
         commentList = findViewById(R.id.comment_list_view);
         commentAdapter = new CommentCustomList(this, commentDataList);
@@ -98,7 +143,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         });
 
         // TODO: Remove when done testing
-
         // Displaying the comments when someone presses
         commentList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
