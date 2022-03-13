@@ -40,7 +40,7 @@ public class PlayerCustomList extends ArrayAdapter<Player> {
         // set text to player username
         Player player = players.get(position);
         TextView playerText = view.findViewById(R.id.scanned_by_text_view);
-        playerText.setText(player.getUsername());
+//        playerText.setText(player.getUsername());
 
         return view;
     }

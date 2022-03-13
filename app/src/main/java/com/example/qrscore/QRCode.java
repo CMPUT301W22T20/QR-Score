@@ -26,14 +26,15 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param loc
+     * @param longitude
      *      a String representing the location of the QR code.
      */
-    public QRCode(String hash, String loc) {
+    public QRCode(String hash) {
         this.hash = hash;
         // this.score = new Score(hash);
-        this.location = loc;
+//        this.location = loc;
         this.comments  = new ArrayList<>();
+        this.hasScanned = new ArrayList<>();
         calculateQRScore(this.hash);
     }
 
@@ -132,6 +133,17 @@ public class QRCode {
         return comments;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
+//    public String getLongitude() {
+//        return longitude;
+//    }
+//
+//    public String getLatitude() {
+//        return latitude;
+//    }
     /**
      * Constructor for QRCode
      *

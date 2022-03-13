@@ -3,16 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/back.xml" value="0.1875" />
-        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1875" />
-        <entry key="app/src/main/res/drawable/scroll_view_black_border.xml" value="0.1435" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22395833333333334" />
-        <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.26902173913043476" />
-        <entry key="app/src/main/res/layout/activity_qrcode_details.xml" value="0.2569402058919271" />
-        <entry key="app/src/main/res/layout/comment_content.xml" value="0.26902173913043476" />
-        <entry key="app/src/main/res/layout/comment_fragment_layout.xml" value="0.30932971014492755" />
-        <entry key="app/src/main/res/layout/scanned_by_content.xml" value="0.26902173913043476" />
-        <entry key="../../../../../../../../layout/custom_preview.xml" value="0.2265625" />
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/nav_bar_round.xml" value="0.208" />
@@ -63,6 +53,35 @@
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/home_fragment_layour.xml" value="0.17502532928064843" />
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/home_fragment_layout.xml" value="0.1796875" />
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1796875" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_home.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_leaderboard.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/back.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/background_activity.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/background_rectangle_bordered.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/button_base.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/ic_baseline_qr_code_24.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_round.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_selector.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_selected.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_selector.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_text.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_unselected.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_content.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_fragment_layout.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/content_comment.xml" value="0.20729166666666668" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_home.xml" value="0.18958333333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_location.xml" value="0.2015625" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_profile.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.16" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.20729166666666668" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1965" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1965" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1634963768115942" />
+        <entry key="app/src/main/res/layout/fragment_custom_location_list.xml" value="0.1046875" />
+        <entry key="app/src/main/res/layout/fragment_location.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.1308876811594203" />
       </map>
     </option>
   </component>

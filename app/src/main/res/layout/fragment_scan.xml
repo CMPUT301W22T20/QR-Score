@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScanFragment"
-    android:id="@+id/scan_fragment">
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/scan_nav_ic" />
-</FrameLayout>
+    <ImageView
+        android:id="@+id/qr_image_view"
+        android:visibility="gone"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_baseline_qr_code_24"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_take_photo"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button_selector"
+        android:textColor="@drawable/round_button_text"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Take Photo"
+        android:visibility="invisible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_scan"
+        android:background="@drawable/round_button_selector"
+        android:textColor="@drawable/round_button_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center"
+        android:text="Scan" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_button_selector"
+        android:textColor="@drawable/round_button_text"
+        android:text="Confirm"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Record location" />
+
+</LinearLayout>
