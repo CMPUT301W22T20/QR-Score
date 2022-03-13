@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#1554F6</color>
     <color name="icon_default">#4E5354</color>
+    <color name="textbox">#8e8e8e</color>
 </resources>

@@ -82,21 +82,21 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
         // Instantiate Textview classes to fill layout parameters
-        TextView userName = (TextView) root.findViewById(R.id.username_text_view);
-        TextView usernamesQRCodes = (TextView) root.findViewById(R.id.qr_code_title_text_view);
-        TextView myScannedCodes = (TextView) root.findViewById(R.id.scanned_text_view);
-        TextView myQRScore = (TextView) root.findViewById(R.id.score_text_view);
-        TextView myRank = (TextView) root.findViewById(R.id.rank_text_view);
+        TextView userName = (TextView) root.findViewById(R.id.home_fragment_username_text_view);
+        TextView usernamesQRCodes = (TextView) root.findViewById(R.id.home_fragment_qr_code_title_text_view);
+        TextView myScannedCodes = (TextView) root.findViewById(R.id.home_fragment_scanned_text_view);
+        TextView myQRScore = (TextView) root.findViewById(R.id.home_fragment_score_text_view);
+        TextView myRank = (TextView) root.findViewById(R.id.home_fragment_rank_text_view);
 
         // Instantiate Account class
         // TODO: Connect to Firebase
         Account myAccount = new Account("id1", "Gregg");
 
         // Instantiate a String to set a TextView to
-        String usernamesQRCodesString = (myAccount.profile.getUserName() + "'s QR Codes");
+        String usernamesQRCodesString = (myAccount.profile.getUserUID() + "'s QR Codes");
 
         // Set the text of all TextViews
-        userName.setText(myAccount.profile.getUserName());
+        userName.setText(myAccount.profile.getUserUID());
         usernamesQRCodes.setText(usernamesQRCodesString);
         myScannedCodes.setText(myAccount.qrDataList.getTotalQRCodesScanned().toString());
         myQRScore.setText(myAccount.qrDataList.getSumOfScoresScanned().toString());
@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
 
         // Instantiate button
         // TODO: Implement "Sort By" button
-        final Button sortByButton = root.findViewById(R.id.sort_by_button);
+        final Button sortByButton = root.findViewById(R.id.home_fragment_sort_by_button);
         sortByButton.setOnClickListener((v) -> {
         });
 
