@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.qrscore.Comment;
+import com.example.qrscore.R;
+
 /**
  * Purpose: This class creates a dialog fragment for the user to input a string into
  * Displays EditText for user to write a comment

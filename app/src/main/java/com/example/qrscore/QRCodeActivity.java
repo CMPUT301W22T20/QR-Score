@@ -37,6 +37,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// Comments collection
+// Geolocation collection
+// QRCode collection
+// Photos storage
+// Photo collection
+
 /**
  * Purpose: This class is the QR Code activity
  *
@@ -77,33 +83,33 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         playerAdapter = new ArrayAdapter<>(this,
                 com.example.qrscore.R.layout.scanned_by_content, playerDataList);
         playerList.setAdapter(playerAdapter);
-        // Bottom Nav selector.
-        // https://www.youtube.com/watch?v=OV25x3a55pk
-        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
-        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.home_fragment_item:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
-                        return true;
-                    case R.id.map_fragment_item:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
-                        return true;
-                    case R.id.scan_fragment_item:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
-                        return true;
-                    case R.id.leaderboard_fragment_item:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
-                        return true;
-                    case R.id.profile_fragment_item:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
-                        return true;
-                }
-                return false;
-            }
-        });
+//        // Bottom Nav selector.
+//        // https://www.youtube.com/watch?v=OV25x3a55pk
+//        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
+//        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+//        bottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.home_fragment_item:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+//                        return true;
+//                    case R.id.map_fragment_item:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
+//                        return true;
+//                    case R.id.scan_fragment_item:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
+//                        return true;
+//                    case R.id.leaderboard_fragment_item:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
+//                        return true;
+//                    case R.id.profile_fragment_item:
+//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
 
         // Initialize the DB
         collectionReference = db.collection("Comment");
@@ -171,7 +177,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
      */
     public void updateHasScanned(String codeID, Player player) {
         DocumentReference id = qrCodeRef.document(codeID);
-        id.update("hasScanned", FieldValue.arrayUnion(player.getUsername()));
+//        id.update("hasScanned", FieldValue.arrayUnion(player.getUsername()));
     }
 
     /**
