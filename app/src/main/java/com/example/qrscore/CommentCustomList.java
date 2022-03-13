@@ -38,7 +38,7 @@ public class CommentCustomList extends ArrayAdapter<Comment> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.comment_content, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.content_comment, parent, false);
         }
 
         Comment comment = comments.get(position);
