@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
 
         // Instantiate Account class
         // TODO: Connect to Firebase
-        Account myAccount = new Account("id1", "Gregg");
+        Account myAccount = new Account("id1", "Samsung", "test_user");
 
         // Instantiate a String to set a TextView to
         String usernamesQRCodesString = (myAccount.profile.getUserUID() + "'s QR Codes");
