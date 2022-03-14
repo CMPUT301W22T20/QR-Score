@@ -44,7 +44,6 @@ public class QRCode {
 //        this.location = loc;
         this.comments  = new ArrayList<>();
         this.hasScanned = new ArrayList<>();
-        //calculateQRScore(this.hash);
     }
 
     /**
@@ -60,43 +59,7 @@ public class QRCode {
      *      a String identifier for the QR code.
      */
     public Integer calculateQRScore(String hash) {
-        Integer score = 0;
-
-        // Source: https://mkyong.com/java/how-to-execute-shell-command-from-java/
-        ProcessBuilder processBuilder = new ProcessBuilder();
-
-        // Run a shell command
-        processBuilder.command("/system/bin/sh", "echo", hash, "|", "sha256sum");
-        Log.i("calculateQRScore", "Command running");
-
-        try {
-            Process process = processBuilder.start();
-            StringBuilder output = new StringBuilder();
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
-            }
-            String outputStr = output.toString();
-            Log.i("calculateQRScore", "output: " + outputStr);
-            int exitVal = process.waitFor();
-            if (exitVal == 0) {
-                Log.i("calculateQRScore", "Successfully executed shell command.");
-                Log.i("calculateQRScore", "Checksum output: " + output.toString());
-                score = outputStr.length() - outputStr.replace("0", "").length();
-                System.exit(0);
-            } else {
-                Log.e("calculateQRScore", "exitVal != 0. exitVal=" + exitVal);
-                //abnormal...
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return score;
+        return hash.length() - hash.replace("0", "").length();
     }
 
     /**
