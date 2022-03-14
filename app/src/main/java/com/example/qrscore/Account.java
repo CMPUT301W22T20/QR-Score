@@ -17,10 +17,10 @@ import java.util.List;
 public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
-    public Profile profile;
-    public QRDataList qrDataList;
-    public Integer totalScore;
-    public Integer scanned;
+    private Profile profile;
+    private QRDataList qrDataList;
+    private Integer totalScore;
+    private Integer scanned;
 // private Permissions permissions;
 
     public Account(String userID) {
@@ -77,6 +77,26 @@ public class Account {
      */
     public void removeQR(QRCode qr) {
         qrDataList.removeQRCode(qr);
+    }
+
+    /**
+     * Returns the QRDataList
+     *
+     * @return
+     *      qrDataList
+     */
+    public QRDataList getQrDataList() {
+        return qrDataList;
+    }
+
+    /**
+     * Returns the username of the user
+     *
+     * @return
+     *      username
+     */
+    public String getUserUID() {
+        return profile.getUserUID();
     }
 
     public Integer getHighest() {
