@@ -7,6 +7,14 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
+            <value value="$USER_HOME$/.android/avd/Pixel_5_API_30.avd" />
+          </Key>
+        </deviceKey>
+      </Target>
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2022-03-12T07:59:59.025277Z" />
+            <type value="SERIAL_NUMBER" />
+            <value value="ZY227KGD28" />
             <value value="C:\Users\super\.android\avd\Pixel_4_API_30.avd" />
           </Key>
         </deviceKey>
