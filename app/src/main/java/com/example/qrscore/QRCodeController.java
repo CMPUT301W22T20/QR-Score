@@ -40,4 +40,8 @@ public class QRCodeController {
             }
         });
     }
+
+    public void updateHasScanned() {
+
+    }
 }

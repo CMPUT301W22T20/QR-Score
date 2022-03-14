@@ -4,8 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +72,7 @@ public class ScanFragment extends Fragment {
         Button cameraButton = view.findViewById(R.id.button_take_photo);
         Button scanButton = view.findViewById(R.id.button_scan);
         Button confirmButton = view.findViewById(R.id.button_confirm);
+        SwitchCompat switchButton = view.findViewById(R.id.switch_button);
 
         // Start activity for scanning QR code
         final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
@@ -91,14 +100,15 @@ public class ScanFragment extends Fragment {
                     qrCode.addScanned(userID);
                     qrCodeController.add(qrHashed, qrCode, userID);
 
-                    locationController.saveLocation(qrHashed, userID);
+                    if (switchButton.isChecked()) {
+                        System.out.println("677777777777777777777777777777777777");
+                        locationController.saveLocation(qrHashed, userID);
+                    }
 
                     if (imageUri != null) {
                         final String imageKey = UUID.randomUUID().toString();
-                        Photo photo = new Photo("images/" + imageKey, qrHashed, "tempUUID");
+                        Photo photo = new Photo("images/" + imageKey, qrHashed, userID);
                         photoController.uploadPhoto(photo, imageUri);
-                        // TODO: Remove this line later
-                        photoController.downloadPhoto();
                         Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -130,6 +140,9 @@ public class ScanFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 8008 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
         }
     }
 

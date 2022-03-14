@@ -8,9 +8,12 @@
 
     <ImageView
         android:id="@+id/qr_image_view"
-        android:visibility="gone"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_baseline_qr_code_24"/>
@@ -48,6 +51,7 @@
         android:visibility="invisible"/>
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
