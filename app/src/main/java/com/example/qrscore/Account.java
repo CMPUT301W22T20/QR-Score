@@ -93,4 +93,8 @@ public class Account {
     public Integer getLowest() {
         return qrDataList.getLowscore();
     }
+
+    public String getUsername() {
+        return userID;
+    }
 }
