@@ -1,7 +1,6 @@
 package com.example.qrscore;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +11,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Purpose: This class is the home fragment which shows some of your player information
@@ -39,8 +38,10 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
     private ArrayAdapter<Comment> commentAdapter;
     private ArrayList<Comment> commentDataList;
     private ProfileController profileController;
+    private AccountController accountController;
+    private Account myAccount;
     private QRCodeController qrCodeController;
-    private ArrayList<String> qrCodes;
+    private ArrayList<QRCode> qrCodes;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         super.onCreate(savedInstanceState);
 
         profileController = new ProfileController(getContext());
+        accountController = new AccountController();
         qrCodeController = new QRCodeController();
     }
 
@@ -66,18 +68,24 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         TextView myScannedCodes = (TextView) root.findViewById(R.id.home_fragment_scanned_text_view);
         TextView myQRScore = (TextView) root.findViewById(R.id.home_fragment_score_text_view);
         TextView myRank = (TextView) root.findViewById(R.id.home_fragment_rank_text_view);
-        ListView myCodes = root.findViewById(R.id.home_fragment_comment_list_view);
+        ListView myCodes = root.findViewById(R.id.home_fragment_codes_list_view);
 
 
 
         String uuid = profileController.getProfile().getUserUID();
         qrCodeController.getPlayerQRs(new QRCodeCallbackList() {
             @Override
-            public void onCallback(ArrayList<String> qrCodesList) {
+            public void onCallback(ArrayList<QRCode> qrCodesList) {
                 System.out.println("55555555555555555555555555");
                 qrCodes = qrCodesList;
                 System.out.println(qrCodes.size());
-                ArrayAdapter<String> codeAdapter = new ArrayAdapter<>(getContext(), R.layout.temp_layout_qrcodes, qrCodes);
+                QRListAdapter codeAdapter = new QRListAdapter(getContext(), qrCodes);
+                codeAdapter.sort(new Comparator<QRCode>() {
+                    @Override
+                    public int compare(QRCode qrCode, QRCode t1) {
+                        return -(qrCode.getQRScore() - t1.getQRScore());
+                    }
+                });
                 myCodes.setAdapter(codeAdapter);
                 codeAdapter.notifyDataSetChanged();
             }
@@ -88,7 +96,8 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
 
         // Instantiate Account class
         // TODO: Connect to Firebase
-        Account myAccount = new Account("id1", "Samsung", "test_user");
+        accountController.getNewAccount();
+        myAccount = accountController.createNewAccount();
 
         // Instantiate a String to set a TextView to
         String usernamesQRCodesString = (myAccount.profile.getUserUID() + "'s QR Codes");
@@ -96,14 +105,42 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         // Set the text of all TextViews
         userName.setText(myAccount.profile.getUserUID());
         usernamesQRCodes.setText(usernamesQRCodesString);
-        myScannedCodes.setText(myAccount.qrDataList.getTotalQRCodesScanned().toString());
-        myQRScore.setText(myAccount.qrDataList.getSumOfScoresScanned().toString());
+        myScannedCodes.setText(myAccount.getScanned().toString());
+        myQRScore.setText(myAccount.getTotalScore().toString());
         myRank.setText(myAccount.qrDataList.getRank().toString());
 
         // Instantiate button
         // TODO: Implement "Sort By" button
         final Button sortByButton = root.findViewById(R.id.home_fragment_sort_by_button);
         sortByButton.setOnClickListener((v) -> {
+            QRListAdapter newAdapter = new QRListAdapter(getContext(), qrCodes);
+            switch (sortByButton.getText().toString()) {
+                case "Highest":
+                    // From stackoverflow
+                    // https://stackoverflow.com/a/8920348
+                    // https://stackoverflow.com/users/844882/alex-lockwood
+                    newAdapter.sort(new Comparator<QRCode>() {
+                        @Override
+                        public int compare(QRCode qrCode, QRCode t1) {
+                            return (qrCode.getQRScore() - t1.getQRScore());
+                        }
+                    });
+                    sortByButton.setText("Lowest");
+                    break;
+                case "Lowest":
+                    newAdapter.sort(new Comparator<QRCode>() {
+                        @Override
+                        public int compare(QRCode qrCode, QRCode t1) {
+                            return -(qrCode.getQRScore() - t1.getQRScore());
+                        }
+                    });
+                    sortByButton.setText("Highest");
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + sortByButton.getText());
+            }
+            myCodes.setAdapter(newAdapter);
+            newAdapter.notifyDataSetChanged();
         });
 
         return root;

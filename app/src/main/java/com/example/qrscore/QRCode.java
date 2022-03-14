@@ -2,6 +2,7 @@ package com.example.qrscore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Purpose: This class represents a QR code.
@@ -26,16 +27,16 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param longitude
-     *      a String representing the location of the QR code.
      */
     public QRCode(String hash) {
+        Random random = new Random();
         this.hash = hash;
-        // this.score = new Score(hash);
+        this.qrScore = random.nextInt(100);
+        this.id = this.qrScore.toString();
 //        this.location = loc;
         this.comments  = new ArrayList<>();
         this.hasScanned = new ArrayList<>();
-        calculateQRScore(this.hash);
+        //calculateQRScore(this.hash);
     }
 
     /**
