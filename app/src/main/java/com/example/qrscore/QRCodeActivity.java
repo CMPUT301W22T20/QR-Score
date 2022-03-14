@@ -133,6 +133,8 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
             }
         });
 
+        loadHasScanned(qrID);
+
         // Clicked the add button; adding comments
         final Button addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener((v) -> {
