@@ -18,6 +18,7 @@
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_text.xml" value="0.1975" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/round_button_unselected.xml" value="0.1975" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/activity_qrcode.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_content.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/comment_fragment_layout.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/content_comment.xml" value="0.20729166666666668" />
@@ -25,6 +26,7 @@
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_location.xml" value="0.2015625" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_profile.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.16" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/scanned_by_content.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.20729166666666668" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1965" />

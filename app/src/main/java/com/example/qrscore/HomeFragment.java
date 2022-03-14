@@ -101,19 +101,6 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
                 codeAdapter.notifyDataSetChanged();
             }
         });
-//        qrCodeController.getPlayerQRs(new QRCodeCallbackList() {
-//            @Override
-//            public void onCallback(ArrayList<String> qrCodesList) {
-//                qrCodes = qrCodesList;
-//                try {
-//                    ArrayAdapter<String> codeAdapter = new ArrayAdapter<>(getContext(), R.layout.temp_layout_qrcodes, qrCodes);
-//                    myCodes.setAdapter(codeAdapter);
-//                    codeAdapter.notifyDataSetChanged();
-//                } catch (NullPointerException e) {
-//                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }, uuid);
 
         myCodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
