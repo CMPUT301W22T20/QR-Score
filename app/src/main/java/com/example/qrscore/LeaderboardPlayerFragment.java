@@ -66,10 +66,10 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      * Purpose: Populate the Player ArrayList to display on RecyclerView.
      */
     private void populatePlayerArrayList() {
-        players.add(new Player(new Account("4324ifjesjafieoawinvksan", "", "")));
-        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan", "", "")));
+        players.add(new Player(new Account("4324ifjesjafieoawinvksan")));
+        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan")));
         for (int i = 0; i < 20; i++) {
-            players.add(new Player(new Account("f342faifnajsnfjowjoias", "", "")));
+            players.add(new Player(new Account("f342faifnajsnfjowjoias")));
         }
     }
 
