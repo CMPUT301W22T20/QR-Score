@@ -20,6 +20,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
     private ArrayList<String> qrCodes;
     private FirebaseFirestore db;
     private CollectionReference qrRef;
+    private static Query.Direction direction;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -64,6 +66,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         qrCodeController = new QRCodeController();
         db = FirebaseFirestore.getInstance();
         qrRef = db.collection("QRCode");
+        direction = Query.Direction.DESCENDING;
     }
 
     @Override
@@ -86,7 +89,8 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         codeAdapter.notifyDataSetChanged();
 
         String uuid = profileController.getProfile().getUserUID();
-        qrRef.whereArrayContains("hasScanned", uuid).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        qrRef.whereArrayContains("hasScanned", uuid).orderBy("qrscore", direction)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 qrCodes.clear();
@@ -131,6 +135,16 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         // TODO: Implement "Sort By" button
         final Button sortByButton = root.findViewById(R.id.home_fragment_sort_by_button);
         sortByButton.setOnClickListener((v) -> {
+            switch (sortByButton.getText().toString()) {
+                case "Lowest":
+                    sortByButton.setText("Highest");
+                    direction = Query.Direction.ASCENDING;
+                    break;
+                case "Highest":
+                    sortByButton.setText("Lowest");
+                    direction = Query.Direction.DESCENDING;
+                    break;
+            }
         });
 
         return root;

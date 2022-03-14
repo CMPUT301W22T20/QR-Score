@@ -13,15 +13,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -60,6 +63,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     private CollectionReference collectionReference;
 
     private ProfileController profileController;
+    private PhotoController photoController;
     private String qrID;
     private TextView geoText;
 
@@ -75,6 +79,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
+        photoController = new PhotoController();
         profileController = new ProfileController(this);
         String uuid = profileController.getProfile().getUserUID();
 
@@ -95,10 +100,22 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         commentList.setAdapter(commentAdapter);
 
         geoText = findViewById(R.id.geolocation_text_view);
+        ImageView imageView = findViewById(R.id.qr_image_view);
 
         Intent intent = getIntent();
         qrID = (String) intent.getExtras().get("QR_ID");
         loadHasScanned(qrID);
+
+        photoController.downloadPhoto(qrID, uuid, new PhotoCallback() {
+            @Override
+            public void onCallback(Uri downloadURL) {
+                Glide.with(imageView)
+                        .load(downloadURL)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_baseline_qr_code_24)
+                        .into(imageView);
+            }
+        });
 
         db.collection("Location").whereEqualTo("qrID", qrID).whereArrayContains("uuids", uuid)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -152,10 +169,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         playerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                String userID = (String) adapterView.getItemAtPosition(pos);
-                Intent intent = new Intent(QRCodeActivity.this, QRCodeActivity.class) {
-
-                }
+                // TODO: Goto player profiles when clicked
             }
         });
 
