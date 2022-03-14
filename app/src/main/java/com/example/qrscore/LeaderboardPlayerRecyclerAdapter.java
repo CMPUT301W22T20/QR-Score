@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -95,6 +96,9 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
+                    Intent intent = new Intent(view.getContext(), OtherPlayerAccountActivity.class);
+                    intent.putExtra("userID", "008pIplmeCdA35SkXKh2B2fL0B82");
+                    view.getContext().startActivity(intent);
                     return false;
                 }
             });

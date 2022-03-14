@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,7 +41,6 @@ import java.util.ArrayList;
 public class OtherPlayerAccountActivity extends AppCompatActivity {
 
     private ListView qrCodesList;
-    private ArrayAdapter<String> qrCodesAdapter;
     private ArrayList<String> qrCodesDataList;
     final String TAG = "Sample";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -58,9 +58,8 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String userUID = intent.getStringExtra("userID");
 
-        // Create array adapter for QR Codes
-        qrCodesDataList = new ArrayList<String>();
-        qrCodesAdapter = new ArrayAdapter<String>(this, com.example.qrscore.R.layout.qr_codes_list_content, qrCodesDataList);
+        ArrayList<QRCode> qrCodesDataList = new ArrayList<QRCode>();
+        QRCodeAdapter qrCodesAdapter = new QRCodeAdapter(this, com.example.qrscore.R.layout.qr_codes_list_content, qrCodesDataList);
         qrCodesList = findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);
 
@@ -119,7 +118,8 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                                                                                     QRCode code = document.toObject(QRCode.class);
 
                                                                                     // Add score to list
-                                                                                    qrCodesDataList.add(code.getQRScore().toString());
+                                                                                    //qrCodesDataList.add(code.getQRScore().toString());
+                                                                                    qrCodesDataList.add(code);
                                                                                     qrCodesAdapter.notifyDataSetChanged();
                                                                                 } else {
                                                                                     Log.d(TAG, "No such qr code document");
@@ -142,6 +142,18 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        // GOTO QRCodeActivity when code is clicked on
+        qrCodesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            // Go to new activity on item click
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(OtherPlayerAccountActivity.this, QRCodeActivity.class);
+                intent.putExtra("QR_ID", qrCodesAdapter.getItem(i).getHash());
+                startActivity(intent);
+
+            }
+        });
 
     }
 

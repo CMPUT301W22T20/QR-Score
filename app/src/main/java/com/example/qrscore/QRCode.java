@@ -47,6 +47,17 @@ public class QRCode {
      */
     public QRCode() {}
 
+    /**
+     * Constructor required to display qr codes a player owns
+     * @param hash
+     *      The QRCode hash
+     * @param qrscore
+     *      The QRCode score
+     */
+    public QRCode(String hash, Integer qrscore) {
+        this.hash = hash;
+        this.qrscore = qrscore;
+    }
 
     /**
      * Calculates QR Score from hash

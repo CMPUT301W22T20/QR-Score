@@ -91,6 +91,8 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         Intent intent = getIntent();
         qrID = (String) intent.getExtras().get("QR_ID");
 
+        loadHasScanned(qrID);
+
         // Clicked the add button; adding comments
         final Button addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener((v) -> {
