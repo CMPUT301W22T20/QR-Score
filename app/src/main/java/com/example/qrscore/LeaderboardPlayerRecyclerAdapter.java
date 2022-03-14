@@ -61,7 +61,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
         Account account = accounts.get(position);
         holder.rank.setText("NIL");
-        holder.score.setText(account.getTotalScore().toString());
+        holder.score.setText(account.getScore().toString());
         holder.name.setText(account.getUserID());
         holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
     }

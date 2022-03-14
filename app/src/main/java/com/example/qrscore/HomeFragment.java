@@ -163,6 +163,7 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+//<<<<<<< HEAD
 //        // Instantiate Textview classes to fill layout parameters
 //        TextView userName = (TextView) root.findViewById(R.id.home_fragment_username_text_view);
 //        TextView usernamesQRCodes = (TextView) root.findViewById(R.id.home_fragment_qr_code_title_text_view);
@@ -210,6 +211,13 @@ public class HomeFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
+//=======
+//        myCodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+//                QRCode qrCode = (QRCode) adapterView.getItemAtPosition(pos);
+//                String qrID = qrCode.getHash();
+//>>>>>>> main
 
 
     @Override

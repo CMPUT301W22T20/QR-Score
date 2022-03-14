@@ -41,12 +41,8 @@ import java.util.ArrayList;
 public class OtherPlayerAccountActivity extends AppCompatActivity {
 
     private ListView qrCodesList;
-    private ArrayList<String> qrCodesDataList;
     final String TAG = "Sample";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference profileRef = db.collection("Profile");
-    private CollectionReference accountRef = db.collection("Account");
-    private CollectionReference qrDataListRef = db.collection("QRDataList");
 
 
     @Override
