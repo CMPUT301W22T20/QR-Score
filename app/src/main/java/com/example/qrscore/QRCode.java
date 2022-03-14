@@ -1,6 +1,13 @@
 package com.example.qrscore;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Purpose: This class represents a QR code.
@@ -12,10 +19,12 @@ import java.util.ArrayList;
  * TODO: Unit tests
  */
 public class QRCode {
+
+    private String id;   // firestore document ID
     private String hash;
-    private Integer qrScore;
+    private Integer qrscore;
     private String location;
-    private ArrayList<Player> hasScanned;
+    private List<String> hasScanned;
     private ArrayList<Comment> comments;
 
     /**
@@ -23,17 +32,26 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param loc
-     *      a String representing the location of the QR code.
      */
-    public QRCode(String hash, String loc) {
+
+
+
+    public QRCode(String hash) {
+        Random random = new Random();
         this.hash = hash;
-        // this.score = new Score(hash);
-        this.location = loc;
-        this.hasScanned = new ArrayList<>();
+        this.qrscore = this.calculateQRScore(this.hash);
+        this.id = this.qrscore.toString();
+//        this.location = loc;
         this.comments  = new ArrayList<>();
-        calculateQRScore(this.hash);
+        this.hasScanned = new ArrayList<>();
+        //calculateQRScore(this.hash);
     }
+
+    /**
+     * Empty constructor for firebase
+     */
+    public QRCode() {}
+
 
     /**
      * Calculates QR Score from hash
@@ -41,11 +59,44 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-    public void calculateQRScore(String hash) {
-        Integer score;
-        //TODO
-        score = 1;
-        this.qrScore = score;
+    public Integer calculateQRScore(String hash) {
+        Integer score = 0;
+
+        // Source: https://mkyong.com/java/how-to-execute-shell-command-from-java/
+        ProcessBuilder processBuilder = new ProcessBuilder();
+
+        // Run a shell command
+        processBuilder.command("bash", "echo", hash, "|", "sha256sum");
+
+        try {
+            Process process = processBuilder.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                String outputStr = output.toString();
+                Log.i("QRCode.calculateQRScore", "Successfully executed shell command.");
+                Log.i("calculateQRScore.output", output.toString());
+                score = outputStr.length() - outputStr.replace("0", "").length();
+                System.exit(0);
+            } else {
+                //abnormal...
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return score;
+
     }
 
     /**
@@ -53,17 +104,17 @@ public class QRCode {
      *
      */
     public Integer getQRScore() {
-        return this.qrScore;
+        return this.qrscore;
     }
 
     /**
      * Adds a player to the list.
      *
-     * @param player
+     * @param playerUsername
      *      the player to add.
      */
-    public void addScanned(Player player) {
-        hasScanned.add(player);
+    public void addScanned(String playerUsername) {
+        hasScanned.add(playerUsername);
     }
 
     /**
@@ -86,16 +137,6 @@ public class QRCode {
      */
     public boolean findScanned(Player player) {
         return hasScanned.contains(player);
-    }
-
-    /**
-     * Returns the list of players who have scanned the QR code.
-     *
-     * return
-     *      an ArrayList of players.
-     */
-    public ArrayList<Player> getScanned() {
-        return hasScanned;
     }
 
     /**
@@ -139,4 +180,56 @@ public class QRCode {
     public ArrayList<Comment> getComments() {
         return comments;
     }
+
+    public String getHash() {
+        return hash;
+    }
+
+//    public String getLongitude() {
+//        return longitude;
+//    }
+//
+//    public String getLatitude() {
+//        return latitude;
+//    }
+    /**
+     * Constructor for QRCode
+     *
+     * @param hasScanned
+     *      list of players that have scanned the QRCode
+     */
+    public QRCode(List<String> hasScanned) {
+        this.hasScanned = hasScanned;
+    }
+
+
+    /**
+     * Gets the players that have scanned the QRCode
+     *
+     * @return
+     *      An ArrayList of players who have scanned the QR Code
+     */
+    public List<String> getHasScanned() { return hasScanned; }
+
+    /**
+     *  Gets the id of the QR Code
+     *
+     * @return
+     *      The id of the qr code
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id for the QR Code
+     *
+     * @param id
+     *      The id that is being set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
 }
