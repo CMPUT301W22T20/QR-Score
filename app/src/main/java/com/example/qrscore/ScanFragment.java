@@ -102,9 +102,6 @@ public class ScanFragment extends Fragment {
                     qrCode.addScanned(userID);
                     qrCodeController.add(qrHashed, qrCode, userID);
 
-//                    // Add QRCode to myAccount
-//                    myAccount.addQR(qrCode);
-
                     if (switchButton.isChecked()) {
                         locationController.saveLocation(qrHashed, userID);
                     }
