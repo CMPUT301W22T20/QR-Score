@@ -27,8 +27,6 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param longitude
-     *      a String representing the location of the QR code.
      */
     public QRCode(String hash) {
         Random random = new Random();
@@ -38,7 +36,7 @@ public class QRCode {
 //        this.location = loc;
         this.comments  = new ArrayList<>();
         this.hasScanned = new ArrayList<>();
-        calculateQRScore(this.hash);
+        //calculateQRScore(this.hash);
     }
 
     /**

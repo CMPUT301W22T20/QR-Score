@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 /**
@@ -79,6 +80,12 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
                 qrCodes = qrCodesList;
                 System.out.println(qrCodes.size());
                 QRListAdapter codeAdapter = new QRListAdapter(getContext(), qrCodes);
+                codeAdapter.sort(new Comparator<QRCode>() {
+                    @Override
+                    public int compare(QRCode qrCode, QRCode t1) {
+                        return -(qrCode.getQRScore() - t1.getQRScore());
+                    }
+                });
                 myCodes.setAdapter(codeAdapter);
                 codeAdapter.notifyDataSetChanged();
             }
@@ -118,8 +125,6 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
                             return (qrCode.getQRScore() - t1.getQRScore());
                         }
                     });
-                    myCodes.setAdapter(newAdapter);
-                    newAdapter.notifyDataSetChanged();
                     sortByButton.setText("Lowest");
                     break;
                 case "Lowest":
@@ -129,13 +134,13 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
                             return -(qrCode.getQRScore() - t1.getQRScore());
                         }
                     });
-                    myCodes.setAdapter(newAdapter);
-                    newAdapter.notifyDataSetChanged();
                     sortByButton.setText("Highest");
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + sortByButton.getText());
             }
+            myCodes.setAdapter(newAdapter);
+            newAdapter.notifyDataSetChanged();
         });
 
         return root;
