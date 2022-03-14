@@ -7,32 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.checkerframework.checker.units.qual.A;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
+
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -92,6 +82,8 @@ public class HomeFragment extends Fragment {
     private HomeFragmentQRCodeRecyclerAdapter HomeFragQRCodeRA;
     private RecyclerView QRCodeRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
+//    private CollectionReference qrRef;
+    private static Query.Direction direction;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -123,6 +115,8 @@ public class HomeFragment extends Fragment {
         QRDataListRef = QRDataListCollectionRef.document(userUID);
 
         populateData();
+//        qrRef = db.collection("QRCode");
+//        direction = Query.Direction.DESCENDING;
     }
 
     private void populateData() {
@@ -137,7 +131,7 @@ public class HomeFragment extends Fragment {
                             Object obj = qrDataListDocument.get("sumOfScoresScanned");
                             int total = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
                             myAccount.setScanned(total);
-                            myAccount.setTotalScore(score);
+                            myAccount.setScore(score);
                             ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
 
                             // get each QRCode from array
@@ -169,6 +163,55 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+//        // Instantiate Textview classes to fill layout parameters
+//        TextView userName = (TextView) root.findViewById(R.id.home_fragment_username_text_view);
+//        TextView usernamesQRCodes = (TextView) root.findViewById(R.id.home_fragment_qr_code_title_text_view);
+//        TextView myScannedCodes = (TextView) root.findViewById(R.id.home_fragment_scanned_text_view);
+//        TextView myQRScore = (TextView) root.findViewById(R.id.home_fragment_score_text_view);
+//        TextView myRank = (TextView) root.findViewById(R.id.home_fragment_rank_text_view);
+//        ListView myCodes = root.findViewById(R.id.home_fragment_codes_list_view);
+//
+//        qrCodes = new ArrayList<>();
+//        QRListAdapter codeAdapter = new QRListAdapter(getContext(), qrCodes);
+//        myCodes.setAdapter(codeAdapter);
+//        codeAdapter.notifyDataSetChanged();
+//
+//        String uuid = profileController.getProfile().getUserUID();
+//        qrRef.whereArrayContains("hasScanned", uuid).orderBy("qrscore", direction)
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                qrCodes.clear();
+//                try {
+//                    for (QueryDocumentSnapshot doc: value) {
+//                        String hash = (String) doc.getData().get("hash");
+//                        qrCodes.add(new QRCode(hash));
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                codeAdapter.sort(new Comparator<QRCode>() {
+//                    @Override
+//                    public int compare(QRCode qrCode, QRCode t1) {
+//                        return -(qrCode.getQRScore() - t1.getQRScore());
+//                    }
+//                });
+//                codeAdapter.notifyDataSetChanged();
+//            }
+//        });
+//
+//        myCodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+//                String qrID = adapterView.getItemAtPosition(pos).toString();
+//
+//                Intent intent = new Intent(getContext(), QRCodeActivity.class);
+//                intent.putExtra("QR_ID", qrID);
+//                startActivity(intent);
+//            }
+//        });
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -188,7 +231,7 @@ public class HomeFragment extends Fragment {
         userName.setText(myAccount.getUserID());
         usernamesQRCodes.setText(usernamesQRCodesString);
         myScannedCodes.setText(myAccount.getScanned().toString());
-        myQRScore.setText(myAccount.getTotalScore().toString());
+        myQRScore.setText(myAccount.getScore().toString());
         myRank.setText("NIL");
 
         // Instantiate button
@@ -267,14 +310,6 @@ public class HomeFragment extends Fragment {
             HFQRCodeRA.updateList(myAccount);
         }
 
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-//        accountListener.remove();
-//        profileListener.remove();
-//        QRDataListListener.remove();
     }
 }
 

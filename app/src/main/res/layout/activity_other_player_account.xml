@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/activity_background"
-    tools:context=".OtherPlayerAccountFragment">
+    tools:context=".OtherPlayerAccountActivity">
 
     <TextView
         android:id="@+id/username_text_view"

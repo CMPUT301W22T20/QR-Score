@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/activity_other_player_account.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/layout/activity_profile_auth.xml" value="0.39633941650390625" />
         <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.18860626220703125" />
         <entry key="app/src/main/res/layout/comment_content.xml" value="0.11956521739130435" />
