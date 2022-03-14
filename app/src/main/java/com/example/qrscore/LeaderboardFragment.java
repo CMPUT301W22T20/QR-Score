@@ -42,6 +42,7 @@ public class LeaderboardFragment extends Fragment {
         new TabLayoutMediator(leaderboardTabLayout, viewPager, (tab, position) -> {
             setIconAndText(tab, position);
         }).attach();
+
         return view;
     }
 

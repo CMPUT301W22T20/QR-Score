@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -59,6 +61,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         leaderboardSearchPlayerET.addTextChangedListener(this);
         populatePlayerArrayList();
         setAdapter();
+
+
+
         return view;
     }
 
@@ -66,10 +71,10 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      * Purpose: Populate the Player ArrayList to display on RecyclerView.
      */
     private void populatePlayerArrayList() {
-        players.add(new Player(new Account("4324ifjesjafieoawinvksan", "", "")));
-        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan", "", "")));
+        players.add(new Player(new Account("4324ifjesjafieoawinvksan", 20, 1)));
+        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan", 1000, 11)));
         for (int i = 0; i < 20; i++) {
-            players.add(new Player(new Account("f342faifnajsnfjowjoias", "", "")));
+            players.add(new Player(new Account("f342faifnajsnfjowjoias", 100, 5)));
         }
     }
 

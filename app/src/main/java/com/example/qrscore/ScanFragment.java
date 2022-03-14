@@ -87,7 +87,7 @@ public class ScanFragment extends Fragment {
                     // Try to get document from db, if cant get then create a new one
                     // so we don't overwrite existing data
                     String userID = profileController.getProfile().getUserUID();
-                    QRCode qrCode = new QRCode(qrHashed, 20);
+                    QRCode qrCode = new QRCode(qrHashed);
                     qrCode.addScanned(userID);
                     qrCodeController.add(qrHashed, qrCode, userID);
 

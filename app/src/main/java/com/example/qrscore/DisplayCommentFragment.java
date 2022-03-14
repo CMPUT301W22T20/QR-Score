@@ -9,7 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * This class creates a dialog fragment to display a string of comments
+ * Purpose: This class creates a dialog fragment to display a string of comments
+ *
+ * Outstanding issues:
  */
 public class DisplayCommentFragment extends DialogFragment {
     @NonNull

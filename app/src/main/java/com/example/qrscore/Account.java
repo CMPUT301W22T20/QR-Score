@@ -3,14 +3,12 @@ package com.example.qrscore;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Purpose: This class represents an account in the system.
+/** Purpose: This class represents an account in the system.
  * Stores the QR codes tied to the account, the device,
  * and the profile.
  *
  * Outstanding issues:
  * TODO: Finish Purpose
- * TODO: As a player, I want to add new QR codes to my account.
- * TODO: As a player, I want to see what QR codes I have added to my account.
  * TODO: As a player, I want to remove QR codes from my account.
  * TODO: As a player, I want to see my highest and lowest scoring QR codes.
  * TODO: Unit tests
@@ -20,20 +18,25 @@ public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
     public Profile profile;
-    private List<String> devices;
     public QRDataList qrDataList;
-    // private Permissions permissions;
+    public Integer totalScore;
+    public Integer scanned;
+// private Permissions permissions;
 
-    public Account(String userID, String device, String userName) {
+    public Account(String userID) {
         this.userID = userID;
-        this.devices = new ArrayList<String>();
-        this.addDevice(device);
+        this.profile = new Profile(userID);
         this.qrDataList = new QRDataList();
-        this.profile = new Profile(userName);
+        this.totalScore = 0;
+        this.scanned = 0;
     }
 
-    private void addDevice(String toAdd) {
-        this.devices.add(toAdd);
+    public Account(String userID, Integer totalScore, Integer scanned) {
+        this.userID = userID;
+        this.profile = new Profile(userID);
+        this.qrDataList = new QRDataList();
+        this.totalScore = totalScore;
+        this.scanned = scanned;
     }
 
     /**
@@ -44,16 +47,6 @@ public class Account {
      */
     public String getUserID() {
         return userID;
-    }
-
-    /**
-     * Returns the Account's device.
-     *
-     * @return
-     *      device as a string.
-     */
-    public String getDevice() {
-        return devices.get(0);
     }
 
     /**
@@ -94,7 +87,11 @@ public class Account {
         return qrDataList.getLowscore();
     }
 
-    public String getUsername() {
-        return userID;
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public Integer getScanned() {
+        return scanned;
     }
 }

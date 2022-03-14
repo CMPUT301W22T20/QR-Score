@@ -27,7 +27,17 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
-// TODO: go to this activity when view profile is clicked on for player
+/**
+ * Purpose: This class shows a list of QRCodes that another player owns. Also shows total scanned,
+ * total score, and rank. Can click on a QR code to go to a different screen.
+ *
+ * Outstanding issues:
+ * TODO: go to this activity when view profile is clicked on for player
+ * TODO: Rank needs to be implemented
+ * TODO: Show total score, scanned, username, and rank
+ * TODO: Go to QRCodeActivity when QRCode is clicked on
+ * TODO: UI testing
+ */
 
 public class OtherPlayerAccountFragment extends Fragment {
 

@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
-    OtherPlayerAccountFragment otherPlayerAccountFragment = new OtherPlayerAccountFragment();
-
     static private Account account;
     final static public String ACCOUNT_KEY = "ACCOUNT";
 
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
                     return true;
                 case R.id.map_fragment_item:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, otherPlayerAccountFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
                     return true;
                 case R.id.scan_fragment_item:
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
