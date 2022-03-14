@@ -2,7 +2,10 @@ package com.example.qrscore;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Build;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     ScanFragment scanFragment = new ScanFragment();
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     ProfileFragment profileFragment = new ProfileFragment();
+
+    OtherPlayerAccountFragment otherPlayerAccountFragment = new OtherPlayerAccountFragment();
 
     static private Account account;
     final static public String ACCOUNT_KEY = "ACCOUNT";
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
                     return true;
                 case R.id.map_fragment_item:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, otherPlayerAccountFragment).commit();
                     return true;
                 case R.id.scan_fragment_item:
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();

@@ -16,7 +16,7 @@ public class QRCode {
 
     private String id;   // firestore document ID
     private String hash;
-    private Integer qrScore;
+    private Integer qrscore;
     private String location;
     private List<String> hasScanned;
     private ArrayList<Comment> comments;
@@ -26,16 +26,24 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param loc
+     * @param longitude
      *      a String representing the location of the QR code.
      */
-    public QRCode(String hash, String loc) {
+    public QRCode(String hash, Integer qrscore) {
         this.hash = hash;
-        // this.score = new Score(hash);
-        this.location = loc;
+        //this.score = new Score(hash);
+//        this.location = loc;
         this.comments  = new ArrayList<>();
+        this.hasScanned = new ArrayList<>();
         calculateQRScore(this.hash);
+        this.qrscore = qrscore;
     }
+
+    /**
+     * Empty constructor for firebase
+     */
+    public QRCode() {}
+
 
     /**
      * Calculates QR Score from hash
@@ -47,7 +55,7 @@ public class QRCode {
         Integer score;
         //TODO
         score = 1;
-        this.qrScore = score;
+        this.qrscore = score;
     }
 
     /**
@@ -55,7 +63,7 @@ public class QRCode {
      *
      */
     public Integer getQRScore() {
-        return this.qrScore;
+        return this.qrscore;
     }
 
     /**
@@ -132,6 +140,17 @@ public class QRCode {
         return comments;
     }
 
+    public String getHash() {
+        return hash;
+    }
+
+//    public String getLongitude() {
+//        return longitude;
+//    }
+//
+//    public String getLatitude() {
+//        return latitude;
+//    }
     /**
      * Constructor for QRCode
      *
@@ -170,5 +189,6 @@ public class QRCode {
     public void setId(String id) {
         this.id = id;
     }
+
 
 }

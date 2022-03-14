@@ -29,4 +29,7 @@ public class Player {
     public String getUsername() {
         return account.getUserID();
     }
+//    public String getUsername() {
+//        return account.getUsername();
+//    }
 }

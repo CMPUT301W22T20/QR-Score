@@ -117,7 +117,7 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:background="@drawable/background_rectangle_bordered"
+        android:foreground="@drawable/background_rectangle_bordered"
         android:layout_marginBottom="20dp" >
         <Button
             android:id="@+id/home_fragment_sort_by_button"
