@@ -22,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
  * - It allows the user to access their QR code.
  *
  * TODO: Implement view for QR code.
+ * TODO: Refactor this Fragment as AccountFragment
  *
  * Outstanding Issues:
  *
