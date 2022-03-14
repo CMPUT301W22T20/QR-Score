@@ -1,16 +1,17 @@
 package com.example.qrscore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,10 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.ref.Reference;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Purpose: This class shows a list of QRCodes that another player owns. Also shows total scanned,
@@ -39,7 +37,7 @@ import java.util.Objects;
  * TODO: UI testing
  */
 
-public class OtherPlayerAccountFragment extends Fragment {
+public class OtherPlayerAccountActivity extends AppCompatActivity {
 
     private ListView qrCodesList;
     private ArrayAdapter<String> qrCodesAdapter;
@@ -50,56 +48,33 @@ public class OtherPlayerAccountFragment extends Fragment {
     private CollectionReference accountRef = db.collection("Account");
     private CollectionReference qrDataListRef = db.collection("QRDataList");
 
-    private TextView scannedTextView;
-    private TextView usernameTextView;
-    private TextView rankTextView;
-    private TextView scoreTextView;
-    private TextView qrCodeTitleTextView;
-
-    private QRDataList qrList;
-    private String userUID;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public OtherPlayerAccountFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MapFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static OtherPlayerAccountFragment newInstance(String param1, String param2) {
-        OtherPlayerAccountFragment fragment = new OtherPlayerAccountFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        setContentView(R.layout.activity_other_player_account);
 
+        // Get the Intent that started this activity and extract the string
+        Intent intent = getIntent();
+        String userUID = intent.getStringExtra("userID");
 
-        userUID = "008pIplmeCdA35SkXKh2B2fL0B82";
+        // Create array adapter for QR Codes
+        qrCodesDataList = new ArrayList<String>();
+        qrCodesAdapter = new ArrayAdapter<String>(this, com.example.qrscore.R.layout.qr_codes_list_content, qrCodesDataList);
+        qrCodesList = findViewById(R.id.qr_codes_list_view);
+        qrCodesList.setAdapter(qrCodesAdapter);
+
+        // Create textviews
+        TextView scannedTextView = findViewById(R.id.scanned_text_view);
+        TextView scoreTextView = findViewById(R.id.score_text_view);
+        TextView usernameTextView = findViewById(R.id.username_text_view);
+        TextView qrCodeTitleTextView = findViewById(R.id.qr_code_title_text_view);
+        TextView rankTextView = findViewById(R.id.rank_text_view);
+
+        // Set username textviews
+        usernameTextView.setText(userUID);
+        qrCodeTitleTextView.setText(userUID + "'s QR Codes");
+
 
         DocumentReference profileRef = db.collection("Profile").document(userUID);
         Query account = db.collection("Account").whereEqualTo("Profile", profileRef);
@@ -125,9 +100,9 @@ public class OtherPlayerAccountFragment extends Fragment {
                                                     if (qrDataListDocument.exists()) {
                                                         Log.d(TAG, "DocumentSnapshot data: " + qrDataListDocument.getData());
                                                         //qrList = qrDataListDocument.toObject(QRDataList.class);
-                                                        //scoreTextView.setText(qrDataListDocument.getData().get("sumOfScoresScanned").toString());
-                                                        //scannedTextView.setText(qrDataListDocument.getData().get("totalQRCodesScanned").toString());
-                                                        //rankTextView.setText(qrDataListDocument.getData().get("rank").toString());
+                                                        scoreTextView.setText(qrDataListDocument.getData().get("sumOfScoresScanned").toString());
+                                                        scannedTextView.setText(qrDataListDocument.getData().get("totalQRCodesScanned").toString());
+                                                        rankTextView.setText(qrDataListDocument.getData().get("rank").toString());
 
                                                         ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
 
@@ -167,32 +142,6 @@ public class OtherPlayerAccountFragment extends Fragment {
                         }
                     }
                 });
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_other_player_account, container, false);
-
-        // Create array adapter for QR Codes
-        qrCodesDataList = new ArrayList<String>();
-        qrCodesAdapter = new ArrayAdapter<String>(getContext(), R.layout.qr_codes_list_content, qrCodesDataList);
-        qrCodesList = (ListView) view.findViewById(R.id.qr_codes_list_view);
-        qrCodesList.setAdapter(qrCodesAdapter);
-
-        // Create textviews
-        scannedTextView = (TextView) view.findViewById(R.id.scanned_text_view);
-        scoreTextView = (TextView) view.findViewById(R.id.score_text_view);
-        usernameTextView = (TextView) view.findViewById(R.id.username_text_view);
-        qrCodeTitleTextView = (TextView) view.findViewById(R.id.qr_code_title_text_view);
-
-        // Set textViews
-        //usernameTextView.setText(userUID);
-        //qrCodeTitleTextView.setText(userUID);
-
-
-        return view;
 
     }
 

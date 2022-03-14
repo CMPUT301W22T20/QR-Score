@@ -40,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent(MainActivity.this, OtherPlayerAccountActivity.class);
+        intent.putExtra("userID", "008pIplmeCdA35SkXKh2B2fL0B82");
+        startActivity(intent);
+
         // Authorize User.
         // Initialize HomeFragment when open app.
         bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
