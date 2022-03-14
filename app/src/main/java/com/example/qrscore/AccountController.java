@@ -53,9 +53,7 @@ public class AccountController {
                         Map<String, Object> data = doc.getData();
                         totalScore[0] = Integer.parseInt(data.get("Score").toString());
                         scanned[0] = Integer.parseInt(data.get("Total").toString());
-                        System.out.println("In docref: "+totalScore[0].toString()+" "+scanned[0].toString());
                     } else {
-                        System.out.println("Doc does not exist, creating new.");
                         // Else, initialize everything with default(?) values
                         // and then create a new account doc in the db.
                         HashMap<String, Object> data = new HashMap<>();
@@ -87,11 +85,9 @@ public class AccountController {
                 }
             }
         });
-        System.out.println("Outside docref: "+totalScore[0].toString()+" "+scanned[0].toString());
     }
 
     public Account createNewAccount() {
-        System.out.println("In create: "+totalScore[0].toString()+" "+scanned[0].toString());
         return new Account(userID);
     }
 }

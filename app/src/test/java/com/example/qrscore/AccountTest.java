@@ -1,54 +1,26 @@
 package com.example.qrscore;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.junit.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.Random;
 
 public class AccountTest {
-    // Test ideas:
-    //  1) Add a new account to database (unique ID), save that ID
-    //  2) Add QR codes to database
-    //  3) Get their IDs and link them to account in database
-
-    @Before
-    public void initDB() {
-        return;
+    @Test
+    public void testCreateBlank() {
+        Account test = new Account("test_id");
+        assertNotNull(test);
+        assertEquals("test_id", test.getUserID());
+        assertEquals(java.util.Optional.of(0), test.getTotalScore());
+        assertEquals(java.util.Optional.of(0), test.getScanned());
     }
 
     @Test
-    public void createNewAccount() {
-        Random random = new Random();
-        // From Baeldung
-        // https://www.baeldung.com/java-random-string
-        // https://www.baeldung.com/author/eugen/
-        String key = random.ints(48, 123)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(20)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-        Account testAccount = new Account(key);
-        assertNotNull(testAccount);
-        assertEquals(key, testAccount.getUserID());
-        assertEquals("Pixel 2", testAccount.getDevice());
+    public void testCreateInts() {
+        Account test = new Account("test_id", 2, 3);
+        assertNotNull(test);
+        assertEquals("test_id", test.getUserID());
+        assertEquals(java.util.Optional.of(2), test.getTotalScore());
+        assertEquals(java.util.Optional.of(3), test.getScanned());
     }
-
-//    @Test
-//    public void getExistingAccount() {
-//        //a
-//    }
-//
-//    @Test
-//    public void testAddQR() {
-//        //a
-//    }
-//
-//    @Test
-//    public void testRemoveQR() {
-//        //a
-//    }
 }
