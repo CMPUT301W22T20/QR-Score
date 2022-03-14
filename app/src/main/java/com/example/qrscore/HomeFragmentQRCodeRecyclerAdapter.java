@@ -1,6 +1,7 @@
 package com.example.qrscore;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
 
     private Account account;
     private QRDataList qrDataList;
+    private String hash;
     private ArrayList<QRCode> qrCodes;
 
     public HomeFragmentQRCodeRecyclerAdapter(Account account) {
@@ -42,13 +44,18 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         private TextView name;
         private ImageButton menuButton;
 
-        public MyViewHolder(final View itemView) {
+        public MyViewHolder(@NonNull View itemView) {
 
             super(itemView);
             rank = itemView.findViewById(R.id.list_item_rank);
             score = itemView.findViewById(R.id.list_item_score);
             name = itemView.findViewById(R.id.list_item_name);
             menuButton = itemView.findViewById(R.id.list_item_menu_button);
+//            hash =
+//
+//            itemView.setOnClickListener(view -> {
+//
+//            });
         }
     }
 
@@ -64,9 +71,17 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     public void onBindViewHolder(@NonNull HomeFragmentQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
 
         holder.rank.setText("NIL");
-//        holder.score.setText(qrCodes.get(position).getQRScore());
-        holder.name.setText(account.getUserID());
-        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(position));
+//        holder.score.setText(account.getQR().get(position).getQRScore());
+
+        String name = account.getProfile().getFirstName() + " " + account.getProfile().getLastName();
+        if (account.getProfile().getFirstName() == null) {
+            holder.name.setText(account.getUserID());
+        }
+        else {
+            holder.name.setText(name);
+        }
+
+        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(account.getQR().get(position).getHash()));
     }
 
     /**
@@ -92,28 +107,25 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
      */
     // https://www.youtube.com/watch?v=s1fW7CpiB9c
     private class MenuButtonOnClickListener implements View.OnClickListener {
-        int position;
-        public MenuButtonOnClickListener(int position) {
-            this.position = position;
+        String hash;
+        public MenuButtonOnClickListener(String hash) {
+            this.hash = hash;
+            Log.d("TAG", hash);
         }
-
         @Override
         public void onClick(View view) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    switch (menuItem.getItemId()) {
-                        case R.id.home_fragment_qr_view_qr_item:
-                            Intent intent = new Intent(view.getContext(), QRCodeActivity.class);
-                            intent.putExtra("qrID", qrCodes.get(position).getHash());
-                            view.getContext().startActivity(intent);
-                            break;
-                        case R.id.home_fragment_qr_delete_qr_item:
-                            break;
-                    }
-                    return false;
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.home_fragment_qr_view_qr_item:
+                        Intent intent = new Intent(view.getContext(), QRCodeActivity.class);
+                        intent.putExtra("QR_ID", hash);
+                        view.getContext().startActivity(intent);
+                        break;
+                    case R.id.home_fragment_qr_delete_qr_item:
+                        break;
                 }
+                return false;
             });
             popupMenu.inflate(R.menu.home_fragment_qr_code_menu);
             popupMenu.show();
