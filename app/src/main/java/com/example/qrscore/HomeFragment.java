@@ -119,7 +119,8 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         myCodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                String qrID = adapterView.getItemAtPosition(pos).toString();
+                QRCode qrCode = (QRCode) adapterView.getItemAtPosition(pos);
+                String qrID = qrCode.getHash();
 
                 Intent intent = new Intent(getContext(), QRCodeActivity.class);
                 intent.putExtra("QR_ID", qrID);
