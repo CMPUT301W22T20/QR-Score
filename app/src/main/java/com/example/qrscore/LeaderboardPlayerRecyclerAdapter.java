@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder>{
 
-    ArrayList<Account> accounts;
+    private ArrayList<Account> accounts;
 
     public LeaderboardPlayerRecyclerAdapter(ArrayList<Account> accounts) {
         this.accounts = accounts;

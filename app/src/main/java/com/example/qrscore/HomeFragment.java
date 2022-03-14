@@ -134,72 +134,40 @@ public class HomeFragment extends Fragment {
                         if (qrDataListDocument.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + qrDataListDocument.getData());
 
-                            Object ob = qrDataListDocument.get("sumOfScoresScanned");
+                            Object obj = qrDataListDocument.get("sumOfScoresScanned");
                             int total = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
                             myAccount.setScanned(total);
                             myAccount.setTotalScore(score);
-                            ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("QRCodes");
-                            String hi = "hello";
+                            ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
+
+                            // get each QRCode from array
+                            for (DocumentReference codeRef : qrCodesArray) {
+                                codeRef.get()
+                                        .addOnCompleteListener(taskQRCodes -> {
+                                            if (taskQRCodes.isSuccessful()) {
+                                                DocumentSnapshot document = taskQRCodes.getResult();
+                                                if (document.exists()) {
+                                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                                    QRCode code = document.toObject(QRCode.class);
+
+                                                    myQRDataList.addQRCode(code);
+                                                    myAccount.setQrDataList(myQRDataList);
+                                                    setAdapter();
+                                                } else {
+                                                    Log.d(TAG, "No such qr code document");
+                                                }
+                                            } else {
+                                                Log.d(TAG, "get failed with ", taskQRCodes.getException());
+                                            }
+                                        });
+
+                            }
+                            myAccount.setQrDataList(myQRDataList);
+                            setAdapter();
                         }
                     }
                 });
     }
-       /* accountRef.get()
-                .addOnCompleteListener(taskAccount -> {
-                    String string = "hello";
-                    if (taskAccount.isSuccessful()) {
-                        DocumentSnapshot accountDocument = taskAccount.getResult();
-                        if (!accountDocument.exists()) {
-                            Log.d(TAG, "DocumentQuery data: " + accountDocument.getData());
-                            DocumentReference qrDataList = accountDocument.getData().get(0).getDocumentReference("qrDataList");
-
-                            // get qrDataList from account
-                            qrDataList.get()
-                                    .addOnCompleteListener(taskQRDataList -> {
-                                        if (taskQRDataList.isSuccessful()) {
-                                            DocumentSnapshot qrDataListDocument = taskQRDataList.getResult();
-                                            if (qrDataListDocument.exists()) {
-                                                Log.d(TAG, "DocumentSnapshot data: " + qrDataListDocument.getData());
-
-                                                int score = ((Number) qrDataListDocument.get("Score")).intValue();
-                                                int total = ((Number) qrDataListDocument.get("Total")).intValue();
-                                                myAccount.setScanned(total);
-                                                myAccount.setTotalScore(score);
-
-                                                ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
-
-                                                // get each QRCode from array
-                                                for (DocumentReference codeRef : qrCodesArray) {
-                                                    codeRef.get()
-                                                            .addOnCompleteListener(taskQRCodes -> {
-                                                                if (taskQRCodes.isSuccessful()) {
-                                                                    DocumentSnapshot document = taskQRCodes.getResult();
-                                                                    if (document.exists()) {
-                                                                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                                                        QRCode code = document.toObject(QRCode.class);
-
-                                                                        myQRDataList.addQRCode(code);
-                                                                        myAccount.setQrDataList(myQRDataList);
-                                                                        setAdapter();
-                                                                    } else {
-                                                                        Log.d(TAG, "No such qr code document");
-                                                                    }
-                                                                } else {
-                                                                    Log.d(TAG, "get failed with ", taskQRCodes.getException());
-                                                                }
-                                                            });
-
-                                                }
-                                            }
-                                        }
-                                    });
-                        } else {
-                            Log.d(TAG, "No such account document");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", taskAccount.getException());
-                    }
-                });*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

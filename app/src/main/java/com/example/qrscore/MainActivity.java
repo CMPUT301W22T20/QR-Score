@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
         bottomNavView.setOnItemSelectedListener(new NavBarOnItemSelectedListener());
-//        account = new Account();
     }
 
     // Bottom Nav selector.

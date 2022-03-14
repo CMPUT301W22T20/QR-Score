@@ -109,8 +109,8 @@
 
         <ImageButton
             android:id="@+id/list_item_menu_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/ic_leaderboard_item_list"
             android:contentDescription="@string/menu_button_description"/>
     </LinearLayout>

@@ -64,8 +64,8 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     public void onBindViewHolder(@NonNull HomeFragmentQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
 
         holder.rank.setText("NIL");
-        holder.score.setText(qrCodes.get(position).getQRScore());
-        holder.name.setText(account.getProfile().getFirstName() + " " + account.getProfile().getLastName());
+//        holder.score.setText(qrCodes.get(position).getQRScore());
+        holder.name.setText(account.getUserID());
         holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(position));
     }
 

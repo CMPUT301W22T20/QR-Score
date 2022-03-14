@@ -69,9 +69,12 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                     accounts.clear();
                    for (QueryDocumentSnapshot documentSnapshot: value)  {
                        String userUID = documentSnapshot.getString("UserUID");
-                       int score = ((Number) documentSnapshot.get("Score")).intValue();
-                       int total = ((Number) documentSnapshot.get("Total")).intValue();
-                       accounts.add(new Account(userUID, score, total));
+//                       Long score = documentSnapshot.getLong("Score");
+//                       Long total = documentSnapshot.getLong("Total");
+                       String score = documentSnapshot.getString("Score");
+                       String total = documentSnapshot.getString("Total");
+                       accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
+//                       accounts.add(new Account(userUID, score.intValue(), total.intValue()));
                        leaderboardRA.updateList(accounts);
                    }
                 });
@@ -100,9 +103,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
            if (task.isSuccessful()) {
                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                    String userUID = documentSnapshot.getString("UserUID");
-                   int score = ((Number) documentSnapshot.get("Score")).intValue();
-                   int total = ((Number) documentSnapshot.get("Total")).intValue();
-                   accounts.add(new Account(userUID, score, total));
+                   String score = documentSnapshot.getString("Score");
+                   String total = documentSnapshot.getString("Total");
+                   accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
                }
            }
         });

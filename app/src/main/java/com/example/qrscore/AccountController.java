@@ -64,8 +64,8 @@ public class AccountController {
         HashMap<String, Object> newAccount = new HashMap<>();
         newAccount.put("Profile", db.collection("Profile").document(userUID));
         newAccount.put("UserUID", userUID);
-        newAccount.put("Score", 0);
-        newAccount.put("Total", 0);
+        newAccount.put("Score", "0");
+        newAccount.put("Total", "0");
         newAccount.put("QRDataList", db.collection("QRDataList").document(userUID));
         accountRef.set(newAccount)
                 .addOnSuccessListener(unused -> {
