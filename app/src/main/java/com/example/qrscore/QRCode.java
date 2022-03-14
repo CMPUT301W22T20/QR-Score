@@ -66,7 +66,8 @@ public class QRCode {
         ProcessBuilder processBuilder = new ProcessBuilder();
 
         // Run a shell command
-        processBuilder.command("bash", "echo", hash, "|", "sha256sum");
+        processBuilder.command("/system/bin/sh", "echo", hash, "|", "sha256sum");
+        Log.i("calculateQRScore", "Command running");
 
         try {
             Process process = processBuilder.start();
@@ -74,19 +75,19 @@ public class QRCode {
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
             String line;
-
             while ((line = reader.readLine()) != null) {
                 output.append(line + "\n");
             }
-
+            String outputStr = output.toString();
+            Log.i("calculateQRScore", "output: " + outputStr);
             int exitVal = process.waitFor();
             if (exitVal == 0) {
-                String outputStr = output.toString();
-                Log.i("QRCode.calculateQRScore", "Successfully executed shell command.");
-                Log.i("calculateQRScore.output", output.toString());
+                Log.i("calculateQRScore", "Successfully executed shell command.");
+                Log.i("calculateQRScore", "Checksum output: " + output.toString());
                 score = outputStr.length() - outputStr.replace("0", "").length();
                 System.exit(0);
             } else {
+                Log.e("calculateQRScore", "exitVal != 0. exitVal=" + exitVal);
                 //abnormal...
             }
 
