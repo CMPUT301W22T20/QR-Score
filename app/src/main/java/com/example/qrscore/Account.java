@@ -1,5 +1,7 @@
 package com.example.qrscore;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,15 +24,12 @@ public class Account {
     private Integer totalScore;
     private Integer scanned;
 
-// private Permissions permissions;
-
     public Account(String userID) {
         this.userID = userID;
         this.profile = new Profile(userID);
         this.qrDataList = new QRDataList();
         this.totalScore = 0;
         this.scanned = 0;
-        this.userID = "Default";
     }
 
     public Account(String userID, Integer totalScore, Integer scanned) {
@@ -39,7 +38,6 @@ public class Account {
         this.qrDataList = new QRDataList();
         this.totalScore = totalScore;
         this.scanned = scanned;
-        this.userID = "Default";
     }
 
     /**
@@ -50,6 +48,14 @@ public class Account {
      */
     public String getUserID() {
         return userID;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public void setScanned(Integer scanned) {
+        this.scanned = scanned;
     }
 
     /**
@@ -70,6 +76,10 @@ public class Account {
      */
     public List<QRCode> getQR() {
         return qrDataList.getQRCodes();
+    }
+
+    public void setQrDataList(QRDataList qrDataList) {
+        this.qrDataList = qrDataList;
     }
 
     /**
@@ -98,10 +108,6 @@ public class Account {
      * @return
      *      username
      */
-    public String getUserUID() {
-        return profile.getUserUID();
-    }
-
     public Integer getHighest() {
         return qrDataList.getHighscore();
     }
@@ -120,5 +126,13 @@ public class Account {
 
     public String getUsername() {
         return profile.getUserUID();
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }

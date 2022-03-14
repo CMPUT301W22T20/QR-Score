@@ -19,7 +19,7 @@ import java.util.List;
  * TODO: Highscore/Lowscore should probably return QRCodes so they can be displayed?
  */
 public class QRDataList {
-    private List<QRCode> qrCodes;
+    private ArrayList<QRCode> qrCodes;
     private Integer totalQRCodesScanned;
     private Integer sumOfScoresScanned;
     private Integer rank;
@@ -31,7 +31,9 @@ public class QRDataList {
      */
     public QRDataList() {
         this.qrCodes = new ArrayList<QRCode>();
-        this.updateStats();
+        this.rank = 0;
+        this.sumOfScoresScanned = 0;
+        this.totalQRCodesScanned = 0;
     }
 
     public QRDataList(Integer totalQRCodesScanned, Integer sumOfScoresScanned, Integer rank) {
@@ -40,7 +42,12 @@ public class QRDataList {
         this.rank = rank;
     }
 
-
+    public QRDataList(ArrayList<QRCode> qrCodes, Integer rank, Integer sumOfScoresScanned, Integer totalQRCodesScanned) {
+        this.qrCodes = qrCodes;
+        this.rank = rank;
+        this.sumOfScoresScanned = sumOfScoresScanned;
+        this.totalQRCodesScanned = totalQRCodesScanned;
+    }
 
     /**
      * Returns the array of QR codes.
@@ -48,10 +55,13 @@ public class QRDataList {
      * @return
      *      a List of QR codes.
      */
-    public List<QRCode> getQRCodes() {
+    public ArrayList<QRCode> getQRCodes() {
         return qrCodes;
     }
 
+    public void setQrCodes(ArrayList<QRCode> qrCodes) {
+        this.qrCodes = qrCodes;
+    }
     /**
      * Adds a QR code to the list.
      *
@@ -117,7 +127,7 @@ public class QRDataList {
         }
         Collections.sort(qrScores);
 
-        return qrScores.get(qrScores.size()-1);
+        return qrScores.get(qrScores.size() - 1);
     }
 
     /**

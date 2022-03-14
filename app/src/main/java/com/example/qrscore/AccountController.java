@@ -155,25 +155,6 @@ public class AccountController {
         return savedAccount;
     }
 
-    // https://firebase.google.com/docs/firestore/query-data/get-data
-    public ArrayList<Account> getAllAccounts() {
-        ArrayList<Account> allAccounts = new ArrayList<Account>();
-        accountCollectionRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                allAccounts.add(queryDocumentSnapshot.toObject(Account.class));
-                                Log.d(TAG, "Query all account successful");
-                            }
-                        } else {
-                            Log.d(TAG, "Failed to query all accounts");
-                        }
-                    }
-                });
-        return allAccounts;
-    }
 }
 //    public void getNewAccount() {
 //        collectionReference = db.collection("Account");

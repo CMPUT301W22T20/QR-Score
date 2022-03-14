@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_fragment_qr_view_qr_item"
+        android:title="@string/home_fragment_qr_view_qr_code">
+    </item>
+
+    <item
+        android:id="@+id/home_fragment_qr_delete_qr_item"
+        android:title="@string/home_fragment_qr_delete_qr_code">
+    </item>
+</menu>

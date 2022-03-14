@@ -72,7 +72,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                        int score = ((Number) documentSnapshot.get("Score")).intValue();
                        int total = ((Number) documentSnapshot.get("Total")).intValue();
                        accounts.add(new Account(userUID, score, total));
-                       leaderboardRA.filterList(accounts);
+                       leaderboardRA.updateList(accounts);
                    }
                 });
     }
@@ -157,6 +157,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                 accountsFiltered.add(account);
             }
         }
-        leaderboardRA.filterList(accountsFiltered);
+        leaderboardRA.updateList(accountsFiltered);
     }
 }

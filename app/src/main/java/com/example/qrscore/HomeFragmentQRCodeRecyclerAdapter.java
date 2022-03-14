@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,18 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 /**
- * Purpose: RecyclerAdapter for Player leaderboard.
+ * Purpose: RecyclerAdapter for HomeFragment Players QR Codes.
  *
  * Outstanding Issues:
  *
  * @author: William Liu
  */
-public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder>{
+public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<HomeFragmentQRCodeRecyclerAdapter.MyViewHolder>{
 
-    ArrayList<Account> accounts;
+    private Account account;
+    private QRDataList qrDataList;
+    private ArrayList<QRCode> qrCodes;
 
-    public LeaderboardPlayerRecyclerAdapter(ArrayList<Account> accounts) {
-        this.accounts = accounts;
+    public HomeFragmentQRCodeRecyclerAdapter(Account account) {
+        this.account = account;
+        this.qrDataList = account.getQrDataList();
+        this.qrCodes = qrDataList.getQRCodes();
     }
 
     /**
@@ -35,14 +40,15 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         private TextView rank;
         private TextView score;
         private TextView name;
-        private ImageButton playerMenuButton;
+        private ImageButton menuButton;
 
         public MyViewHolder(final View itemView) {
+
             super(itemView);
             rank = itemView.findViewById(R.id.list_item_rank);
             score = itemView.findViewById(R.id.list_item_score);
             name = itemView.findViewById(R.id.list_item_name);
-            playerMenuButton = itemView.findViewById(R.id.list_item_menu_button);
+            menuButton = itemView.findViewById(R.id.list_item_menu_button);
         }
     }
 
@@ -55,12 +61,12 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      *      Represents the position on the ViewHolder.
      */
     @Override
-    public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
-        Account account = accounts.get(position);
+    public void onBindViewHolder(@NonNull HomeFragmentQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
+
         holder.rank.setText("NIL");
-        holder.score.setText(account.getTotalScore().toString());
-        holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
+        holder.score.setText(qrCodes.get(position).getQRScore());
+        holder.name.setText(account.getProfile().getFirstName() + " " + account.getProfile().getLastName());
+        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(position));
     }
 
     /**
@@ -71,12 +77,12 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     @Override
     public int getItemCount() {
-        return accounts.size();
+        return qrCodes.size();
     }
 
     @NonNull
     @Override
-    public LeaderboardPlayerRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeFragmentQRCodeRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
         return new MyViewHolder(itemView);
     }
@@ -86,28 +92,38 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     // https://www.youtube.com/watch?v=s1fW7CpiB9c
     private class MenuButtonOnClickListener implements View.OnClickListener {
+        int position;
+        public MenuButtonOnClickListener(int position) {
+            this.position = position;
+        }
+
         @Override
         public void onClick(View view) {
-            PopupMenu popupMenu = new PopupMenu(view.getContext(),  view);
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
+                    switch (menuItem.getItemId()) {
+                        case R.id.home_fragment_qr_view_qr_item:
+                            Intent intent = new Intent(view.getContext(), QRCodeActivity.class);
+                            intent.putExtra("qrID", qrCodes.get(position).getHash());
+                            view.getContext().startActivity(intent);
+                            break;
+                        case R.id.home_fragment_qr_delete_qr_item:
+                            break;
+                    }
                     return false;
                 }
             });
-            popupMenu.inflate(R.menu.leaderboard_profile_menu);
+            popupMenu.inflate(R.menu.home_fragment_qr_code_menu);
             popupMenu.show();
         }
     }
 
-    /**
-     * Purpose: Update Adapter with filtered players when using the search function.
-     *
-     * @param accountsFiltered
-     *      Represents the players that have been filtered out.
-     */
-    public void updateList(ArrayList<Account> accountsFiltered) {
-        accounts = accountsFiltered;
+    public void updateList(Account account) {
+        this.account = account;
+        this.qrCodes = account.getQrDataList().getQRCodes();
         notifyDataSetChanged();
     }
+
 }

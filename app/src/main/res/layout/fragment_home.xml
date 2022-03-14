@@ -130,10 +130,11 @@
             android:minHeight="48dp"
             android:text="Highest"
             android:textSize="11sp" />
-        <ListView
-            android:id="@+id/home_fragment_codes_list_view"
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_fragment_qrCode_recycler_view"
+            android:layout_width="350dp"
+            android:layout_gravity="center"
             android:layout_height="match_parent" >
-        </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>
