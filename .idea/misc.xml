@@ -29,6 +29,9 @@
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1965" />
         <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1965" />
+        <entry key="..\:/Users/ysong/Documents/uni/cmput 301/QR-Score/app/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="..\:/Users/ysong/Documents/uni/cmput 301/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.536" />
+        <entry key="..\:/Users/ysong/Documents/uni/cmput 301/QR-Score/app/src/main/res/layout/qr_view.xml" value="0.536" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1634963768115942" />
         <entry key="app/src/main/res/layout/fragment_custom_location_list.xml" value="0.1046875" />
         <entry key="app/src/main/res/layout/fragment_location.xml" value="0.1" />

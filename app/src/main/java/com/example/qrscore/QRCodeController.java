@@ -49,9 +49,9 @@ public class QRCodeController {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            ArrayList<String> qrCodes = new ArrayList<>();
+                            ArrayList<QRCode> qrCodes = new ArrayList<>();
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                qrCodes.add((String) doc.get("hash"));
+                                qrCodes.add(new QRCode((String) doc.get("hash")));
                             }
                             qrCodeCallbackList.onCallback(qrCodes);
                         }
