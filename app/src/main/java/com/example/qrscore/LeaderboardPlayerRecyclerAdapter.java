@@ -22,10 +22,10 @@ import java.util.ArrayList;
  */
 public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder>{
 
-    ArrayList<Player> players;
+    ArrayList<Account> accounts;
 
-    public LeaderboardPlayerRecyclerAdapter(ArrayList<Player> players) {
-        this.players = players;
+    public LeaderboardPlayerRecyclerAdapter(ArrayList<Account> accounts) {
+        this.accounts = accounts;
     }
 
     /**
@@ -56,11 +56,10 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     @Override
     public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
-
-        Player player = players.get(position);
-        holder.rank.setText("fd");
-        holder.score.setText("fd");
-        holder.name.setText("Fdsafdsfdfsdfsdfdsf");
+        Account account = accounts.get(position);
+        holder.rank.setText("NIL");
+        holder.score.setText(account.getTotalScore().toString());
+        holder.name.setText(account.getUserID());
         holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
     }
 
@@ -72,7 +71,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     @Override
     public int getItemCount() {
-        return players.size();
+        return accounts.size();
     }
 
     @NonNull
@@ -104,11 +103,11 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     /**
      * Purpose: Update Adapter with filtered players when using the search function.
      *
-     * @param playersFiltered
+     * @param accountsFiltered
      *      Represents the players that have been filtered out.
      */
-    public void filterList(ArrayList<Player> playersFiltered) {
-        players = playersFiltered;
+    public void filterList(ArrayList<Account> accountsFiltered) {
+        accounts = accountsFiltered;
         notifyDataSetChanged();
     }
 }

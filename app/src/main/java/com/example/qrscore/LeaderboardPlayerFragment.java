@@ -3,6 +3,8 @@ package com.example.qrscore;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,14 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 // https://www.youtube.com/watch?v=__OMnFR-wZU
 // https://www.youtube.com/watch?v=OWwOSLfWboY
@@ -33,11 +46,12 @@ import java.util.ArrayList;
  */
 public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
 
-    private ArrayList<Player> players;
+    private ArrayList<Account> accounts;
     private RecyclerView playerRecyclerView;
     private LeaderboardPlayerRecyclerAdapter leaderboardRA;
     private RecyclerView.LayoutManager layoutManager;
     private TextInputEditText leaderboardSearchPlayerET;
+    private ListenerRegistration accountListener;
 
     public LeaderboardPlayerFragment() {
         // Required empty public constructor
@@ -46,6 +60,21 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        populatePlayerArrayList();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference accountRef = db.collection("Account");
+        accountListener = accountRef
+                .addSnapshotListener((value, error) -> {
+                    accounts.clear();
+                   for (QueryDocumentSnapshot documentSnapshot: value)  {
+                       String userUID = documentSnapshot.getString("UserUID");
+                       int score = ((Number) documentSnapshot.get("Score")).intValue();
+                       int total = ((Number) documentSnapshot.get("Total")).intValue();
+                       accounts.add(new Account(userUID, score, total));
+                       leaderboardRA.filterList(accounts);
+                   }
+                });
     }
 
     @Override
@@ -54,16 +83,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         View view = inflater.inflate(R.layout.fragment_leaderboard_player_fragment, container, false);
 
         playerRecyclerView = view.findViewById(R.id.leaderboard_player_recyclerview);
-//        accountController = new AccountController();
-//        players = accountController.getPlayers();
-        players = new ArrayList<Player>();
         leaderboardSearchPlayerET = view.findViewById(R.id.leaderboard_username_edit_text);
         leaderboardSearchPlayerET.addTextChangedListener(this);
-        populatePlayerArrayList();
         setAdapter();
-
-
-
         return view;
     }
 
@@ -71,18 +93,26 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      * Purpose: Populate the Player ArrayList to display on RecyclerView.
      */
     private void populatePlayerArrayList() {
-        players.add(new Player(new Account("4324ifjesjafieoawinvksan")));
-        players.add(new Player(new Account("bgdf4ifje324ieoawinvksan")));
-        for (int i = 0; i < 20; i++) {
-            players.add(new Player(new Account("f342faifnajsnfjowjoias")));
-        }
+        accounts = new ArrayList<Account>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference accountRef = db.collection("Account");
+        accountRef.get().addOnCompleteListener(task -> {
+           if (task.isSuccessful()) {
+               for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                   String userUID = documentSnapshot.getString("UserUID");
+                   int score = ((Number) documentSnapshot.get("Score")).intValue();
+                   int total = ((Number) documentSnapshot.get("Total")).intValue();
+                   accounts.add(new Account(userUID, score, total));
+               }
+           }
+        });
     }
 
     /**
      * Purpose: Set the LeaderboardPlayerRecyclerAdapter with current players.
      */
     private void setAdapter() {
-        leaderboardRA = new LeaderboardPlayerRecyclerAdapter(players);
+        leaderboardRA = new LeaderboardPlayerRecyclerAdapter(accounts);
         layoutManager = new LinearLayoutManager(getContext());
         playerRecyclerView.setLayoutManager(layoutManager);
         playerRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -108,6 +138,12 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         filter(editable.toString());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accountListener.remove();
+    }
+
     /**
      * Purpose: Filter the ArrayList of players based on their usernames.
      *
@@ -115,12 +151,12 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      *      Represents a player's username.
      */
     private void filter(String username) {
-        ArrayList<Player> playersFiltered = new ArrayList<Player>();
-        for (Player player: players) {
-            if (player.getUsername().toLowerCase().contains(username.toLowerCase())) {
-                playersFiltered.add(player);
+        ArrayList<Account> accountsFiltered = new ArrayList<Account>();
+        for (Account account: accounts) {
+            if (account.getUsername().toLowerCase().contains(username.toLowerCase())) {
+                accountsFiltered.add(account);
             }
         }
-        leaderboardRA.filterList(playersFiltered);
+        leaderboardRA.filterList(accountsFiltered);
     }
 }
