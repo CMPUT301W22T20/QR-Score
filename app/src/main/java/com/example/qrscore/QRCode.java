@@ -2,6 +2,7 @@ package com.example.qrscore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Purpose: This class represents a QR code.
@@ -16,7 +17,7 @@ public class QRCode {
 
     private String id;   // firestore document ID
     private String hash;
-    private Integer qrScore;
+    private Integer qrscore;
     private String location;
     private List<String> hasScanned;
     private ArrayList<Comment> comments;
@@ -26,17 +27,26 @@ public class QRCode {
      *
      * @param hash
      *      a String identifier for the QR code.
-     * @param longitude
-     *      a String representing the location of the QR code.
      */
+
+
+
     public QRCode(String hash) {
+        Random random = new Random();
         this.hash = hash;
-        // this.score = new Score(hash);
+        this.qrscore = random.nextInt(100);
+        this.id = this.qrscore.toString();
 //        this.location = loc;
         this.comments  = new ArrayList<>();
         this.hasScanned = new ArrayList<>();
-        calculateQRScore(this.hash);
+        //calculateQRScore(this.hash);
     }
+
+    /**
+     * Empty constructor for firebase
+     */
+    public QRCode() {}
+
 
     /**
      * Calculates QR Score from hash
@@ -48,7 +58,7 @@ public class QRCode {
         Integer score;
         //TODO
         score = 1;
-        this.qrScore = score;
+        this.qrscore = score;
     }
 
     /**
@@ -56,7 +66,7 @@ public class QRCode {
      *
      */
     public Integer getQRScore() {
-        return this.qrScore;
+        return this.qrscore;
     }
 
     /**
@@ -182,5 +192,6 @@ public class QRCode {
     public void setId(String id) {
         this.id = id;
     }
+
 
 }

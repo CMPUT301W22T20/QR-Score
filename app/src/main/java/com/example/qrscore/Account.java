@@ -3,14 +3,12 @@ package com.example.qrscore;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Purpose: This class represents an account in the system.
+/** Purpose: This class represents an account in the system.
  * Stores the QR codes tied to the account, the device,
  * and the profile.
  *
  * Outstanding issues:
  * TODO: Finish Purpose
- * TODO: As a player, I want to add new QR codes to my account.
- * TODO: As a player, I want to see what QR codes I have added to my account.
  * TODO: As a player, I want to remove QR codes from my account.
  * TODO: As a player, I want to see my highest and lowest scoring QR codes.
  * TODO: Unit tests
@@ -19,21 +17,29 @@ import java.util.List;
 public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
-    public Profile profile;
-    private List<String> devices;
-    public QRDataList qrDataList;
-    // private Permissions permissions;
+    private Profile profile;
+    private QRDataList qrDataList;
+    private Integer totalScore;
+    private Integer scanned;
 
-    public Account(String userID, String device, String userName) {
+// private Permissions permissions;
+
+    public Account(String userID) {
         this.userID = userID;
-        this.devices = new ArrayList<String>();
-        this.addDevice(device);
+        this.profile = new Profile(userID);
         this.qrDataList = new QRDataList();
-        this.profile = new Profile(userName);
+        this.totalScore = 0;
+        this.scanned = 0;
+        this.userID = "Default";
     }
 
-    private void addDevice(String toAdd) {
-        this.devices.add(toAdd);
+    public Account(String userID, Integer totalScore, Integer scanned) {
+        this.userID = userID;
+        this.profile = new Profile(userID);
+        this.qrDataList = new QRDataList();
+        this.totalScore = totalScore;
+        this.scanned = scanned;
+        this.userID = "Default";
     }
 
     /**
@@ -44,16 +50,6 @@ public class Account {
      */
     public String getUserID() {
         return userID;
-    }
-
-    /**
-     * Returns the Account's device.
-     *
-     * @return
-     *      device as a string.
-     */
-    public String getDevice() {
-        return devices.get(0);
     }
 
     /**
@@ -86,11 +82,43 @@ public class Account {
         qrDataList.removeQRCode(qr);
     }
 
+    /**
+     * Returns the QRDataList
+     *
+     * @return
+     *      qrDataList
+     */
+    public QRDataList getQrDataList() {
+        return qrDataList;
+    }
+
+    /**
+     * Returns the username of the user
+     *
+     * @return
+     *      username
+     */
+    public String getUserUID() {
+        return profile.getUserUID();
+    }
+
     public Integer getHighest() {
         return qrDataList.getHighscore();
     }
 
     public Integer getLowest() {
         return qrDataList.getLowscore();
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public Integer getScanned() {
+        return scanned;
+    }
+
+    public String getUsername() {
+        return profile.getUserUID();
     }
 }

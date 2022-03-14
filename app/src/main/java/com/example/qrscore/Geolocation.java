@@ -4,6 +4,12 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.ArrayList;
 
+/**
+ * Purpose:
+ *
+ * Outstanding issues:
+ */
+
 public class Geolocation {
     private GeoPoint geoPoint;
     private String qrID;

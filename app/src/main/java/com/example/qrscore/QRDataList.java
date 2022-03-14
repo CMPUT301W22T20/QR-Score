@@ -24,6 +24,7 @@ public class QRDataList {
     private Integer sumOfScoresScanned;
     private Integer rank;
 
+
     /**
      * Constructor for Stats class
      *
@@ -32,6 +33,14 @@ public class QRDataList {
         this.qrCodes = new ArrayList<QRCode>();
         this.updateStats();
     }
+
+    public QRDataList(Integer totalQRCodesScanned, Integer sumOfScoresScanned, Integer rank) {
+        this.totalQRCodesScanned = totalQRCodesScanned;
+        this.sumOfScoresScanned = sumOfScoresScanned;
+        this.rank = rank;
+    }
+
+
 
     /**
      * Returns the array of QR codes.

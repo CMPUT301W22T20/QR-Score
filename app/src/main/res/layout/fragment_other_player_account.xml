@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background_activity">
+    android:background="@drawable/activity_background"
+    tools:context=".OtherPlayerAccountFragment">
+
     <TextView
-        android:id="@+id/home_fragment_username_text_view"
+        android:id="@+id/username_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -15,19 +16,22 @@
         android:textColor="@color/black"
         android:textSize="45sp"
         android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="20dp"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
+            android:background="@drawable/rectangle_bordered_background"
             android:layout_marginHorizontal="5dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -37,7 +41,7 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/home_fragment_scanned_text_view"
+                android:id="@+id/scanned_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -52,8 +56,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
+            android:background="@drawable/rectangle_bordered_background"
             android:layout_marginHorizontal="5dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -63,7 +68,7 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/home_fragment_score_text_view"
+                android:id="@+id/score_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -72,14 +77,16 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
+            android:background="@drawable/rectangle_bordered_background"
             android:layout_marginHorizontal="5dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -89,7 +96,7 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/home_fragment_rank_text_view"
+                android:id="@+id/rank_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -99,8 +106,9 @@
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
     </LinearLayout>
+
     <TextView
-        android:id="@+id/home_fragment_qr_code_title_text_view"
+        android:id="@+id/qr_code_title_text_view"
         android:hint="(username's QR Codes)"
         android:textSize="25dp"
         android:textColorHint="@color/black"
@@ -110,6 +118,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"
         android:textAlignment="center" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -117,23 +126,26 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:foreground="@drawable/background_rectangle_bordered"
+        android:background="@drawable/rectangle_bordered_background"
         android:layout_marginBottom="20dp" >
 
         <Button
-            android:id="@+id/home_fragment_sort_by_button"
+            android:id="@+id/sort_by_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
             android:minWidth="0dp"
             android:minHeight="48dp"
-            android:text="Highest"
+            android:text="Recent"
             android:textSize="11sp" />
+
         <ListView
-            android:id="@+id/home_fragment_codes_list_view"
+            android:id="@+id/qr_codes_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
         </ListView>
+
     </LinearLayout>
+
 </LinearLayout>
