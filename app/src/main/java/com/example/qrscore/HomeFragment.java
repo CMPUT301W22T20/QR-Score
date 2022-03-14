@@ -126,15 +126,32 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateData() {
-        Query account = db.collection("Account").whereEqualTo("Profile", profileRef);
 
-        account.get()
+        QRDataListRef.get()
+                .addOnCompleteListener(taskQRDataList -> {
+                    if (taskQRDataList.isSuccessful()) {
+                        DocumentSnapshot qrDataListDocument = taskQRDataList.getResult();
+                        if (qrDataListDocument.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + qrDataListDocument.getData());
+
+                            Object ob = qrDataListDocument.get("sumOfScoresScanned");
+                            int total = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
+                            myAccount.setScanned(total);
+                            myAccount.setTotalScore(score);
+                            ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("QRCodes");
+                            String hi = "hello";
+                        }
+                    }
+                });
+    }
+       /* accountRef.get()
                 .addOnCompleteListener(taskAccount -> {
+                    String string = "hello";
                     if (taskAccount.isSuccessful()) {
-                        QuerySnapshot accountQuery = taskAccount.getResult();
-                        if (!accountQuery.isEmpty()) {
-                            Log.d(TAG, "DocumentQuery data: " + accountQuery.getDocuments());
-                            DocumentReference qrDataList = accountQuery.getDocuments().get(0).getDocumentReference("qrDataList");
+                        DocumentSnapshot accountDocument = taskAccount.getResult();
+                        if (!accountDocument.exists()) {
+                            Log.d(TAG, "DocumentQuery data: " + accountDocument.getData());
+                            DocumentReference qrDataList = accountDocument.getData().get(0).getDocumentReference("qrDataList");
 
                             // get qrDataList from account
                             qrDataList.get()
@@ -182,8 +199,7 @@ public class HomeFragment extends Fragment {
                     } else {
                         Log.d(TAG, "get failed with ", taskAccount.getException());
                     }
-                });
-    }
+                });*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
