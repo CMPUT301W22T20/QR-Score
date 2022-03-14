@@ -8,6 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Purpose:
+ *
+ * Outstanding issues:
+ */
+
 public class LeaderboardQRcodeFragment extends Fragment {
 
     public LeaderboardQRcodeFragment() {

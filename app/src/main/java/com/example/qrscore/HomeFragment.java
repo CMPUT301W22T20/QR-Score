@@ -143,14 +143,14 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         myAccount = accountController.createNewAccount();
 
         // Instantiate a String to set a TextView to
-        String usernamesQRCodesString = (myAccount.profile.getUserUID() + "'s QR Codes");
+        String usernamesQRCodesString = (myAccount.getUserUID() + "'s QR Codes");
 
         // Set the text of all TextViews
-        userName.setText(myAccount.profile.getUserUID());
+        userName.setText(myAccount.getUserUID());
         usernamesQRCodes.setText(usernamesQRCodesString);
         myScannedCodes.setText(myAccount.getScanned().toString());
         myQRScore.setText(myAccount.getTotalScore().toString());
-        myRank.setText(myAccount.qrDataList.getRank().toString());
+        myRank.setText(myAccount.getQrDataList().getRank().toString());
 
         // Instantiate button
         // TODO: Implement "Sort By" button

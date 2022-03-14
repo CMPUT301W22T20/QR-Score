@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -59,6 +61,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         leaderboardSearchPlayerET.addTextChangedListener(this);
         populatePlayerArrayList();
         setAdapter();
+
+
+
         return view;
     }
 

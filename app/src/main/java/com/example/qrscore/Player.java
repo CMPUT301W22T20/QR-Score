@@ -27,6 +27,9 @@ public class Player {
      *      username of the player
      */
     public String getUsername() {
-        return account.getUsername();
+        return account.getUserID();
     }
-}
+//    public String getUsername() {
+//        return account.getUsername();
+//    }
+    }

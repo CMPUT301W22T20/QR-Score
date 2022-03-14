@@ -3,7 +3,7 @@ package com.example.qrscore;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Purpose: This class represents an account in the system.
+/** Purpose: This class represents an account in the system.
  * Stores the QR codes tied to the account, the device,
  * and the profile.
  *
@@ -17,11 +17,11 @@ import java.util.List;
 public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
-    public Profile profile;
-    public QRDataList qrDataList;
-    public Integer totalScore;
-    public Integer scanned;
-    public String username;
+    private Profile profile;
+    private QRDataList qrDataList;
+    private Integer totalScore;
+    private Integer scanned;
+
 // private Permissions permissions;
 
     public Account(String userID) {
@@ -30,7 +30,7 @@ public class Account {
         this.qrDataList = new QRDataList();
         this.totalScore = 0;
         this.scanned = 0;
-        this.username = "Default";
+        this.userID = "Default";
     }
 
     public Account(String userID, Integer totalScore, Integer scanned) {
@@ -39,7 +39,7 @@ public class Account {
         this.qrDataList = new QRDataList();
         this.totalScore = totalScore;
         this.scanned = scanned;
-        this.username = "Default";
+        this.userID = "Default";
     }
 
     /**
@@ -82,6 +82,26 @@ public class Account {
         qrDataList.removeQRCode(qr);
     }
 
+    /**
+     * Returns the QRDataList
+     *
+     * @return
+     *      qrDataList
+     */
+    public QRDataList getQrDataList() {
+        return qrDataList;
+    }
+
+    /**
+     * Returns the username of the user
+     *
+     * @return
+     *      username
+     */
+    public String getUserUID() {
+        return profile.getUserUID();
+    }
+
     public Integer getHighest() {
         return qrDataList.getHighscore();
     }
@@ -99,6 +119,6 @@ public class Account {
     }
 
     public String getUsername() {
-        return username;
+        return profile.getUserUID();
     }
 }
