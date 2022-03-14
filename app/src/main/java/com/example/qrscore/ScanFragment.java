@@ -103,7 +103,6 @@ public class ScanFragment extends Fragment {
                     qrCodeController.add(qrHashed, qrCode, userID);
 
                     if (switchButton.isChecked()) {
-                        System.out.println("677777777777777777777777777777777777");
                         locationController.saveLocation(qrHashed, userID);
                     }
 
