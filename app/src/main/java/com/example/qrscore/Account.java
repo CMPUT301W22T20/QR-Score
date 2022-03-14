@@ -19,7 +19,7 @@ public class Account {
     private String userID;
     private Profile profile;
     private QRDataList qrDataList;
-    private Integer totalScore;
+    private Integer score;
     private Integer scanned;
 
 // private Permissions permissions;
@@ -28,17 +28,17 @@ public class Account {
         this.userID = userID;
         this.profile = new Profile(userID);
         this.qrDataList = new QRDataList();
-        this.totalScore = 0;
-        this.scanned = 0;
+        this.scanned = this.qrDataList.getTotalQRCodesScanned();
+        this.score = this.qrDataList.getSumOfScoresScanned();
         this.userID = "Default";
     }
 
-    public Account(String userID, Integer totalScore, Integer scanned) {
+    public Account(String userID, Integer score, Integer scanned) {
         this.userID = userID;
         this.profile = new Profile(userID);
         this.qrDataList = new QRDataList();
-        this.totalScore = totalScore;
         this.scanned = scanned;
+        this.score = score;
         this.userID = "Default";
     }
 
@@ -110,8 +110,8 @@ public class Account {
         return qrDataList.getLowscore();
     }
 
-    public Integer getTotalScore() {
-        return totalScore;
+    public Integer getScore() {
+        return score;
     }
 
     public Integer getScanned() {
