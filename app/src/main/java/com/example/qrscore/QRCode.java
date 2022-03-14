@@ -1,5 +1,10 @@
 package com.example.qrscore;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +39,7 @@ public class QRCode {
     public QRCode(String hash) {
         Random random = new Random();
         this.hash = hash;
-        this.qrscore = random.nextInt(100);
+        this.qrscore = this.calculateQRScore(this.hash);
         this.id = this.qrscore.toString();
 //        this.location = loc;
         this.comments  = new ArrayList<>();
@@ -54,11 +59,43 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-    public void calculateQRScore(String hash) {
-        Integer score;
-        //TODO
-        score = 1;
-        this.qrscore = score;
+    public Integer calculateQRScore(String hash) {
+        Integer score = 0;
+
+        // Source: https://mkyong.com/java/how-to-execute-shell-command-from-java/
+        ProcessBuilder processBuilder = new ProcessBuilder();
+
+        // Run a shell command
+        processBuilder.command("bash", "echo", hash, "|", "sha256sum");
+
+        try {
+            Process process = processBuilder.start();
+            StringBuilder output = new StringBuilder();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                output.append(line + "\n");
+            }
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                String outputStr = output.toString();
+                Log.i("QRCode.calculateQRScore", "Successfully executed shell command.");
+                Log.i("calculateQRScore.output", output.toString());
+                score = outputStr.length() - outputStr.replace("0", "").length();
+                System.exit(0);
+            } else {
+                //abnormal...
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return score;
     }
 
     /**
