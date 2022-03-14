@@ -93,39 +93,39 @@ public class QRCodeActivityTest {
     /**
      * This adds player to hasScanned for a QRCode and checks if the list displays the player
      */
-    @Test
-    public void checkHasScanned() {
-        solo.assertCurrentActivity("Wrong activity", QRCodeActivity.class);
-
-        QRCodeActivity activity = (QRCodeActivity) solo.getCurrentActivity();
-
-        // Create test players
-        Profile profile1 = new Profile("newuser1");
-        Account account1 = new Account(profile1);
-        Player player1 = new Player(account1);
-
-        Profile profile2 = new Profile("newuser2");
-        Account account2 = new Account(profile2);
-        Player player2 = new Player(account2);
-
-        // Create test QRCode
-        String[] hasScannedArray = {};
-        List<String> hasScanned = Arrays.asList(hasScannedArray);
-        QRCode code = new QRCode(hasScanned);
-        code.setId("QNyyQ2ZLBbCB22lXtTke");
-
-        activity.updateHasScanned(code.getId(), player1);  // add player to hasScanned
-
-        activity.loadHasScanned(code.getId());  // load to screen
-
-        assertTrue(solo.waitForText("newuser1", 1, 2000));
-
-        activity.updateHasScanned(code.getId(), player2);
-
-        activity.loadHasScanned(code.getId());
-
-        assertTrue(solo.waitForText("newuser2", 1, 2000));
-    }
+//    @Test
+//    public void checkHasScanned() {
+//        solo.assertCurrentActivity("Wrong activity", QRCodeActivity.class);
+//
+//        QRCodeActivity activity = (QRCodeActivity) solo.getCurrentActivity();
+//
+//        // Create test players
+//        Profile profile1 = new Profile("newuser1");
+//        Account account1 = new Account(profile1);
+//        Player player1 = new Player(account1);
+//
+//        Profile profile2 = new Profile("newuser2");
+//        Account account2 = new Account(profile2);
+//        Player player2 = new Player(account2);
+//
+//        // Create test QRCode
+//        String[] hasScannedArray = {};
+//        List<String> hasScanned = Arrays.asList(hasScannedArray);
+//        QRCode code = new QRCode(hasScanned);
+//        code.setId("QNyyQ2ZLBbCB22lXtTke");
+//
+//        activity.updateHasScanned(code.getId(), player1);  // add player to hasScanned
+//
+//        activity.loadHasScanned(code.getId());  // load to screen
+//
+//        assertTrue(solo.waitForText("newuser1", 1, 2000));
+//
+//        activity.updateHasScanned(code.getId(), player2);
+//
+//        activity.loadHasScanned(code.getId());
+//
+//        assertTrue(solo.waitForText("newuser2", 1, 2000));
+//    }
 
 
     @After
