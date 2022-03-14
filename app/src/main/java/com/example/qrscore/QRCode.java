@@ -1,5 +1,10 @@
 package com.example.qrscore;
 
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -34,12 +39,11 @@ public class QRCode {
     public QRCode(String hash) {
         Random random = new Random();
         this.hash = hash;
-        this.qrscore = random.nextInt(100);
+        this.qrscore = this.calculateQRScore(this.hash);
         this.id = this.qrscore.toString();
 //        this.location = loc;
         this.comments  = new ArrayList<>();
         this.hasScanned = new ArrayList<>();
-        //calculateQRScore(this.hash);
     }
 
     /**
@@ -65,11 +69,8 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-    public void calculateQRScore(String hash) {
-        Integer score;
-        //TODO
-        score = 1;
-        this.qrscore = score;
+    public Integer calculateQRScore(String hash) {
+        return hash.length() - hash.replace("0", "").length();
     }
 
     /**

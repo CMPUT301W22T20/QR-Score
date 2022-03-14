@@ -35,6 +35,8 @@ import java.util.UUID;
 
 // TODO: Replace tempUUID with actual UUID
 public class ScanFragment extends Fragment {
+    private Account myAccount;
+    private AccountController accountController;
     private ImageView imageView;
     private LocationController locationController;
     private PhotoController photoController;
@@ -53,7 +55,7 @@ public class ScanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        accountController = new AccountController();
         photoController = new PhotoController();
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
@@ -67,6 +69,11 @@ public class ScanFragment extends Fragment {
 
         requestLocationPermissions();
         requestCameraPermissions();
+
+        // Instantiate Account class
+        // TODO: Connect to Firebase
+        accountController.getNewAccount();
+        myAccount = accountController.createNewAccount();
 
         imageView = view.findViewById(R.id.qr_image_view);
         Button cameraButton = view.findViewById(R.id.button_take_photo);
@@ -99,6 +106,9 @@ public class ScanFragment extends Fragment {
                     QRCode qrCode = new QRCode(qrHashed);
                     qrCode.addScanned(userID);
                     qrCodeController.add(qrHashed, qrCode, userID);
+
+                    // Add QRCode to myAccount
+                    myAccount.addQR(qrCode);
 
                     if (switchButton.isChecked()) {
                         System.out.println("677777777777777777777777777777777777");

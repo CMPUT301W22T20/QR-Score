@@ -140,7 +140,7 @@ public class HomeFragment extends Fragment implements AddCommentFragment.OnFragm
         userName.setText(myAccount.getUserUID());
         usernamesQRCodes.setText(usernamesQRCodesString);
         myScannedCodes.setText(myAccount.getScanned().toString());
-        myQRScore.setText(myAccount.getTotalScore().toString());
+        myQRScore.setText(myAccount.getScore().toString());
         myRank.setText(myAccount.getQrDataList().getRank().toString());
 
         // Instantiate button
