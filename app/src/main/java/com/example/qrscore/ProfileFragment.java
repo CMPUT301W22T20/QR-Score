@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
      * @param view
      *      Represents a view that is contained within the fragment.
      */
-    public void populateProfile(Profile profile, View view) {
+    private void populateProfile(Profile profile, View view) {
         usernameTextView = view.findViewById(R.id.userUID_textView);
         usernameTextView.setText(profile.getUserUID());
 

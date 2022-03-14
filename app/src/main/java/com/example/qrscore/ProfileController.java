@@ -36,6 +36,7 @@ public class ProfileController {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference profileRef;
+    private AccountController accountController;
     private Profile newProfile;
     private String userUID;
     private ListenerRegistration profileListener;
@@ -60,7 +61,7 @@ public class ProfileController {
 
     /**
      * Purpose: To create a new profile locally and on firestore db.
-     *
+     * To create a new account on firestore db.
      */
     public void createNewUser() {
         newProfile = new Profile(userUID);
@@ -73,6 +74,8 @@ public class ProfileController {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "Profile Created");
                         setProfile(newProfile);
+                        accountController = new AccountController();
+                        accountController.createNewAccount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -169,7 +172,7 @@ public class ProfileController {
         String lastName = profileSP.getString("lastName", null);
         String email = profileSP.getString("email", null);
         String phoneNumber = profileSP.getString("phoneNumber", null);
-        String userUID = profileSP.getString("userUID", null);
+        String userUID = profileSP.getString("userUID", currentUser.getUid());
         Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID);
         return profile;
     }

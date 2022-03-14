@@ -70,11 +70,6 @@ public class ScanFragment extends Fragment {
         requestLocationPermissions();
         requestCameraPermissions();
 
-        // Instantiate Account class
-        // TODO: Connect to Firebase
-        accountController.getNewAccount();
-        myAccount = accountController.createNewAccount();
-
         imageView = view.findViewById(R.id.qr_image_view);
         Button cameraButton = view.findViewById(R.id.button_take_photo);
         Button scanButton = view.findViewById(R.id.button_scan);

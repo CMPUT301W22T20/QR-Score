@@ -31,4 +31,8 @@
     <string name="list_item_score">Score</string>
     <string name="list_item_player">Player</string>
     <string name="menu_button_description">Hamburger menu button</string>
+
+    <!--  Home Fragment  -->
+    <string name="home_fragment_qr_view_qr_code">View QR Code</string>
+    <string name="home_fragment_qr_delete_qr_code">Delete QR Code</string>
 </resources>
