@@ -17,6 +17,12 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * Purpose: A custom array list for players.
+ *
+ * Outstanding Issues:
+ *
+ */
 public class PlayerCustomList extends ArrayAdapter<Player> {
     private ArrayList<Player> players;
     private Context context;

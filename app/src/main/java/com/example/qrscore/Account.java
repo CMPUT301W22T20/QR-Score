@@ -1,13 +1,9 @@
 package com.example.qrscore;
 
-import android.util.Log;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /** Purpose: This class represents an account in the system.
- * Stores the QR codes tied to the account, the device,
- * and the profile.
+ * Has score, total scanned, list of scanned QRs and a profile.
  *
  * Outstanding issues:
  * TODO: Finish Purpose
@@ -24,6 +20,12 @@ public class Account {
     private Integer score;
     private Integer scanned;
 
+    /**
+     * Purpose: Constructor for an account instance.
+     *
+     * @param userID
+     *      The players unique user ID;
+     */
     public Account(String userID) {
         this.userID = userID;
         this.profile = new Profile(userID);
@@ -32,6 +34,16 @@ public class Account {
         this.scanned = 0;
     }
 
+    /**
+     * Purpose: Constructor for an account instance.
+     *
+     * @param userID
+     *      The players unique user ID.
+     * @param score
+     *      The players running total.
+     * @param scanned
+     *      The players total scanned QRs.
+     */
     public Account(String userID, Integer score, Integer scanned) {
         this.userID = userID;
         this.profile = new Profile(userID);
@@ -50,16 +62,64 @@ public class Account {
         return userID;
     }
 
+    /**
+     * Purpose: Return the profile in the account.
+     * @return
+     *      A profile instance.
+     */
+    public Profile getProfile() {
+        return profile;
+    }
+
+    /**
+     * Purpose: Sets a profile of a user in the account.
+     * @param profile
+     *      A profile instance.
+     */
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    /**
+     * Purpose: Return the running total score.
+     *
+     * @return
+     *      Integer representing the total score
+     */
+    public Integer getScore() {
+        return score;
+    }
+
+    /**
+     * Purpose: Set the score for the account.
+     *
+     * @param score
+     *      Integer representing the accounts score.
+     */
     public void setScore(Integer score) {
         this.score = score;
     }
 
+    /**
+     * Purpose: Set the number of QR codes scanned.
+     * @param scanned
+     *      Integer representing the total QRs scanned.
+     */
     public void setScanned(Integer scanned) {
         this.scanned = scanned;
     }
 
     /**
-     * Adds a QR code to the list.
+     * Purpose: Return the number of QR codes scanned.
+     * @return
+     *      Integer representing the number of QR codes scanned.
+     */
+    public Integer getScanned() {
+        return scanned;
+    }
+
+    /**
+     * Adds a QR code to the QRDataList.
      *
      * @param qr
      *      the QR code to add.
@@ -69,7 +129,7 @@ public class Account {
     }
 
     /**
-     * Returns the array of QR codes.
+     * Returns the list of QRCodes
      *
      * @return
      *      a List of QR codes.
@@ -78,6 +138,11 @@ public class Account {
         return qrDataList.getQRCodes();
     }
 
+    /**
+     * Purpose: Set the QRDataList for the account.
+     * @param qrDataList
+     *      Represents a QRDataList instance.
+     */
     public void setQrDataList(QRDataList qrDataList) {
         this.qrDataList = qrDataList;
     }
@@ -85,7 +150,7 @@ public class Account {
     /**
      * Removes a QR code from the list if it exists.
      *
-     * @param qr
+     * @param hash
      *      the hash of the QR code to remove.
      */
     public void removeQR(String hash) {
@@ -103,36 +168,23 @@ public class Account {
     }
 
     /**
-     * Returns the username of the user
+     * Purpose: Return the highest scoring QR Code.
      *
      * @return
-     *      username
+     *      Integer representing the highest scoring QR Code,
      */
     public Integer getHighest() {
         return qrDataList.getHighscore();
     }
 
+    /**
+     * Purpose: Get the lowest scoring QR Code
+     *
+     * @return
+     *      Integer representing the lowest scoring QR Code.
+     */
     public Integer getLowest() {
         return qrDataList.getLowscore();
     }
 
-    public Integer getScore() {
-        return score;
-    }
-
-    public Integer getScanned() {
-        return scanned;
-    }
-
-    public String getUsername() {
-        return profile.getUserUID();
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
 }

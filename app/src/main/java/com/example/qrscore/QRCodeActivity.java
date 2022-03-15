@@ -194,7 +194,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         });
     }
 
-    /** TODO: Put this in the activity where a player scans a QRCode
+    /**
      * This adds a player to hasScanned for a specific QRCode
      * @param codeID
      *          firebase document ID of the QRCode

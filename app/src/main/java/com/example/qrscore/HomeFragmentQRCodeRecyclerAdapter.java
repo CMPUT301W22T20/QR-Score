@@ -133,12 +133,24 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         }
     }
 
+    /**
+     * Purpose: Update the list with of accounts.
+     * @param account
+     *      An account instance.
+     */
     public void updateList(Account account) {
         this.account = account;
         this.qrCodes = account.getQrDataList().getQRCodes();
         notifyDataSetChanged();
     }
 
+    /**
+     * Purpose: Delete QRCodes of user.
+     * @param userID
+     *      The UniqueUID of user.
+     * @param hash
+     *      The hash code of the QRCode.
+     */
     public void deleteQRCode(String userID, String hash) {
 
         // Get document references
@@ -148,6 +160,11 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         // Remove code from account
         qrDataListRef.update("qrCodes", FieldValue.arrayRemove(qrCodeRef));
         account.removeQR(hash);
+
+        // Remove code from hasScanned
+        qrCodeRef.update("hasScanned", FieldValue.arrayRemove(userID));
+
+
     }
 
 }
