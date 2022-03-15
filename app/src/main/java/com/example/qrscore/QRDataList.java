@@ -225,5 +225,6 @@ public class QRDataList {
         this.calculateSumOfScoresScanned();
         this.calculateRank();
     }
+
 }
 

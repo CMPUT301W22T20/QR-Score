@@ -85,7 +85,7 @@ public class Account {
     /**
      * Removes a QR code from the list if it exists.
      *
-     * @param qr
+     * @param hash
      *      the hash of the QR code to remove.
      */
     public void removeQR(String hash) {

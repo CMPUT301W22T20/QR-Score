@@ -95,10 +95,14 @@ public class QRCode {
      * Removes a player from the list.
      *
      * @param player
-     *      the player to remove.
+     *      the id of the player to remove.
      */
-    public void deleteScanned(Player player) {
-        hasScanned.remove(player);
+    public void deleteScanned(String player) {
+        for (int i=0; i<hasScanned.size(); i++) {
+            if (hasScanned.get(i) == player) {
+                hasScanned.remove(player);
+            }
+        }
     }
 
     /**
