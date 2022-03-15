@@ -148,6 +148,11 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         // Remove code from account
         qrDataListRef.update("qrCodes", FieldValue.arrayRemove(qrCodeRef));
         account.removeQR(hash);
+
+        // Remove code from hasScanned
+        qrCodeRef.update("hasScanned", FieldValue.arrayRemove(userID));
+
+
     }
 
 }

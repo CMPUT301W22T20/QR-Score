@@ -39,6 +39,7 @@ public class QRCodeController {
                         if (!scanners.contains(uuid)) {
                             doc.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
                             addToQRDataList(key);
+                            qrCode.addScanned(uuid);
                         }
                     }
                     else {
