@@ -98,6 +98,26 @@ public class QRDataList {
      * @return
      *      the sum of a user's scanned QR codes.
      */
+    public void setTotalQRCodesScanned(Integer newTotal) {
+        this.totalQRCodesScanned = newTotal;
+    }
+
+    /**
+     * Returns the total sum of QR scores a user has scanned.
+     *
+     * @return
+     *      the sum of a user's scanned QR scores.
+     */
+    public void setSumOfScoresScanned(Integer newSum) {
+        this.sumOfScoresScanned = newSum;
+    }
+
+    /**
+     * Returns the total number of QR codes a user has scanned.
+     *
+     * @return
+     *      the sum of a user's scanned QR codes.
+     */
     public Integer getTotalQRCodesScanned() {
         return this.totalQRCodesScanned;
     }
