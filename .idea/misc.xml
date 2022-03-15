@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/home_fragment_layout.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/profile_actionbar.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/layout/qr_codes_list_content.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/qr_view.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/layout/scanned_by_content.xml" value="0.17755825734549138" />
         <entry key="app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26916198730468743" />
