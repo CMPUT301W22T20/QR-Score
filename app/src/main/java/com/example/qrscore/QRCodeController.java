@@ -16,33 +16,56 @@ import java.util.ArrayList;
 
 public class QRCodeController {
     private FirebaseFirestore db;
-    private CollectionReference QRCodeRef;
+    private CollectionReference QRCodeColRef;
     private CollectionReference QRDataListRef;
     private DocumentReference QRDataListDocRef;
     private AccountController accountController;
 
     public QRCodeController() {
         db = FirebaseFirestore.getInstance();
-        QRCodeRef = db.collection("QRCode");
+        QRCodeColRef = db.collection("QRCode");
         QRDataListRef = db.collection("QRDataList");
     }
 
     public void add(String key, QRCode qrCode, String uuid) {
+        int currentScore;
+        int currentNumCodesScanned;
         QRDataListDocRef = QRDataListRef.document(uuid);
-        QRCodeRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        QRDataListRef.document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if (doc.exists()) {
-                        ArrayList<String> scanners = (ArrayList<String>) doc.get("hasScanned");
+                    DocumentSnapshot qrDataListDocument = task.getResult();
+                    if (qrDataListDocument.exists()) {
+                        currentScore = ((Number) qrDataListDocument.get("sumOfScoresScanned")).intValue();
+                        currentNumCodesScanned = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
+                        ArrayList<String> scanners = (ArrayList<String>) qrDataListDocument.get("hasScanned");
                         if (!scanners.contains(uuid)) {
-                            doc.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
+                            qrDataListDocument.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
                             addToQRDataList(key);
                         }
                     }
                     else {
-                        QRCodeRef.document(key).set(qrCode);
+                        QRCodeColRef.document(key).set(qrCode);
+                    }
+                }
+            }
+        });
+        QRCodeColRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot qrCodeDocument = task.getResult();
+                    if (qrCodeDocument.exists()) {
+                        int addToScore = ((Number) qrCodeDocument.get("qrscore")).intValue();
+                        ArrayList<String> scanners = (ArrayList<String>) qrCodeDocument.get("hasScanned");
+                        if (!scanners.contains(uuid)) {
+                            qrCodeDocument.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
+                            addToQRDataList(key);
+                        }
+                    }
+                    else {
+                        QRCodeColRef.document(key).set(qrCode);
                     }
                 }
             }
@@ -51,6 +74,5 @@ public class QRCodeController {
 
     private void addToQRDataList(String key) {
         QRDataListDocRef.update("qrCodes", FieldValue.arrayUnion(db.collection("QRCode").document(key)));
-//        QRDataListDocRef.update("sumOfScoresScanned", qrDataList.getSumOfScoresScanned());
     }
 }
