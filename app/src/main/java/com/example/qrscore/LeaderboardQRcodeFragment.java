@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Purpose:
+ * Purpose: Fragment that shows the high scoring QRCOdes.
  *
  * Outstanding issues:
  */
@@ -19,7 +19,6 @@ public class LeaderboardQRcodeFragment extends Fragment {
     public LeaderboardQRcodeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

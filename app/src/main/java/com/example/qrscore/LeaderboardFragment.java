@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
  *
  * Outstanding Issues:
  *
- *  @author William Liu/
+ *  @author William Liu
  */
 public class LeaderboardFragment extends Fragment {
     TabLayout leaderboardTabLayout;

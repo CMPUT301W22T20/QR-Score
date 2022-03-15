@@ -33,9 +33,6 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-
-
-
     public QRCode(String hash) {
         Random random = new Random();
         this.hash = hash;

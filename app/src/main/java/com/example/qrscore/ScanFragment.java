@@ -33,6 +33,12 @@ import com.journeyapps.barcodescanner.ScanOptions;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+/**
+ * Purpose: To scan QR Codes and add a photo to the QR Codes.
+ *
+ * Outstanding Issues:
+ *
+ */
 // TODO: Replace tempUUID with actual UUID
 public class ScanFragment extends Fragment {
     private Account myAccount;

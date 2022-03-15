@@ -12,6 +12,12 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * Purpose: Custom List adapter for a QR Code list.
+ *
+ * Outstanding Issues:
+ *
+ */
 public class QRListAdapter extends ArrayAdapter<QRCode> {
     private ArrayList<QRCode> qrs;
     private Context context;

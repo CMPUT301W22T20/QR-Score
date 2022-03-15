@@ -23,7 +23,6 @@ import java.util.ArrayList;
  * Purpose: This class is the main activity
  *
  * Outstanding issues:
- * TODO: Merge with William's MainActivity
  */
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavView;
