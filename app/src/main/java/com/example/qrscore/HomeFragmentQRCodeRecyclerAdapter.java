@@ -13,6 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 /**
@@ -27,6 +32,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     private Account account;
     private QRDataList qrDataList;
     private ArrayList<QRCode> qrCodes;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public HomeFragmentQRCodeRecyclerAdapter(Account account) {
         this.account = account;
@@ -117,7 +123,8 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
                         view.getContext().startActivity(intent);
                         break;
                     case R.id.home_fragment_qr_delete_qr_item:
-                        break;
+                        deleteQRCode(account.getUserID(), hash);
+                        updateList(account);
                 }
                 return false;
             });
@@ -130,6 +137,17 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         this.account = account;
         this.qrCodes = account.getQrDataList().getQRCodes();
         notifyDataSetChanged();
+    }
+
+    public void deleteQRCode(String userID, String hash) {
+
+        // Get document references
+        DocumentReference qrDataListRef = db.collection("QRDataList").document(userID);
+        DocumentReference qrCodeRef = db.collection("QRCode").document(hash);
+
+        // Remove code from account
+        qrDataListRef.update("qrCodes", FieldValue.arrayRemove(qrCodeRef));
+        account.removeQR(hash);
     }
 
 }

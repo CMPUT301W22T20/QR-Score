@@ -16,40 +16,52 @@ import java.util.ArrayList;
 
 public class QRCodeController {
     private FirebaseFirestore db;
-    private CollectionReference QRCodeRef;
+    private CollectionReference QRCodeColRef;
     private CollectionReference QRDataListRef;
     private DocumentReference QRDataListDocRef;
     private AccountController accountController;
+    private QRDataList qrDataList;
 
     public QRCodeController() {
         db = FirebaseFirestore.getInstance();
-        QRCodeRef = db.collection("QRCode");
+        QRCodeColRef = db.collection("QRCode");
         QRDataListRef = db.collection("QRDataList");
     }
 
     public void add(String key, QRCode qrCode, String uuid) {
         QRDataListDocRef = QRDataListRef.document(uuid);
-        QRCodeRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+        QRDataListDocRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot qrDataDoc = task.getResult();
+                if (qrDataDoc.exists()) {
+                    qrDataList = qrDataDoc.toObject(QRDataList.class);
+                }
+            }
+        });
+        QRCodeColRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    if (doc.exists()) {
-                        ArrayList<String> scanners = (ArrayList<String>) doc.get("hasScanned");
+                    DocumentSnapshot qrCodeDocument = task.getResult();
+                    if (qrCodeDocument.exists()) {
+                        ArrayList<String> scanners = (ArrayList<String>) qrCodeDocument.get("hasScanned");
                         if (!scanners.contains(uuid)) {
-                            doc.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
-                            addToQRDataList(key);
+                            qrCodeDocument.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
+                            addToQRDataList(key, qrDataList, qrCode);
                         }
                     }
                     else {
-                        QRCodeRef.document(key).set(qrCode);
+                        QRCodeColRef.document(key).set(qrCode);
                     }
                 }
             }
         });
     }
 
-    private void addToQRDataList(String key) {
+    private void addToQRDataList(String key, QRDataList qrDataList, QRCode qrCode) {
+//        qrDataList.setTotalQRCodesScanned(qrDataList.getTotalQRCodesScanned()+1);
+//        qrDataList.setSumOfScoresScanned(qrDataList.getSumOfScoresScanned() + qrCode.getQRScore());
         QRDataListDocRef.update("qrCodes", FieldValue.arrayUnion(db.collection("QRCode").document(key)));
     }
 }
