@@ -114,7 +114,6 @@ public class HomeFragment extends Fragment {
         profileRef = profileCollectionRef.document(userUID);
         QRDataListRef = QRDataListCollectionRef.document(userUID);
 
-        populateData();
 //        qrRef = db.collection("QRCode");
 //        direction = Query.Direction.DESCENDING;
     }
@@ -126,12 +125,11 @@ public class HomeFragment extends Fragment {
                     if (taskQRDataList.isSuccessful()) {
                         DocumentSnapshot qrDataListDocument = taskQRDataList.getResult();
                         if (qrDataListDocument.exists()) {
-                            Log.d(TAG, "DocumentSnapshot data: " + qrDataListDocument.getData());
+                            Log.d(TAG, "qrDataListDocument data: " + qrDataListDocument.getData());
 
                             Object obj = qrDataListDocument.get("sumOfScoresScanned");
                             int total = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
-                            myAccount.setScanned(total);
-                            myAccount.setScore(score);
+
                             ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
 
                             // get each QRCode from array
@@ -139,13 +137,19 @@ public class HomeFragment extends Fragment {
                                 codeRef.get()
                                         .addOnCompleteListener(taskQRCodes -> {
                                             if (taskQRCodes.isSuccessful()) {
-                                                DocumentSnapshot document = taskQRCodes.getResult();
-                                                if (document.exists()) {
-                                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                                    QRCode code = document.toObject(QRCode.class);
+                                                DocumentSnapshot qrCodesDocument = taskQRCodes.getResult();
+                                                if (qrCodesDocument.exists()) {
+                                                    Log.d(TAG, "qrCodesdocument data: " + qrCodesDocument.getData());
+                                                    QRCode code = qrCodesDocument.toObject(QRCode.class);
 
                                                     myQRDataList.addQRCode(code);
                                                     myAccount.setQrDataList(myQRDataList);
+                                                    Log.i(TAG, "myAccount.getQrDataList().getSumOfScoresScanned(): " + myAccount.getQrDataList().getSumOfScoresScanned());
+                                                    Log.i(TAG, "myAccount.getQrDataList().getTotalQRCodesScanned(): " + myAccount.getQrDataList().getTotalQRCodesScanned());
+                                                    Log.i(TAG, "myAccount.getScanned(): " + myAccount.getScanned());
+                                                    myAccount.setScanned(myAccount.getQrDataList().getSumOfScoresScanned());
+                                                    myAccount.setScore(myAccount.getQrDataList().getTotalQRCodesScanned());
+                                                    Log.i(TAG, "myAccount.getScanned() after setScore: " + myAccount.getScanned());
                                                     setAdapter();
                                                 } else {
                                                     Log.d(TAG, "No such qr code document");
@@ -156,6 +160,8 @@ public class HomeFragment extends Fragment {
                                         });
 
                             }
+                            Log.i(TAG, "Line 162" + myAccount.getQrDataList().getQRCodes().size());
+
                             myAccount.setQrDataList(myQRDataList);
                             setAdapter();
                         }
@@ -222,6 +228,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        populateData();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -235,9 +243,11 @@ public class HomeFragment extends Fragment {
 
         String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
 
+
         // Set the text of all TextViews
         userName.setText(myAccount.getUserID());
         usernamesQRCodes.setText(usernamesQRCodesString);
+        Log.i(TAG, "myAccount.getScanned() in onCreateView: " + myAccount.getScanned());
         myScannedCodes.setText(myAccount.getScanned().toString());
         myQRScore.setText(myAccount.getScore().toString());
         myRank.setText("NIL");

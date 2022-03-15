@@ -51,5 +51,6 @@ public class QRCodeController {
 
     private void addToQRDataList(String key) {
         QRDataListDocRef.update("qrCodes", FieldValue.arrayUnion(db.collection("QRCode").document(key)));
+//        QRDataListDocRef.update("sumOfScoresScanned", qrDataList.getSumOfScoresScanned());
     }
 }
