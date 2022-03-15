@@ -62,7 +62,7 @@ public class QRDataList {
         return qrCodes;
     }
 
-    public void setQrCodes(ArrayList<QRCode> qrCodes) {
+    public void setQRCodes(ArrayList<QRCode> qrCodes) {
         this.qrCodes = qrCodes;
     }
     /**

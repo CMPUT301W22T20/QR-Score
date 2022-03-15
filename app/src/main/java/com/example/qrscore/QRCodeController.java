@@ -29,8 +29,6 @@ public class QRCodeController {
     }
 
     public void add(String key, QRCode qrCode, String uuid) {
-        int currentScore;
-        int currentNumCodesScanned;
         QRDataListDocRef = QRDataListRef.document(uuid);
 
         QRDataListDocRef.get().addOnCompleteListener(task -> {
@@ -47,12 +45,10 @@ public class QRCodeController {
                 if (task.isSuccessful()) {
                     DocumentSnapshot qrCodeDocument = task.getResult();
                     if (qrCodeDocument.exists()) {
-                        int addToScore = ((Number) qrCodeDocument.get("qrscore")).intValue();
                         ArrayList<String> scanners = (ArrayList<String>) qrCodeDocument.get("hasScanned");
                         if (!scanners.contains(uuid)) {
                             qrCodeDocument.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
                             addToQRDataList(key, qrDataList, qrCode);
-//                            qrDataList.addQRCode(qrCode);
                         }
                     }
                     else {
@@ -64,8 +60,8 @@ public class QRCodeController {
     }
 
     private void addToQRDataList(String key, QRDataList qrDataList, QRCode qrCode) {
-        qrDataList.setTotalQRCodesScanned(qrDataList.getTotalQRCodesScanned()+1);
-        qrDataList.setSumOfScoresScanned(qrDataList.getSumOfScoresScanned() + qrCode.getQRScore());
+//        qrDataList.setTotalQRCodesScanned(qrDataList.getTotalQRCodesScanned()+1);
+//        qrDataList.setSumOfScoresScanned(qrDataList.getSumOfScoresScanned() + qrCode.getQRScore());
         QRDataListDocRef.update("qrCodes", FieldValue.arrayUnion(db.collection("QRCode").document(key)));
     }
 }
