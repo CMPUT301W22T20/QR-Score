@@ -1,7 +1,11 @@
 package com.example.qrscore;
 
-import android.net.Uri;
-
+/**
+ * Purpose: Represents a Photo instance.
+ *
+ * Outstanding issues:
+ *
+ */
 public class Photo {
     private String qrID;
     private String UUID;

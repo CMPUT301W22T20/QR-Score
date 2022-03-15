@@ -189,7 +189,7 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Purpose: Set the  with current .
+     * Purpose: Set RecyclerAdapter with QRCodes
      */
     private void setAdapter() {
         HomeFragQRCodeRA = new HomeFragmentQRCodeRecyclerAdapter(myAccount);
@@ -199,6 +199,9 @@ public class HomeFragment extends Fragment {
         QRCodeRecyclerView.setAdapter(HomeFragQRCodeRA);
     }
 
+    /**
+     * Purpose: Implement the SortByListener to sort the QRCodes based on score.
+     */
     public class sortByButtonOnClickListener implements View.OnClickListener {
 
         Button sortByButton;
@@ -231,6 +234,9 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        /**
+         * Purpose: Sort the QRCodes from lowest score to highest.
+         */
         private void sortLowest() {
             Collections.sort(qrCodesToSort, new Comparator<QRCode>() {
                 @Override
@@ -244,6 +250,9 @@ public class HomeFragment extends Fragment {
             HFQRCodeRA.updateList(myAccount);
         }
 
+        /**
+         * Purpose: Sort the QRCodes from highest score to lowest.
+         */
         private void sortHighest() {
             Collections.sort(qrCodes, new Comparator<QRCode>() {
                 @Override

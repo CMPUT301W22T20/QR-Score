@@ -27,6 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Purpose: Controller for accounts.
+ *
+ * Outstanding issues:
+ *
+ */
 public class AccountController {
     private final String TAG = "ACCOUNT_CONTROLLER";
     private FirebaseAuth firebaseAuth;
@@ -56,6 +62,9 @@ public class AccountController {
         userUID = currentUser.getUid();
     }
 
+    /**
+     * Purpose: Create an account on firestore and reference to QRDataList and Profile.
+     */
     public void createNewAccount() {
         account = new Account(userUID);
         accountRef = accountCollectionRef.document(userUID);
@@ -90,8 +99,6 @@ public class AccountController {
                     QRDataListRef.set(newQRDataList);
                 });
     }
-
-    public void getAccount() {}
 
 }
 //    public void getNewAccount() {

@@ -1,10 +1,7 @@
 package com.example.qrscore;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -158,12 +155,12 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         }
         else {
             for (Account account : accounts) {
-                if (account.getUsername().toLowerCase().startsWith(username.toLowerCase())) {
+                if (account.getUserID().toLowerCase().startsWith(username.toLowerCase())) {
                     accountsFiltered.add(account);
                 }
             }
             playerRecyclerView.setAdapter(new LeaderboardPlayerRecyclerAdapter(accountsFiltered));
-            //            leaderboardRA.updateList(accountsFiltered);
+            leaderboardRA.updateList(accountsFiltered);
         }
         leaderboardRA.notifyDataSetChanged();
     }

@@ -13,7 +13,12 @@ import com.google.firebase.firestore.model.DocumentCollections;
 
 import java.util.ArrayList;
 
-
+/**
+ * Purpose: Represents a QRCodeController
+ * - Add QR Codes to firebase and accounts.
+ *
+ * Outstanding issues:
+ */
 public class QRCodeController {
     private FirebaseFirestore db;
     private CollectionReference QRCodeColRef;
@@ -28,6 +33,15 @@ public class QRCodeController {
         QRDataListRef = db.collection("QRDataList");
     }
 
+    /**
+     * Purpose: To add a QR Code to firestore db.
+     * @param key
+     *      The hash of the QR Code.
+     * @param qrCode
+     *      Instance of the QR Code.
+     * @param uuid
+     *      User UID of user that added it.
+     */
     public void add(String key, QRCode qrCode, String uuid) {
         QRDataListDocRef = QRDataListRef.document(uuid);
 

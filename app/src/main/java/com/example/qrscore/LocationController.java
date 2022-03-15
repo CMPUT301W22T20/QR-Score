@@ -27,7 +27,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
+/**
+ * Purpose: A controller that deals with the location recorded.
+ *
+ * Outstanding Issues:
+ *
+ */
 public class LocationController {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
@@ -79,10 +84,24 @@ public class LocationController {
         };
     }
 
+    /**
+     * Purpose: Get the location of the user.
+     *
+     * @return
+     *      A location instance of the user.
+     */
     protected Location getLocation() {
         return currLocation;
     }
 
+    /**
+     * Purpose: Save the location of a user.
+     *
+     * @param qrID
+     *      The hash of the QR Code.
+     * @param UUID
+     *      Users unique UID.
+     */
     public void saveLocation(String qrID, String UUID) {
         if (currLocation != null) {
             locationRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -123,6 +142,9 @@ public class LocationController {
         }
     }
 
+    /**
+     * Purpose: Start recording the location of user,
+     */
     public void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(activity,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity,
@@ -140,6 +162,9 @@ public class LocationController {
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
 
+    /**
+     * Purpose: Stop recording users location.
+     */
     public void stopLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(activity,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity,
@@ -156,6 +181,9 @@ public class LocationController {
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
+    /**
+     * Purpose: Request location requests every 10 seconds.
+     */
     protected void createLocationRequest() {
         locationRequest = LocationRequest.create();
         locationRequest.setInterval(10000);
