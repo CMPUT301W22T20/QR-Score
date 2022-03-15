@@ -93,6 +93,22 @@ public class QRDataList {
     }
 
     /**
+     * Removes a QR code from the list if it exists
+     *
+     * @param hash
+     *          The hash of the QR Code
+     */
+    public void removeQRCodeFromHash(String hash) {
+        for (int i=0; i < qrCodes.size(); i++) {
+            if (qrCodes.get(i).getHash() == hash) {
+                qrCodes.remove(i);
+            }
+        }
+        this.updateStats();
+    }
+
+
+    /**
      * Returns the total number of QR codes a user has scanned.
      *
      * @return

@@ -86,10 +86,10 @@ public class Account {
      * Removes a QR code from the list if it exists.
      *
      * @param qr
-     *      the QR code to remove.
+     *      the hash of the QR code to remove.
      */
-    public void removeQR(QRCode qr) {
-        qrDataList.removeQRCode(qr);
+    public void removeQR(String hash) {
+        qrDataList.removeQRCodeFromHash(hash);
     }
 
     /**
