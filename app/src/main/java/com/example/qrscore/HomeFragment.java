@@ -120,9 +120,8 @@ public class HomeFragment extends Fragment {
                         if (qrDataListDocument.exists()) {
                             Log.d(TAG, "qrDataListDocument data: " + qrDataListDocument.getData());
 
-                            Object obj = qrDataListDocument.get("sumOfScoresScanned");
                             int total = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
-
+ 
                             ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
 
                             // get each QRCode from array
@@ -134,7 +133,6 @@ public class HomeFragment extends Fragment {
                                                 if (qrCodesDocument.exists()) {
                                                     Log.d(TAG, "qrCodesdocument data: " + qrCodesDocument.getData());
                                                     QRCode code = qrCodesDocument.toObject(QRCode.class);
-
                                                     myQRDataList.addQRCode(code);
                                                     myAccount.setQrDataList(myQRDataList);
                                                     Log.i(TAG, "myAccount.getQrDataList().getSumOfScoresScanned(): " + myAccount.getQrDataList().getSumOfScoresScanned());
@@ -167,72 +165,11 @@ public class HomeFragment extends Fragment {
                                                 Log.d(TAG, "get failed with ", taskQRCodes.getException());
                                             }
                                         });
-
-
                             }
-                            Log.i(TAG, "Line 162" + myAccount.getQrDataList().getQRCodes().size());
-                            myAccount.setQrDataList(myQRDataList);
-                            setAdapter();
                         }
                     }
                 });
     }
-
-//<<<<<<< HEAD
-//        // Instantiate Textview classes to fill layout parameters
-//        TextView userName = (TextView) root.findViewById(R.id.home_fragment_username_text_view);
-//        TextView usernamesQRCodes = (TextView) root.findViewById(R.id.home_fragment_qr_code_title_text_view);
-//        TextView myScannedCodes = (TextView) root.findViewById(R.id.home_fragment_scanned_text_view);
-//        TextView myQRScore = (TextView) root.findViewById(R.id.home_fragment_score_text_view);
-//        TextView myRank = (TextView) root.findViewById(R.id.home_fragment_rank_text_view);
-//        ListView myCodes = root.findViewById(R.id.home_fragment_codes_list_view);
-//
-//        qrCodes = new ArrayList<>();
-//        QRListAdapter codeAdapter = new QRListAdapter(getContext(), qrCodes);
-//        myCodes.setAdapter(codeAdapter);
-//        codeAdapter.notifyDataSetChanged();
-//
-//        String uuid = profileController.getProfile().getUserUID();
-//        qrRef.whereArrayContains("hasScanned", uuid).orderBy("qrscore", direction)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                qrCodes.clear();
-//                try {
-//                    for (QueryDocumentSnapshot doc: value) {
-//                        String hash = (String) doc.getData().get("hash");
-//                        qrCodes.add(new QRCode(hash));
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                codeAdapter.sort(new Comparator<QRCode>() {
-//                    @Override
-//                    public int compare(QRCode qrCode, QRCode t1) {
-//                        return -(qrCode.getQRScore() - t1.getQRScore());
-//                    }
-//                });
-//                codeAdapter.notifyDataSetChanged();
-//            }
-//        });
-//
-//        myCodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-//                String qrID = adapterView.getItemAtPosition(pos).toString();
-//
-//                Intent intent = new Intent(getContext(), QRCodeActivity.class);
-//                intent.putExtra("QR_ID", qrID);
-//                startActivity(intent);
-//            }
-//        });
-//=======
-//        myCodes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-//                QRCode qrCode = (QRCode) adapterView.getItemAtPosition(pos);
-//                String qrID = qrCode.getHash();
-//>>>>>>> main
 
 
     @Override

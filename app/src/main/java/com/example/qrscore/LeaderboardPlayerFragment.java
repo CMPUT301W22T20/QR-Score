@@ -69,12 +69,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                     accounts.clear();
                    for (QueryDocumentSnapshot documentSnapshot: value)  {
                        String userUID = documentSnapshot.getString("UserUID");
-//                       Long score = documentSnapshot.getLong("Score");
-//                       Long total = documentSnapshot.getLong("Total");
                        String score = documentSnapshot.getString("Score");
                        String total = documentSnapshot.getString("Total");
                        accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
-//                       accounts.add(new Account(userUID, score.intValue(), total.intValue()));
                        leaderboardRA.updateList(accounts);
                    }
                 });
@@ -155,11 +152,19 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      */
     private void filter(String username) {
         ArrayList<Account> accountsFiltered = new ArrayList<Account>();
-        for (Account account: accounts) {
-            if (account.getUsername().toLowerCase().contains(username.toLowerCase())) {
-                accountsFiltered.add(account);
-            }
+
+        if (username.isEmpty()) {
+            playerRecyclerView.setAdapter(new LeaderboardPlayerRecyclerAdapter(accounts));
         }
-        leaderboardRA.updateList(accountsFiltered);
+        else {
+            for (Account account : accounts) {
+                if (account.getUsername().toLowerCase().startsWith(username.toLowerCase())) {
+                    accountsFiltered.add(account);
+                }
+            }
+            playerRecyclerView.setAdapter(new LeaderboardPlayerRecyclerAdapter(accountsFiltered));
+            //            leaderboardRA.updateList(accountsFiltered);
+        }
+        leaderboardRA.notifyDataSetChanged();
     }
 }

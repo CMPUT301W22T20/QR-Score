@@ -63,7 +63,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         holder.rank.setText("NIL");
         holder.score.setText(account.getScore().toString());
         holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener());
+        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
     }
 
     /**
@@ -75,6 +75,11 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     @Override
     public int getItemCount() {
         return accounts.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @NonNull
@@ -89,6 +94,12 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     // https://www.youtube.com/watch?v=s1fW7CpiB9c
     private class MenuButtonOnClickListener implements View.OnClickListener {
+
+        String userUID;
+        public MenuButtonOnClickListener(String userUID) {
+            this.userUID = userUID;
+        }
+
         @Override
         public void onClick(View view) {
             PopupMenu popupMenu = new PopupMenu(view.getContext(),  view);
@@ -96,7 +107,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Intent intent = new Intent(view.getContext(), OtherPlayerAccountActivity.class);
-                    intent.putExtra("userID", "008pIplmeCdA35SkXKh2B2fL0B82");
+                    intent.putExtra("userID", userUID);
                     view.getContext().startActivity(intent);
                     return false;
                 }
