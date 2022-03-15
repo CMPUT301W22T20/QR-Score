@@ -26,7 +26,6 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
 
     private Account account;
     private QRDataList qrDataList;
-    private String hash;
     private ArrayList<QRCode> qrCodes;
 
     public HomeFragmentQRCodeRecyclerAdapter(Account account) {
@@ -51,11 +50,6 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
             score = itemView.findViewById(R.id.list_item_score);
             name = itemView.findViewById(R.id.list_item_name);
             menuButton = itemView.findViewById(R.id.list_item_menu_button);
-//            hash =
-//
-//            itemView.setOnClickListener(view -> {
-//
-//            });
         }
     }
 
