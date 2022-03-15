@@ -143,17 +143,12 @@ public class HomeFragment extends Fragment {
                                                     Log.i(TAG, "myAccount.getScanned() after setScore: " + myAccount.getScanned());
 
                                                     // Instantiate Textview classes to fill layout parameters
-                                                    TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
-                                                    TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
                                                     TextView myScannedCodes = (TextView) view.findViewById(R.id.home_fragment_scanned_text_view);
                                                     TextView myQRScore = (TextView) view.findViewById(R.id.home_fragment_score_text_view);
                                                     TextView myRank = (TextView) view.findViewById(R.id.home_fragment_rank_text_view);
                                                     QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
-                                                    String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
 
                                                     // Set the text of all TextViews
-                                                    userName.setText(myAccount.getUserID());
-                                                    usernamesQRCodes.setText(usernamesQRCodesString);
                                                     myScannedCodes.setText(myAccount.getScanned().toString());
                                                     myQRScore.setText(myAccount.getScore().toString());
                                                     myRank.setText("NIL");
@@ -182,6 +177,16 @@ public class HomeFragment extends Fragment {
         // TODO: Implement "Sort By" button
         final Button sortByButton = view.findViewById(R.id.home_fragment_sort_by_button);
         sortByButton.setOnClickListener(new sortByButtonOnClickListener(sortByButton, HomeFragQRCodeRA, myAccount));
+
+        // Instantiate Textview classes to fill layout parameters
+        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
+        TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
+
+        String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
+
+        // Set username TextViews
+        usernamesQRCodes.setText(usernamesQRCodesString);
+        userName.setText(myAccount.getUserID());
 
         populateData(view);
 
