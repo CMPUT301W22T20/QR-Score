@@ -57,7 +57,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
 
         account = new Account(userUID);
         qrDataList = new QRDataList();
-        qrDataList.setQrCodes(new ArrayList<QRCode>());
+        qrDataList.setQRCodes(new ArrayList<QRCode>());
         account.setQrDataList(qrDataList);
 
         ArrayList<QRCode> qrCodes = new ArrayList<QRCode>();

@@ -91,6 +91,8 @@ public class AccountController {
                 });
     }
 
+    public void getAccount() {}
+
 }
 //    public void getNewAccount() {
 //        collectionReference = db.collection("Account");

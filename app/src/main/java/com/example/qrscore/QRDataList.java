@@ -1,5 +1,7 @@
 package com.example.qrscore;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import java.util.List;
  * TODO: Highscore/Lowscore should probably return QRCodes so they can be displayed?
  */
 public class QRDataList {
+    final String TAG = "QRDataList";
     private ArrayList<QRCode> qrCodes;
     private Integer totalQRCodesScanned;
     private Integer sumOfScoresScanned;
@@ -59,7 +62,7 @@ public class QRDataList {
         return qrCodes;
     }
 
-    public void setQrCodes(ArrayList<QRCode> qrCodes) {
+    public void setQRCodes(ArrayList<QRCode> qrCodes) {
         this.qrCodes = qrCodes;
     }
     /**
@@ -71,6 +74,10 @@ public class QRDataList {
     public void addQRCode(QRCode toAdd) {
         qrCodes.add(toAdd);
         this.updateStats();
+        Log.i(TAG, "toAdd.qrscore: " + toAdd.getQRScore());
+        System.out.println("qr hash: " + toAdd.getHash());
+        System.out.println("qrCodes.size(): " + qrCodes.size());
+        System.out.println("this.getTotalQRCodesScanned(): " + this.getTotalQRCodesScanned());
     }
 
     /**
@@ -100,6 +107,26 @@ public class QRDataList {
         this.updateStats();
     }
 
+
+    /**
+     * Returns the total number of QR codes a user has scanned.
+     *
+     * @return
+     *      the sum of a user's scanned QR codes.
+     */
+    public void setTotalQRCodesScanned(Integer newTotal) {
+        this.totalQRCodesScanned = newTotal;
+    }
+
+    /**
+     * Returns the total sum of QR scores a user has scanned.
+     *
+     * @return
+     *      the sum of a user's scanned QR scores.
+     */
+    public void setSumOfScoresScanned(Integer newSum) {
+        this.sumOfScoresScanned = newSum;
+    }
 
     /**
      * Returns the total number of QR codes a user has scanned.
