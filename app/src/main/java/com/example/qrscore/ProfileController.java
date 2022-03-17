@@ -73,8 +73,8 @@ public class ProfileController {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "Profile Created");
                         setProfile(newProfile);
-//                        accountController = new AccountController();
-//                        accountController.createNewAccount();
+                        accountController = new AccountController();
+                        accountController.createNewAccount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
