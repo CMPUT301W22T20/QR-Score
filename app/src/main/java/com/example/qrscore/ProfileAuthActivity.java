@@ -2,10 +2,12 @@ package com.example.qrscore;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +25,13 @@ import com.google.firebase.auth.FirebaseUser;
  *
  *  @author William Liu
  */
-public class ProfileAuthActivity extends AppCompatActivity {
+public class ProfileAuthActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
+    private AppCompatButton returningButton;
+    private AppCompatButton loginByQRButton;
+    private AppCompatButton newUserButton;
     private ProgressBar profileProgressBar;
     private TextView loginTextView;
 
@@ -37,19 +42,50 @@ public class ProfileAuthActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         profileProgressBar = findViewById(R.id.auth_progress_bar);
-        loginTextView = findViewById(R.id.auth_text_view);
+        loginTextView = findViewById(R.id.auth_login_text_view);
+        returningButton = findViewById(R.id.auth_returning_user_button);
+        returningButton.setOnClickListener(this);
+        loginByQRButton = findViewById(R.id.auth_login_by_qr_user_button);
+        loginByQRButton.setOnClickListener(this);
+        newUserButton = findViewById(R.id.auth_new_user_button);
+        newUserButton.setOnClickListener(this);
+    }
 
-        // Check if user is signed-in (non-null)
-        // Profile is null/need to sign in and register in firestore.
-        // https://firebase.google.com/docs/auth/android/anonymous-auth
-        currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser == null) {
-            createUser();
-        }
-        else {
-            goToMainActivity();
+    @Override
+    public void onClick(View view) {
+        String loginMethod;
+        switch (view.getId()) {
+            case R.id.auth_returning_user_button:
+                currentUser = firebaseAuth.getCurrentUser();
+                // Check if user is signed-in (non-null)
+                // Profile is null/need to sign in and register in firestore.
+                // https://firebase.google.com/docs/auth/android/anonymous-auth
+                if (currentUser == null) {
+                    Toast.makeText(this, "Cannot locate user, Please sign up as a NEW USER!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    loginTextView.setVisibility(View.VISIBLE);
+                    profileProgressBar.setVisibility(View.VISIBLE);
+                    goToMainActivity();
+                }
+                break;
+            case R.id.auth_login_by_qr_user_button:
+                break;
+            case R.id.auth_new_user_button:
+                currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Toast.makeText(this, "User already created. Please select RETURNING!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    loginTextView.setVisibility(View.VISIBLE);
+                    profileProgressBar.setVisibility(View.VISIBLE);
+                    createUser();
+                    goToMainActivity();
+                }
+                break;
         }
     }
+
 
     /**
      * Purpose: Creates a new user on firebase auth and initializes a new document on the firestore "Profile" collection.
@@ -63,8 +99,8 @@ public class ProfileAuthActivity extends AppCompatActivity {
                             currentUser = firebaseAuth.getCurrentUser();
                             // create user on firestore db.
                             ProfileController profileController = new ProfileController(getApplicationContext());
-                            profileController.createNewUser();
-                            goToMainActivity();
+                            profileController.createNewUser(currentUser.getUid());
+//                            goToMainActivity();
                         }
                         // Failed to create user
                         else {
@@ -79,7 +115,6 @@ public class ProfileAuthActivity extends AppCompatActivity {
      * Purpose: Go to the MainActivity after finished authorizing user.
      */
     private void goToMainActivity() {
-        Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(ProfileAuthActivity.this, MainActivity.class));
         finish();
     }

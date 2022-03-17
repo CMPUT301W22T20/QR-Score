@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -38,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+        Toast.makeText(this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
         //Intent intent = new Intent(MainActivity.this, OtherPlayerAccountActivity.class);
         //intent.putExtra("userID", "008pIplmeCdA35SkXKh2B2fL0B82");

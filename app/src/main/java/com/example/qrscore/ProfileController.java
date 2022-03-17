@@ -53,7 +53,6 @@ public class ProfileController {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        this.userUID = currentUser.getUid();
         // https://www.youtube.com/watch?v=fJEFZ6EOM9o
         profileSP = context.getSharedPreferences(PROFILE_PREFS, Context.MODE_PRIVATE);
         profileSPEditor = profileSP.edit();
@@ -63,7 +62,7 @@ public class ProfileController {
      * Purpose: To create a new profile locally and on firestore db.
      * To create a new account on firestore db.
      */
-    public void createNewUser() {
+    public void createNewUser(String userUID) {
         newProfile = new Profile(userUID);
         // https://firebase.google.com/docs/firestore/manage-data/add-data
         profileRef = db.collection("Profile").document(userUID);
@@ -74,8 +73,8 @@ public class ProfileController {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "Profile Created");
                         setProfile(newProfile);
-                        accountController = new AccountController();
-                        accountController.createNewAccount();
+//                        accountController = new AccountController();
+//                        accountController.createNewAccount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -90,6 +89,7 @@ public class ProfileController {
      * Purpose: Add a profileListener for firestore data.
      */
     public void addProfileListener() {
+        userUID = currentUser.getUid();
         profileRef = db.collection("Profile").document(userUID);
         profileListener = profileRef.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
@@ -121,6 +121,7 @@ public class ProfileController {
      */
     public void updateProfile(Profile updatedProfile, Context context) {
         // https://firebase.google.com/docs/firestore/manage-data/add-data
+        userUID = currentUser.getUid();
         profileRef = db.collection("Profile").document(userUID);
         Map<String, Object> profile = new HashMap<>();
         profile.put("firstName", updatedProfile.getFirstName());
