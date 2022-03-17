@@ -149,6 +149,7 @@ public class ProfileFragment extends Fragment {
             }
             Profile updatedProfile = new Profile(firstName, lastName, email, phoneNumber, userUID);
             profileController.updateProfile(updatedProfile, getActivity());
+//            profileController.convertAccount();
         }
     }
 }

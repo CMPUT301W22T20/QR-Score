@@ -11,6 +11,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -176,6 +179,25 @@ public class ProfileController {
         String userUID = profileSP.getString("userUID", currentUser.getUid());
         Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID);
         return profile;
+    }
+
+    public void convertAccount() {
+        Profile profile = getProfile();
+        AuthCredential credential = EmailAuthProvider.getCredential(profile.getEmail(), profile.getUserUID());
+
+        firebaseAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "linkWithCredential:success");
+                            FirebaseUser user = task.getResult().getUser();
+                        } else {
+                            Log.w(TAG, "linkWithCredential:failure", task.getException());
+//                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
 
