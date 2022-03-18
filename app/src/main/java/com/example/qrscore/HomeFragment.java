@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -77,6 +78,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 //    private CollectionReference qrRef;
     private static Query.Direction direction;
+
+    private ImageButton profileQRButton;
+    private TextView actionBarNameTextView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -179,15 +183,18 @@ public class HomeFragment extends Fragment {
         sortByButton.setOnClickListener(new sortByButtonOnClickListener(sortByButton, HomeFragQRCodeRA, myAccount));
 
         // Instantiate Textview classes to fill layout parameters
-        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
+//        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
         TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
 
         String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
 
         // Set username TextViews
         usernamesQRCodes.setText(usernamesQRCodesString);
-        userName.setText(myAccount.getUserID());
+//        userName.setText(myAccount.getUserID());
 
+        profileQRButton = view.findViewById(R.id.home_fragment_actionbar_qr_code);
+        profileQRButton.setOnClickListener(new profileGeneratorButtonListener(userUID));
+        actionBarNameTextView = view.findViewById(R.id.home_fragment_actionbar_textview);    // need to implement
         populateData(view);
 
         return view;
@@ -270,7 +277,31 @@ public class HomeFragment extends Fragment {
             myAccount.setQrDataList(qrDataListToSort);
             HFQRCodeRA.updateList(myAccount);
         }
+    }
 
+    private class profileGeneratorButtonListener implements View.OnClickListener {
+        String userUID;
+
+        public profileGeneratorButtonListener(String userUID) {
+            this.userUID = userUID;
+        }
+
+        @Override
+        public void onClick(View view) {
+            openQRDialog();
+        }
+
+        private void openQRDialog() {
+            // https://stackoverflow.com/a/15459259
+            Bundle args = new Bundle();
+            args.putString("email", "");
+            args.putString("userUID", userUID);
+            args.putBoolean("login", false);
+
+            QRGeneratorDialog qrGeneratorDialog = new QRGeneratorDialog();
+            qrGeneratorDialog.setArguments(args);
+            qrGeneratorDialog.show(getChildFragmentManager(), "QR Dialog");
+        }
     }
 }
 
