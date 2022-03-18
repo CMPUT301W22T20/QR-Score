@@ -6,7 +6,7 @@ Allow user to click add comment from this screen.
 Outstanding issues:
 */
 
-package com.example.qrscore;
+package com.example.qrscore.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +25,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.qrscore.Comment;
+import com.example.qrscore.CommentCustomList;
+import com.example.qrscore.PhotoCallback;
+import com.example.qrscore.Player;
+import com.example.qrscore.R;
+import com.example.qrscore.controller.PhotoController;
+import com.example.qrscore.controller.ProfileController;
+import com.example.qrscore.fragment.AddCommentFragment;
+import com.example.qrscore.fragment.DisplayCommentFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;

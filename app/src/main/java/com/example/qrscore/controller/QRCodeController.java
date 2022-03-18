@@ -1,7 +1,9 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import androidx.annotation.NonNull;
 
+import com.example.qrscore.QRCode;
+import com.example.qrscore.QRDataList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -9,7 +11,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.DocumentCollections;
 
 import java.util.ArrayList;
 

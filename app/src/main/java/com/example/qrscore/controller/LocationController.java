@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.Manifest;
 import android.app.Activity;
@@ -41,6 +41,8 @@ public class LocationController {
     private Location currLocation;
     private FirebaseFirestore db;
     private CollectionReference locationRef;
+    private static double lat;
+    private static double lon;
 
     public LocationController(Activity activity) {
         this.activity = activity;
@@ -78,6 +80,8 @@ public class LocationController {
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
                     currLocation = location;
+                    lat = currLocation.getLatitude();
+                    lon = currLocation.getLongitude();
 
                 }
             }
@@ -90,8 +94,12 @@ public class LocationController {
      * @return
      *      A location instance of the user.
      */
-    protected Location getLocation() {
-        return currLocation;
+    public double getLatitude() {
+        return lat;
+    }
+
+    public double getLongitude() {
+        return lon;
     }
 
     /**
