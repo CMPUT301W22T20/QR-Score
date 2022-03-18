@@ -45,6 +45,8 @@ public class ProfileController {
     private ListenerRegistration profileListener;
     private SharedPreferences profileSP;
     private SharedPreferences.Editor profileSPEditor;
+    private String email;
+    private Boolean permanent;
 
     private static final String PROFILE_PREFS = "profilePrefs";
     private static final String TAG = "Profile";
@@ -117,11 +119,12 @@ public class ProfileController {
 
     /**
      * Purpose: Updates the current players profile on firestore db and locally.
-     * @param updatedProfile
-     *      An instance of their updated profile.
-     * @param context
-     *      ProfileFragment activity to display toast message.
+     *
+     * @param updatedProfile An instance of their updated profile.
+     * @param context        ProfileFragment activity to display toast message.
      */
+
+    // Profile Callback
     public void updateProfile(Profile updatedProfile, Context context) {
         // https://firebase.google.com/docs/firestore/manage-data/add-data
         userUID = currentUser.getUid();
@@ -130,6 +133,8 @@ public class ProfileController {
         profile.put("firstName", updatedProfile.getFirstName());
         profile.put("lastName", updatedProfile.getLastName());
         profile.put("email", updatedProfile.getEmail());
+        email = updatedProfile.getEmail();
+        permanent = updatedProfile.getPermanent();
         profile.put("phoneNumber", updatedProfile.getPhoneNumber());
         profile.put("permanent", updatedProfile.getPermanent());
 
@@ -142,12 +147,14 @@ public class ProfileController {
                         Log.d(TAG, "Profile successfully updated!");
                         Toast.makeText(context, "Profile has been updated!", Toast.LENGTH_SHORT).show();
                         setProfile(updatedProfile);
+//                        profileCallback.onCallback(true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Profile update unsuccessful :(", e);
+//                        profileCallback.onCallback(false);
                         Toast.makeText(context, "Profile has not been updated. Please try again!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -155,8 +162,8 @@ public class ProfileController {
 
     /**
      * Purpose: Set/Update profile info in SharedPrefs.
-     * @param newProfile
-     *      Profile to be set/updated with locally.
+     *
+     * @param newProfile Profile to be set/updated with locally.
      */
     public void setProfile(Profile newProfile) {
         profileSPEditor.putString("firstName", newProfile.getFirstName());
@@ -165,21 +172,21 @@ public class ProfileController {
         profileSPEditor.putString("phoneNumber", newProfile.getPhoneNumber());
         profileSPEditor.putString("userUID", newProfile.getUserUID());
         profileSPEditor.putBoolean("permanent", newProfile.getPermanent());
-        profileSPEditor.commit();
+        profileSPEditor.apply();
     }
 
     /**
      * Purpose: Return an instance of the profile saved locally
-     * @return
-     *      Represents the Profile object locally.
+     *
+     * @return Represents the Profile object locally.
      */
     public Profile getProfile() {
         String firstName = profileSP.getString("firstName", null);
         String lastName = profileSP.getString("lastName", null);
         String email = profileSP.getString("email", null);
         String phoneNumber = profileSP.getString("phoneNumber", null);
-        Boolean permanent = profileSP.getBoolean("permanent", false);
         String userUID = profileSP.getString("userUID", currentUser.getUid());
+        Boolean permanent = profileSP.getBoolean("permanent", false);
         Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID, permanent);
         return profile;
     }
@@ -192,10 +199,10 @@ public class ProfileController {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "linkWithCredential:success");
                             FirebaseUser user = task.getResult().getUser();
                             profile.setPermanent(true);
                             updateProfile(profile, context);
+                            Log.d(TAG, "linkWithCredential:success");
                         } else {
                             Log.w(TAG, "linkWithCredential:failure", task.getException());
 //                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -204,4 +211,5 @@ public class ProfileController {
                 });
     }
 }
+
 

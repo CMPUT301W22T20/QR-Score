@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,7 +39,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class ProfileFragment extends Fragment {
 
     private ProfileController profileController;
-    private Profile profile;
+    protected Profile profile;
     private TextInputLayout userUIDLayout;
     private TextInputEditText userUIDTextEdit;
     private TextInputLayout firstNameLayout;
@@ -51,6 +52,7 @@ public class ProfileFragment extends Fragment {
     private TextInputEditText phoneNumberEdit;
     private Button saveButton;
     private Button generateQRButton;
+
 
     /**
      * Purpose: A constructor for the profile fragment.
@@ -72,15 +74,15 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         Toolbar toolbar = view.findViewById(R.id.profile_actionbar);
+        saveButton = view.findViewById(R.id.profile_save_button);
+        generateQRButton = view.findViewById(R.id.profile_generateQR_button);
         toolbar.setTitle("");
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         populateProfile(profile, view);
 
-        saveButton = view.findViewById(R.id.profile_save_button);
-        generateQRButton = view.findViewById(R.id.profile_generateQR_button);
         phoneNumberEdit.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-        saveButton.setOnClickListener(new ButtonOnClickListener());
+        saveButton.setOnClickListener(new SaveButtonOnClickListener());
         emailTextEdit.addTextChangedListener(new EmailTextWatcher());
         emailTextEdit.setOnFocusChangeListener(new EmailFocusChangedListener());
         generateQRButton.setOnClickListener(new QRCodeButtonOnClickListener());
@@ -148,19 +150,20 @@ public class ProfileFragment extends Fragment {
      * Purpose: A class that implements the onClick method of the save button in the profileFragment.
      * - Calls updateProfile in the ProfileController to update the profile info.
      */
-    private class ButtonOnClickListener implements View.OnClickListener {
+    private class SaveButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             String firstName = firstNameTextEdit.getText().toString().trim();
             String lastName = lastNameTextEdit.getText().toString().trim();
-            String email = emailTextEdit.getText().toString().trim();
+            String email = emailTextEdit.getText().toString();
             String phoneNumber = phoneNumberEdit.getText().toString().trim();
             String userUID = userUIDTextEdit.getText().toString();
 
-            if (!email.isEmpty() && !isValidEmail(email)) {
+            if (!isValidEmail(email) && !(email.isEmpty())) {
                 Toast.makeText(getContext(), "Email Invalid, Profile not saved", Toast.LENGTH_SHORT).show();
             }
             else {
+                email = email.trim();
                 if (firstName.isEmpty()) {
                     firstName = null;
                 }
@@ -177,8 +180,9 @@ public class ProfileFragment extends Fragment {
                 if (phoneNumber.isEmpty()) {
                     phoneNumber = null;
                 }
-                Profile updatedProfile = new Profile(firstName, lastName, email, phoneNumber, userUID);
+                Profile updatedProfile = new Profile(firstName, lastName, email, phoneNumber, userUID, profile.getPermanent());
                 profileController.updateProfile(updatedProfile, getActivity());
+                profile = profileController.getProfile();
             }
         }
     }
@@ -221,15 +225,34 @@ public class ProfileFragment extends Fragment {
     }
 
     private class QRCodeButtonOnClickListener implements View.OnClickListener {
-        Profile profile = profileController.getProfile();
         @Override
         public void onClick(View view) {
-            if (!profile.getEmail().isEmpty() && !profile.getPermanent()) {
+            ProfileController profileController = new ProfileController(getContext());
+            profile = profileController.getProfile();
+            if (profile.getPermanent()) {
+                Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
+                openQRDialog();
+            }
+            else if((profile.getEmail() != null) && !(profile.getPermanent())) {
                 profileController.convertAccount(getContext());
+                Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
+                profile = profileController.getProfile();
+                openQRDialog();
             }
             else {
                 Toast.makeText(getContext(), "Email Required for QR Code generation", Toast.LENGTH_SHORT).show();
             }
+        }
+
+        private void openQRDialog() {
+            // https://stackoverflow.com/a/15459259
+            Bundle args = new Bundle();
+            args.putString("email", profile.getEmail());
+            args.putString("userUID", profile.getUserUID());
+
+            QRGeneratorDialog qrGeneratorDialog = new QRGeneratorDialog();
+            qrGeneratorDialog.setArguments(args);
+            qrGeneratorDialog.show(getChildFragmentManager(), "QR Dialog");
         }
     }
 }

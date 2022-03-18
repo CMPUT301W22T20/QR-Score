@@ -6,7 +6,13 @@
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable/activity_background.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
+        <entry key="app/src/main/res/drawable/back_button_selector.xml" value="0.248" />
+        <entry key="app/src/main/res/drawable/dialog_round_box_background.xml" value="0.248" />
+        <entry key="app/src/main/res/drawable/nav_bar_round.xml" value="0.248" />
         <entry key="app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.1875" />
+        <entry key="app/src/main/res/drawable/round_box_background.xml" value="0.248" />
+        <entry key="app/src/main/res/drawable/round_button_selected.xml" value="0.248" />
+        <entry key="app/src/main/res/drawable/round_button_selector.xml" value="0.248" />
         <entry key="app/src/main/res/drawable/useruid_text_box.xml" value="0.2295" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
         <entry key="app/src/main/res/layout/activity_other_player_account.xml" value="0.28177083333333336" />
@@ -31,6 +37,7 @@
         <entry key="app/src/main/res/layout/home_fragment_layout.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/profile_actionbar.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/layout/qr_codes_list_content.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/qr_generator_diaglog.xml" value="0.3765625" />
         <entry key="app/src/main/res/layout/qr_view.xml" value="0.20052083333333334" />
         <entry key="app/src/main/res/layout/scanned_by_content.xml" value="0.17755825734549138" />
         <entry key="app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.2740036231884058" />
