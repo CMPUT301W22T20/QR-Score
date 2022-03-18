@@ -27,6 +27,7 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,10 +99,13 @@ public class MapFragment extends Fragment {
 
                 for (DocumentSnapshot doc: docs) {
                     com.google.firebase.firestore.GeoPoint pos = (com.google.firebase.firestore.GeoPoint) doc.getData().get("geoPoint");
+                    ArrayList<String> qrCodes = (ArrayList<String>) doc.getData().get("qrIDs");
+                    int nearbyQRs = qrCodes.size();
                     GeoPoint realPos = new GeoPoint(pos.getLatitude(), pos.getLongitude());
                     Marker qrMarker = new Marker(map);
                     qrMarker.setPosition(realPos);
                     qrMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+                    qrMarker.setTitle("Nearby QRs: " + nearbyQRs);
                     map.getOverlays().add(qrMarker);
                 }
             }

@@ -130,8 +130,16 @@ public class LocationController {
                                 // Check if a saved location is already close to the current one
                                 if (diffLat < 0.0025 && diffLon < 0.0025) {
                                     // Saved location is already close to current
-                                    // Update the array of UUIDs with new one
+
                                     ArrayList<String> uuids = (ArrayList<String>) doc.get("uuids");
+                                    ArrayList<String> qrIDs = (ArrayList<String>) doc.get("qrIDs");
+
+                                    // Update the array of qrIDs with the new one
+                                    if (!qrIDs.contains(qrID)) {
+                                        doc.getReference().update("qrIDs", FieldValue.arrayUnion(qrID));
+                                    }
+
+                                    // Update the array of UUIDs with new one
                                     if (!uuids.contains(UUID)) {
                                         // Person hasn't scanned it before
                                         doc.getReference().update("uuids", FieldValue.arrayUnion(UUID));
