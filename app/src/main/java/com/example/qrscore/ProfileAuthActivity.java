@@ -35,6 +35,8 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     private AppCompatButton newUserButton;
     private ProgressBar profileProgressBar;
     private TextView loginTextView;
+    private String email;
+    private String userUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,8 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.auth_login_by_qr_user_button:
+                currentUser = firebaseAuth.getCurrentUser();
+                signInWithEmail();
                 break;
             case R.id.auth_new_user_button:
                 currentUser = firebaseAuth.getCurrentUser();
@@ -83,6 +87,26 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
         }
+    }
+
+    private void signInWithEmail() {
+        loginTextView.setVisibility(View.VISIBLE);
+        profileProgressBar.setVisibility(View.VISIBLE);
+
+        firebaseAuth.signInWithEmailAndPassword(email, userUID)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        currentUser = firebaseAuth.getCurrentUser();
+                        goToMainActivity();
+                    }
+                    else {
+                        profileProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(ProfileAuthActivity.this, "Cannot sign in. Please close the app and try again!", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
     }
 
     /**

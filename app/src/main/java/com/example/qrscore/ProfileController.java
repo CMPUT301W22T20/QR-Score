@@ -147,14 +147,12 @@ public class ProfileController {
                         Log.d(TAG, "Profile successfully updated!");
                         Toast.makeText(context, "Profile has been updated!", Toast.LENGTH_SHORT).show();
                         setProfile(updatedProfile);
-//                        profileCallback.onCallback(true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Profile update unsuccessful :(", e);
-//                        profileCallback.onCallback(false);
                         Toast.makeText(context, "Profile has not been updated. Please try again!", Toast.LENGTH_SHORT).show();
                     }
                 });
