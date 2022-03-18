@@ -191,7 +191,7 @@ public class ProfileController {
         return profile;
     }
 
-    public void convertAccount(Context context) {
+    public void convertAccount(Context context, ConvertAccountCallback convertAccountCallback) {
         Profile profile = getProfile();
         AuthCredential credential = EmailAuthProvider.getCredential(profile.getEmail(), profile.getUserUID());
         firebaseAuth.getCurrentUser().linkWithCredential(credential)
@@ -202,10 +202,11 @@ public class ProfileController {
                             FirebaseUser user = task.getResult().getUser();
                             profile.setPermanent(true);
                             updateProfile(profile, context);
+                            convertAccountCallback.onCallback(true);
                             Log.d(TAG, "linkWithCredential:success");
                         } else {
                             Log.w(TAG, "linkWithCredential:failure", task.getException());
-//                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            convertAccountCallback.onCallback(false);
                         }
                     }
                 });

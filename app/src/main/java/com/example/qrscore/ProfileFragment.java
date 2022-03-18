@@ -234,10 +234,17 @@ public class ProfileFragment extends Fragment {
                 openQRDialog();
             }
             else if((profile.getEmail() != null) && !(profile.getPermanent())) {
-                profileController.convertAccount(getContext());
-                Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
-                profile = profileController.getProfile();
-                openQRDialog();
+                profileController.convertAccount(getContext(), converted -> {
+                    if (converted) {
+                        Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
+                        profile = profileController.getProfile();
+                        openQRDialog();
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Cannot Generate QR Code, Email already exists to another user!", Toast.LENGTH_LONG).show();
+                    }
+                });
+
             }
             else {
                 Toast.makeText(getContext(), "Email Required for QR Code generation", Toast.LENGTH_SHORT).show();
