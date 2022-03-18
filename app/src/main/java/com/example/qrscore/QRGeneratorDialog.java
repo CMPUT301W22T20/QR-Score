@@ -46,6 +46,7 @@ public class QRGeneratorDialog extends DialogFragment {
         return view;
     }
 
+    // https://www.youtube.com/watch?v=n8HdrLYL9DA
     private void generateQR() {
         MultiFormatWriter writer = new MultiFormatWriter();
         String account = email + "\n" + userUID;
