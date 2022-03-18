@@ -70,14 +70,12 @@ public class AccountController {
     public void createNewAccount() {
         account = new Account(userUID);
         accountRef = accountCollectionRef.document(userUID);
-        QRDataListRef = QRDataListCollectionRef.document(userUID);
 
         HashMap<String, Object> newAccount = new HashMap<>();
-        newAccount.put("Profile", db.collection("Profile").document(userUID));
         newAccount.put("UserUID", userUID);
         newAccount.put("Score", "0");
         newAccount.put("Total", "0");
-        newAccount.put("QRDataList", db.collection("QRDataList").document(userUID));
+        newAccount.put("QRCodes", account.getQRList());
         accountRef.set(newAccount)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
@@ -85,20 +83,6 @@ public class AccountController {
                 .addOnFailureListener(e -> {
                     Log.d(TAG, "Account has not been created.");
                     accountRef.set(account);
-                });
-
-        HashMap<String, Object> newQRDataList = new HashMap<>();
-        newQRDataList.put("qrCodes", account.getQrDataList().getQRCodes());
-        newQRDataList.put("rank", account.getQrDataList().getRank());
-        newQRDataList.put("sumOfScoresScanned", account.getQrDataList().getSumOfScoresScanned());
-        newQRDataList.put("totalQRCodesScanned", account.getQrDataList().getTotalQRCodesScanned());
-        QRDataListRef.set(newQRDataList)
-                .addOnSuccessListener(unused -> {
-                    Log.d(TAG, "QRDataList created!");
-                })
-                .addOnFailureListener(e -> {
-                    Log.d(TAG, "QRDataList has not been created.");
-                    QRDataListRef.set(newQRDataList);
                 });
     }
 

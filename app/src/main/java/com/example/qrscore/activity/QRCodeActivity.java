@@ -125,7 +125,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
             }
         });
 
-        db.collection("Location").whereEqualTo("qrID", qrID).whereArrayContains("uuids", uuid)
+        db.collection("Location").whereEqualTo("qrIDs", qrID).whereArrayContains("uuids", uuid)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -227,8 +227,9 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
+                                playerDataList.clear();
                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                ArrayList<String> userIDs = (ArrayList<String>) document.getData().get("hasScanned");
+                                ArrayList<String> userIDs = (ArrayList<String>) document.getData().get("scanned");
 
                                 // Add each player from hasScanned to playerDataList
                                 playerDataList.addAll(userIDs);

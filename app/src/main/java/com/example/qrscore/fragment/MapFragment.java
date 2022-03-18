@@ -30,6 +30,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Implement the path for when user denies location services
 /**
  * Purpose: This class is used to represent the map fragment.
  *
@@ -71,12 +72,15 @@ public class MapFragment extends Fragment {
 
         Button centerButton = view.findViewById(R.id.button_center);
 
+        // Initialize the map
         map = (MapView) view.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
 
+        // Setting zoom and touch controls
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
+        // Setting the maps starting point at the player location if enabled
         IMapController mapController = map.getController();
         mapController.setZoom(18.5);
         double lat = locationController.getLatitude();
@@ -84,24 +88,32 @@ public class MapFragment extends Fragment {
         GeoPoint startPoint = new GeoPoint(lat, lon);
         mapController.setCenter(startPoint);
 
+        // Enabling the marker for the player's location
         MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()), map);
         mLocationOverlay.enableMyLocation();
         map.getOverlays().add(mLocationOverlay);
 
+        // Button to center map on players location
         centerButton.setOnClickListener(centerClicked -> {
             GeoPoint myPos = new GeoPoint(locationController.getLatitude(), locationController.getLongitude());
             mapController.animateTo(myPos, 18.5, (long) 1000);
         });
 
+        // Set qr location markers on the map
         locationRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<DocumentSnapshot> docs = task.getResult().getDocuments();
 
                 for (DocumentSnapshot doc: docs) {
+                    // Convert firebase's geopoint to osmdroid's geopoint
                     com.google.firebase.firestore.GeoPoint pos = (com.google.firebase.firestore.GeoPoint) doc.getData().get("geoPoint");
+                    GeoPoint realPos = new GeoPoint(pos.getLatitude(), pos.getLongitude());
+
+                    // Get a count of how many qrcodes are near this location
                     ArrayList<String> qrCodes = (ArrayList<String>) doc.getData().get("qrIDs");
                     int nearbyQRs = qrCodes.size();
-                    GeoPoint realPos = new GeoPoint(pos.getLatitude(), pos.getLongitude());
+
+                    // Create the marker and add it to the map
                     Marker qrMarker = new Marker(map);
                     qrMarker.setPosition(realPos);
                     qrMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);

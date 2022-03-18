@@ -29,14 +29,12 @@ import java.util.ArrayList;
 public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<HomeFragmentQRCodeRecyclerAdapter.MyViewHolder>{
 
     private Account account;
-    private QRDataList qrDataList;
     private ArrayList<QRCode> qrCodes;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public HomeFragmentQRCodeRecyclerAdapter(Account account) {
         this.account = account;
-        this.qrDataList = account.getQrDataList();
-        this.qrCodes = qrDataList.getQRCodes();
+        this.qrCodes = (ArrayList<QRCode>) account.getQRList();
     }
 
     /**
@@ -70,7 +68,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     public void onBindViewHolder(@NonNull HomeFragmentQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
 
         holder.rank.setText("NIL");
-//        holder.score.setText(account.getQR().get(position).getQRScore());
+//        holder.score.setText(account.getQRList().get(position).getQRScore());
 
         String name = account.getProfile().getFirstName() + " " + account.getProfile().getLastName();
         if (account.getProfile().getFirstName() == null) {
@@ -80,7 +78,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
             holder.name.setText(name);
         }
 
-        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(account.getQR().get(position).getHash()));
+        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(account.getQRList().get(position).getHash()));
     }
 
     /**
@@ -139,7 +137,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
      */
     public void updateList(Account account) {
         this.account = account;
-        this.qrCodes = account.getQrDataList().getQRCodes();
+        this.qrCodes = (ArrayList<QRCode>) account.getQRList();
         notifyDataSetChanged();
     }
 
@@ -153,15 +151,13 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     public void deleteQRCode(String userID, String hash) {
 
         // Get document references
-        DocumentReference qrDataListRef = db.collection("QRDataList").document(userID);
         DocumentReference qrCodeRef = db.collection("QRCode").document(hash);
 
         // Remove code from account
-        qrDataListRef.update("qrCodes", FieldValue.arrayRemove(qrCodeRef));
         account.removeQR(hash);
 
         // Remove code from hasScanned
-        qrCodeRef.update("hasScanned", FieldValue.arrayRemove(userID));
+        qrCodeRef.update("scanned", FieldValue.arrayRemove(userID));
 
 
     }

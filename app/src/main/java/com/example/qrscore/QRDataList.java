@@ -33,7 +33,7 @@ public class QRDataList {
      *
      */
     public QRDataList() {
-        this.qrCodes = new ArrayList<QRCode>();
+        this.qrCodes = new ArrayList<>();
         this.rank = 0;
         this.sumOfScoresScanned = 0;
         this.totalQRCodesScanned = 0;
