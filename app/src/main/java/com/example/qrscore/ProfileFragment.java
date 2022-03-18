@@ -256,6 +256,7 @@ public class ProfileFragment extends Fragment {
             Bundle args = new Bundle();
             args.putString("email", profile.getEmail());
             args.putString("userUID", profile.getUserUID());
+            args.putBoolean("login", true);
 
             QRGeneratorDialog qrGeneratorDialog = new QRGeneratorDialog();
             qrGeneratorDialog.setArguments(args);

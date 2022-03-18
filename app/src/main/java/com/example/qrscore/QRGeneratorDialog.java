@@ -25,6 +25,8 @@ public class QRGeneratorDialog extends DialogFragment {
     ImageView qrCode;
     String email;
     String userUID;
+    Boolean login;
+    String account;
 
     @Nullable
     @Override
@@ -32,6 +34,7 @@ public class QRGeneratorDialog extends DialogFragment {
         Bundle mArgs = getArguments();
         email = mArgs.getString("email");
         userUID = mArgs.getString("userUID");
+        login = mArgs.getBoolean("login");
 
         View view = inflater.inflate(R.layout.qr_generator_diaglog, container, false);
 
@@ -49,7 +52,13 @@ public class QRGeneratorDialog extends DialogFragment {
     // https://www.youtube.com/watch?v=n8HdrLYL9DA
     private void generateQR() {
         MultiFormatWriter writer = new MultiFormatWriter();
-        String account = email + "\n" + userUID;
+        if (login) {
+            account = email + "\n" + userUID;
+        }
+        else {
+            account = userUID;
+        }
+
         try {
             BitMatrix bitMatrix = writer.encode(account, BarcodeFormat.QR_CODE, 600, 600);
             BarcodeEncoder encoder = new BarcodeEncoder();
