@@ -14,14 +14,20 @@ import android.widget.Button;
 
 import com.example.qrscore.R;
 import com.example.qrscore.controller.LocationController;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+
+import java.util.List;
 
 /**
  * Purpose: This class is used to represent the map fragment.
@@ -35,6 +41,9 @@ public class MapFragment extends Fragment {
 
     private LocationController locationController;
 
+    private FirebaseFirestore db;
+    private CollectionReference locationRef;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -42,6 +51,9 @@ public class MapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
+        locationRef = db.collection("Location");
 
         locationController = new LocationController(getActivity());
         locationController.startLocationUpdates();
@@ -78,6 +90,21 @@ public class MapFragment extends Fragment {
         centerButton.setOnClickListener(centerClicked -> {
             GeoPoint myPos = new GeoPoint(locationController.getLatitude(), locationController.getLongitude());
             mapController.animateTo(myPos, 18.5, (long) 1000);
+        });
+
+        locationRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<DocumentSnapshot> docs = task.getResult().getDocuments();
+
+                for (DocumentSnapshot doc: docs) {
+                    com.google.firebase.firestore.GeoPoint pos = (com.google.firebase.firestore.GeoPoint) doc.getData().get("geoPoint");
+                    GeoPoint realPos = new GeoPoint(pos.getLatitude(), pos.getLongitude());
+                    Marker qrMarker = new Marker(map);
+                    qrMarker.setPosition(realPos);
+                    qrMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
+                    map.getOverlays().add(qrMarker);
+                }
+            }
         });
 
         return view;
