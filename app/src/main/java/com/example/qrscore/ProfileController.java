@@ -131,6 +131,7 @@ public class ProfileController {
         profile.put("lastName", updatedProfile.getLastName());
         profile.put("email", updatedProfile.getEmail());
         profile.put("phoneNumber", updatedProfile.getPhoneNumber());
+        profile.put("permanent", updatedProfile.getPermanent());
 
         // Update profile of user.
         profileRef
@@ -163,6 +164,7 @@ public class ProfileController {
         profileSPEditor.putString("email", newProfile.getEmail());
         profileSPEditor.putString("phoneNumber", newProfile.getPhoneNumber());
         profileSPEditor.putString("userUID", newProfile.getUserUID());
+        profileSPEditor.putBoolean("permanent", newProfile.getPermanent());
         profileSPEditor.commit();
     }
 
@@ -176,15 +178,15 @@ public class ProfileController {
         String lastName = profileSP.getString("lastName", null);
         String email = profileSP.getString("email", null);
         String phoneNumber = profileSP.getString("phoneNumber", null);
+        Boolean permanent = profileSP.getBoolean("permanent", false);
         String userUID = profileSP.getString("userUID", currentUser.getUid());
-        Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID);
+        Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID, permanent);
         return profile;
     }
 
-    public void convertAccount() {
+    public void convertAccount(Context context) {
         Profile profile = getProfile();
         AuthCredential credential = EmailAuthProvider.getCredential(profile.getEmail(), profile.getUserUID());
-
         firebaseAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -192,6 +194,8 @@ public class ProfileController {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "linkWithCredential:success");
                             FirebaseUser user = task.getResult().getUser();
+                            profile.setPermanent(true);
+                            updateProfile(profile, context);
                         } else {
                             Log.w(TAG, "linkWithCredential:failure", task.getException());
 //                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();

@@ -2,16 +2,24 @@ package com.example.qrscore;
 
 import android.os.Bundle;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,7 +39,8 @@ public class ProfileFragment extends Fragment {
 
     private ProfileController profileController;
     private Profile profile;
-    private TextView usernameTextView;
+    private TextInputLayout userUIDLayout;
+    private TextInputEditText userUIDTextEdit;
     private TextInputLayout firstNameLayout;
     private TextInputEditText firstNameTextEdit;
     private TextInputLayout lastNameLayout;
@@ -41,6 +50,7 @@ public class ProfileFragment extends Fragment {
     private TextInputLayout phoneNumberLayout;
     private TextInputEditText phoneNumberEdit;
     private Button saveButton;
+    private Button generateQRButton;
 
     /**
      * Purpose: A constructor for the profile fragment.
@@ -61,14 +71,19 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        saveButton = view.findViewById(R.id.profile_save_button);
-        saveButton.setOnClickListener(new ButtonOnClickListener());
         Toolbar toolbar = view.findViewById(R.id.profile_actionbar);
         toolbar.setTitle("");
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         populateProfile(profile, view);
+
+        saveButton = view.findViewById(R.id.profile_save_button);
+        generateQRButton = view.findViewById(R.id.profile_generateQR_button);
         phoneNumberEdit.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        saveButton.setOnClickListener(new ButtonOnClickListener());
+        emailTextEdit.addTextChangedListener(new EmailTextWatcher());
+        emailTextEdit.setOnFocusChangeListener(new EmailFocusChangedListener());
+        generateQRButton.setOnClickListener(new QRCodeButtonOnClickListener());
         return view;
     }
 
@@ -87,8 +102,12 @@ public class ProfileFragment extends Fragment {
      *      Represents a view that is contained within the fragment.
      */
     private void populateProfile(Profile profile, View view) {
-        usernameTextView = view.findViewById(R.id.userUID_textView);
-        usernameTextView.setText(profile.getUserUID());
+
+        userUIDLayout = view.findViewById(R.id.userUID_textInputLayout);
+        userUIDTextEdit = view.findViewById(R.id.userUID_textInputEditText);
+        userUIDTextEdit.setText(profile.getUserUID());
+        userUIDTextEdit.setInputType(InputType.TYPE_NULL);
+        userUIDTextEdit.setFocusable(false);
 
         firstNameLayout = view.findViewById(R.id.first_name_textInputLayout);
         firstNameTextEdit = view.findViewById(R.id.first_name_textInputEditText);
@@ -106,17 +125,19 @@ public class ProfileFragment extends Fragment {
             lastNameTextEdit.setText(profile.getLastName());
         }
 
-        emailLayout = view.findViewById(R.id.email_textInputLayout);
         emailTextEdit = view.findViewById(R.id.email_textInputEditText);
+        emailLayout = view.findViewById(R.id.email_textInputLayout);
         if (profile.getEmail() == null || profile.getEmail() == "") {
             emailTextEdit.setText("");
+            emailLayout.setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT);
         } else {
             emailTextEdit.setText(profile.getEmail());
+            emailTextEdit.setInputType(InputType.TYPE_NULL);
         }
 
         phoneNumberLayout = view.findViewById(R.id.phone_number_textInputLayout);
         phoneNumberEdit = view.findViewById(R.id.phone_number_textInputEditText);
-        if (profile.getEmail() == null || profile.getEmail() == "") {
+        if (profile.getPhoneNumber() == null || profile.getPhoneNumber() == "") {
             phoneNumberEdit.setText("");
         } else {
             phoneNumberEdit.setText(profile.getPhoneNumber());
@@ -134,22 +155,81 @@ public class ProfileFragment extends Fragment {
             String lastName = lastNameTextEdit.getText().toString().trim();
             String email = emailTextEdit.getText().toString().trim();
             String phoneNumber = phoneNumberEdit.getText().toString().trim();
-            String userUID = usernameTextView.getText().toString();
-            if (firstName == "") {
-                firstName = null;
+            String userUID = userUIDTextEdit.getText().toString();
+
+            if (!email.isEmpty() && !isValidEmail(email)) {
+                Toast.makeText(getContext(), "Email Invalid, Profile not saved", Toast.LENGTH_SHORT).show();
             }
-            if (lastName == "") {
-                lastName = null;
+            else {
+                if (firstName.isEmpty()) {
+                    firstName = null;
+                }
+                if (lastName.isEmpty()) {
+                    lastName = null;
+                }
+                if (email.isEmpty()) {
+                    email = null;
+                } else {
+                    emailTextEdit.setInputType(InputType.TYPE_NULL);
+                    emailLayout.setEndIconMode(TextInputLayout.END_ICON_NONE);
+                    emailLayout.setErrorEnabled(false);
+                }
+                if (phoneNumber.isEmpty()) {
+                    phoneNumber = null;
+                }
+                Profile updatedProfile = new Profile(firstName, lastName, email, phoneNumber, userUID);
+                profileController.updateProfile(updatedProfile, getActivity());
             }
-            if (email == "") {
-                email = null;
+        }
+    }
+
+    private class EmailTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            emailLayout.setError("Email can only be edited once!");
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            if (!isValidEmail(charSequence)) {
+                emailLayout.setError("Invalid Email");
             }
-            if (phoneNumber == "") {
-                phoneNumber = null;
+            else {
+                emailLayout.setError("Email can only be edited once!");
             }
-            Profile updatedProfile = new Profile(firstName, lastName, email, phoneNumber, userUID);
-            profileController.updateProfile(updatedProfile, getActivity());
-//            profileController.convertAccount();
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+        }
+    }
+
+    private class EmailFocusChangedListener implements View.OnFocusChangeListener {
+
+        @Override
+        public void onFocusChange(View view, boolean changed) {
+            if (changed) {
+                emailLayout.setError("Email can only be edited once!");
+            }
+        }
+    }
+
+    //https://stackoverflow.com/a/15808057
+    private static boolean isValidEmail(CharSequence email) {
+        return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
+    }
+
+    private class QRCodeButtonOnClickListener implements View.OnClickListener {
+        Profile profile = profileController.getProfile();
+        @Override
+        public void onClick(View view) {
+            if (!profile.getEmail().isEmpty() && !profile.getPermanent()) {
+                profileController.convertAccount(getContext());
+            }
+            else {
+                Toast.makeText(getContext(), "Email Required for QR Code generation", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
