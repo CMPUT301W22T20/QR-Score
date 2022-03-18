@@ -33,9 +33,6 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-
-
-
     public QRCode(String hash) {
         Random random = new Random();
         this.hash = hash;
@@ -70,7 +67,17 @@ public class QRCode {
      *      a String identifier for the QR code.
      */
     public Integer calculateQRScore(String hash) {
-        return hash.length() - hash.replace("0", "").length();
+        String hash5 = hash.replace("00000", "");
+        String hash4 = hash5.replace("0000", "");
+        String hash3 = hash4.replace("000", "");
+        String hash2 = hash3.replace("00", "");
+        Integer count5 = (hash.length() - hash5.length())/5;
+        Integer count4 = (hash.length() - hash4.length())/4;
+        Integer count3 = (hash.length() - hash3.length())/3;
+        Integer count2 = (hash.length() - hash2.length())/2;
+        Integer score = count2*20 + count3*400 + count4*8000 + count5*160000;
+
+        return score;
     }
 
     /**
@@ -95,10 +102,14 @@ public class QRCode {
      * Removes a player from the list.
      *
      * @param player
-     *      the player to remove.
+     *      the id of the player to remove.
      */
-    public void deleteScanned(Player player) {
-        hasScanned.remove(player);
+    public void deleteScanned(String player) {
+        for (int i=0; i<hasScanned.size(); i++) {
+            if (hasScanned.get(i) == player) {
+                hasScanned.remove(player);
+            }
+        }
     }
 
     /**
