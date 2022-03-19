@@ -125,7 +125,8 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
             }
         });
 
-        db.collection("Location").whereEqualTo("qrIDs", qrID).whereArrayContains("uuids", uuid)
+        // Getting all locations where the uuids match
+        db.collection("Location").whereArrayContains("uuids", uuid)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -133,9 +134,15 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
                     List<DocumentSnapshot> docs = task.getResult().getDocuments();
                     for (DocumentSnapshot doc: docs) {
                         System.out.println(doc);
-                        GeoPoint geoPoint = (GeoPoint) doc.get("geoPoint");
-                        String text = geoPoint.getLatitude() + ", " + geoPoint.getLongitude();
-                        geoText.setText(text);
+                        ArrayList<String> qrIDs = (ArrayList<String>) doc.getData().get("qrIDs");
+
+                        // Checking if the doc contains the unique qrID
+                        if (qrIDs.contains(qrID)) {
+                            GeoPoint geoPoint = (GeoPoint) doc.get("geoPoint");
+                            String text = geoPoint.getLatitude() + ", " + geoPoint.getLongitude();
+                            geoText.setText(text);
+                            break;
+                        }
                     }
                 }
             }

@@ -4,6 +4,31 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/mattb/Sync-BCJ/School/Courses/CMPUT 301/eClass/Project/QR-Score/app/src/main/res/layout/activity_main.xml" value="0.20833333333333334" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_home.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_leaderboard.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_leaderboard_item_list.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_map.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-anydpi/ic_profile.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/activity_background.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/background_rectangle_bordered.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/ic_baseline_gps_fixed_24.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/ic_baseline_qr_code_24.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/map_edit_text_background.xml" value="0.1975" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_round.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/nav_bar_selector.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.3055" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/content_comment.xml" value="0.18958333333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_comment.xml" value="0.18958333333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_map.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/fragment_scan.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/home_fragment_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/list_items.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/layout/profile_actionbar.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/home_fragment_qr_code_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/GitHub/QR-Score/app/src/main/res/menu/leaderboard_profile_menu.xml" value="0.36666666666666664" />
         <entry key="app/src/main/res/drawable/activity_background.xml" value="0.1875" />
         <entry key="app/src/main/res/drawable/back.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/rectangle_bordered_background.xml" value="0.1875" />

@@ -1,19 +1,24 @@
 package com.example.qrscore.fragment;
 
 import android.content.Context;
-import android.location.Location;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.qrscore.R;
 import com.example.qrscore.controller.LocationController;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,7 +75,11 @@ public class MapFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_map, container, false);
 
-        Button centerButton = view.findViewById(R.id.button_center);
+        FloatingActionButton centerButton = view.findViewById(R.id.button_center);
+        Button searchButton = view.findViewById(R.id.button_map_confirm);
+        EditText latEdit = view.findViewById(R.id.map_lat_edit_text);
+        EditText lonEdit = view.findViewById(R.id.map_lon_edit_text);
+        TextView errorText = view.findViewById(R.id.map_error_text_view);
 
         // Initialize the map
         map = (MapView) view.findViewById(R.id.map);
@@ -91,13 +100,9 @@ public class MapFragment extends Fragment {
         // Enabling the marker for the player's location
         MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()), map);
         mLocationOverlay.enableMyLocation();
+        Bitmap myLogo = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_gps_fixed_24);
+        mLocationOverlay.setPersonIcon(myLogo);
         map.getOverlays().add(mLocationOverlay);
-
-        // Button to center map on players location
-        centerButton.setOnClickListener(centerClicked -> {
-            GeoPoint myPos = new GeoPoint(locationController.getLatitude(), locationController.getLongitude());
-            mapController.animateTo(myPos, 18.5, (long) 1000);
-        });
 
         // Set qr location markers on the map
         locationRef.get().addOnCompleteListener(task -> {
@@ -123,6 +128,32 @@ public class MapFragment extends Fragment {
             }
         });
 
+        // Button to center map on players location
+        centerButton.setOnClickListener(centerClicked -> {
+            GeoPoint myPos = new GeoPoint(locationController.getLatitude(), locationController.getLongitude());
+            mapController.animateTo(myPos, 18.5, (long) 1000);
+        });
+
+        // Button to search for location on the map
+        searchButton.setOnClickListener(searchClicked -> {
+            boolean validLocation = true;
+            try {
+                double latSearch = Double.parseDouble(latEdit.getText().toString());
+                double lonSearch = Double.parseDouble(lonEdit.getText().toString());
+
+                GeoPoint searchPoint = new GeoPoint(latSearch, lonSearch);
+                mapController.animateTo(searchPoint, 18.5, (long) 1000);
+            } catch (Exception e) {
+                validLocation = false;
+                errorText.setText("Invalid location!");
+                e.printStackTrace();
+            }
+
+            if (validLocation) {
+                errorText.setText("");
+            }
+        });
+
         return view;
     }
 
@@ -130,6 +161,7 @@ public class MapFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+        map.onPause();
         locationController.stopLocationUpdates();
     }
 
@@ -137,6 +169,7 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        map.onResume();
         locationController.startLocationUpdates();
     }
 }
