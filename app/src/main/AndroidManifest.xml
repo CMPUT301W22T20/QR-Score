@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
@@ -17,11 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QRScore">
         <activity
-
             android:name=".QRCodeActivity"
             android:exported="false" />
         <activity
-
             android:name=".OtherPlayerAccountActivity"
             android:exported="false" />
         <activity

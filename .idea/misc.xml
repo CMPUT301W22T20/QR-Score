@@ -15,7 +15,7 @@
         <entry key="app/src/main/res/drawable/round_button_selected.xml" value="0.248" />
         <entry key="app/src/main/res/drawable/round_button_selector.xml" value="0.248" />
         <entry key="app/src/main/res/drawable/useruid_text_box.xml" value="0.2295" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.11956521739130435" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.29530978575564565" />
         <entry key="app/src/main/res/layout/activity_other_player_account.xml" value="0.28177083333333336" />
         <entry key="app/src/main/res/layout/activity_profile_auth.xml" value="0.24091698512558113" />
         <entry key="app/src/main/res/layout/activity_qrcode.xml" value="0.18860626220703125" />
@@ -44,6 +44,7 @@
         <entry key="app/src/main/res/layout/scanned_by_content.xml" value="0.17755825734549138" />
         <entry key="app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26916198730468743" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2705" />
       </map>
     </option>
   </component>
