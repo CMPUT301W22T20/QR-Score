@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.fragment;
 
 import android.os.Bundle;
 
@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.qrscore.Profile;
+import com.example.qrscore.R;
+import com.example.qrscore.controller.ProfileController;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

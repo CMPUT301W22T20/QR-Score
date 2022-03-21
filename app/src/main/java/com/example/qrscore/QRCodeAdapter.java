@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.qrscore.activity.QRCodeActivity;
+
 import java.util.ArrayList;
 
 /**

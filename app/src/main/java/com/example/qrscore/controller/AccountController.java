@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -6,6 +6,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.qrscore.Account;
+import com.example.qrscore.QRDataList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,7 +58,6 @@ public class AccountController {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         accountCollectionRef = db.collection("Account");
-        QRDataListCollectionRef = db.collection("QRDataList");
         profileCollectionRef = db.collection("Profile");
         currentUser = firebaseAuth.getCurrentUser();
         userUID = currentUser.getUid();
@@ -68,14 +69,12 @@ public class AccountController {
     public void createNewAccount() {
         account = new Account(userUID);
         accountRef = accountCollectionRef.document(userUID);
-        QRDataListRef = QRDataListCollectionRef.document(userUID);
 
         HashMap<String, Object> newAccount = new HashMap<>();
-        newAccount.put("Profile", db.collection("Profile").document(userUID));
         newAccount.put("UserUID", userUID);
         newAccount.put("Score", "0");
         newAccount.put("Total", "0");
-        newAccount.put("QRDataList", db.collection("QRDataList").document(userUID));
+        newAccount.put("QRCodes", account.getQRList());
         accountRef.set(newAccount)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
@@ -84,20 +83,20 @@ public class AccountController {
                     Log.d(TAG, "Account has not been created.");
                     accountRef.set(account);
                 });
+    }
 
-        HashMap<String, Object> newQRDataList = new HashMap<>();
-        newQRDataList.put("qrCodes", account.getQrDataList().getQRCodes());
-        newQRDataList.put("rank", account.getQrDataList().getRank());
-        newQRDataList.put("sumOfScoresScanned", account.getQrDataList().getSumOfScoresScanned());
-        newQRDataList.put("totalQRCodesScanned", account.getQrDataList().getTotalQRCodesScanned());
-        QRDataListRef.set(newQRDataList)
-                .addOnSuccessListener(unused -> {
-                    Log.d(TAG, "QRDataList created!");
-                })
-                .addOnFailureListener(e -> {
-                    Log.d(TAG, "QRDataList has not been created.");
-                    QRDataListRef.set(newQRDataList);
-                });
+    public void updateScore() {
+        accountRef = accountCollectionRef.document(userUID);
+
+        Integer newScore = account.getScore();
+        accountRef.update("Score", String.valueOf(newScore));
+    }
+
+    public void updateTotalScanned() {
+        accountRef = accountCollectionRef.document(userUID);
+
+        Integer newTotal = account.getScanned();
+        accountRef.update("Total", String.valueOf(newTotal));
     }
 
 }

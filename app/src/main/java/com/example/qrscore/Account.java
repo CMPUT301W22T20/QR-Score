@@ -1,5 +1,8 @@
 package com.example.qrscore;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /** Purpose: This class represents an account in the system.
@@ -16,7 +19,7 @@ public class Account {
     private static final String TAG = "ACCOUNT";
     private String userID;
     private Profile profile;
-    private QRDataList qrDataList;
+    private ArrayList<QRCode> qrCodes;
     private Integer score;
     private Integer scanned;
 
@@ -29,9 +32,9 @@ public class Account {
     public Account(String userID) {
         this.userID = userID;
         this.profile = new Profile(userID);
-        this.qrDataList = new QRDataList();
         this.score = 0;
         this.scanned = 0;
+        this.qrCodes = new ArrayList<>();
     }
 
     /**
@@ -47,9 +50,9 @@ public class Account {
     public Account(String userID, Integer score, Integer scanned) {
         this.userID = userID;
         this.profile = new Profile(userID);
-        this.qrDataList = new QRDataList();
         this.scanned = scanned;
         this.score = score;
+        this.qrCodes = new ArrayList<>();
     }
 
     /**
@@ -87,6 +90,7 @@ public class Account {
      *      Integer representing the total score
      */
     public Integer getScore() {
+        calculateTotalScore();
         return score;
     }
 
@@ -115,17 +119,7 @@ public class Account {
      *      Integer representing the number of QR codes scanned.
      */
     public Integer getScanned() {
-        return scanned;
-    }
-
-    /**
-     * Adds a QR code to the QRDataList.
-     *
-     * @param qr
-     *      the QR code to add.
-     */
-    public void addQR(QRCode qr) {
-        qrDataList.addQRCode(qr);
+        return qrCodes.size();
     }
 
     /**
@@ -134,17 +128,8 @@ public class Account {
      * @return
      *      a List of QR codes.
      */
-    public List<QRCode> getQR() {
-        return qrDataList.getQRCodes();
-    }
-
-    /**
-     * Purpose: Set the QRDataList for the account.
-     * @param qrDataList
-     *      Represents a QRDataList instance.
-     */
-    public void setQrDataList(QRDataList qrDataList) {
-        this.qrDataList = qrDataList;
+    public List<QRCode> getQRList() {
+        return qrCodes;
     }
 
     /**
@@ -154,37 +139,23 @@ public class Account {
      *      the hash of the QR code to remove.
      */
     public void removeQR(String hash) {
-        qrDataList.removeQRCodeFromHash(hash);
+        for (QRCode qrCode: qrCodes) {
+            if (qrCode.getHash() == hash) {
+                qrCodes.remove(qrCode);
+                return;
+            }
+        }
     }
 
-    /**
-     * Returns the QRDataList
-     *
-     * @return
-     *      qrDataList
-     */
-    public QRDataList getQrDataList() {
-        return qrDataList;
+    public void setQRCodesList(ArrayList<QRCode> qrCodesArray) {
+        this.qrCodes = qrCodesArray;
     }
 
-    /**
-     * Purpose: Return the highest scoring QR Code.
-     *
-     * @return
-     *      Integer representing the highest scoring QR Code,
-     */
-    public Integer getHighest() {
-        return qrDataList.getHighscore();
+    private void calculateTotalScore() {
+        int sum = 0;
+        for (QRCode qrCode: qrCodes) {
+            sum = sum + qrCode.getQRScore();
+        }
+        score = sum;
     }
-
-    /**
-     * Purpose: Get the lowest scoring QR Code
-     *
-     * @return
-     *      Integer representing the lowest scoring QR Code.
-     */
-    public Integer getLowest() {
-        return qrDataList.getLowscore();
-    }
-
 }

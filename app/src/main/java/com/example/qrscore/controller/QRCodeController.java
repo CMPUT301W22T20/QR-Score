@@ -1,7 +1,9 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import androidx.annotation.NonNull;
 
+import com.example.qrscore.QRCode;
+import com.example.qrscore.QRDataList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -9,7 +11,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.model.DocumentCollections;
 
 import java.util.ArrayList;
 
@@ -22,15 +23,12 @@ import java.util.ArrayList;
 public class QRCodeController {
     private FirebaseFirestore db;
     private CollectionReference QRCodeColRef;
-    private CollectionReference QRDataListRef;
-    private DocumentReference QRDataListDocRef;
-    private AccountController accountController;
-    private QRDataList qrDataList;
+    private CollectionReference accountColRef;
 
     public QRCodeController() {
         db = FirebaseFirestore.getInstance();
         QRCodeColRef = db.collection("QRCode");
-        QRDataListRef = db.collection("QRDataList");
+        accountColRef = db.collection("Account");
     }
 
     /**
@@ -43,26 +41,23 @@ public class QRCodeController {
      *      User UID of user that added it.
      */
     public void add(String key, QRCode qrCode, String uuid) {
-        QRDataListDocRef = QRDataListRef.document(uuid);
-
-        QRDataListDocRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot qrDataDoc = task.getResult();
-                if (qrDataDoc.exists()) {
-                    qrDataList = qrDataDoc.toObject(QRDataList.class);
-                }
-            }
-        });
+//        QRDataListDocRef.get().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                DocumentSnapshot qrDataDoc = task.getResult();
+//                if (qrDataDoc.exists()) {
+//                    qrDataList = qrDataDoc.toObject(QRDataList.class);
+//                }
+//            }
+//        });
         QRCodeColRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot qrCodeDocument = task.getResult();
                     if (qrCodeDocument.exists()) {
-                        ArrayList<String> scanners = (ArrayList<String>) qrCodeDocument.get("hasScanned");
+                        ArrayList<String> scanners = (ArrayList<String>) qrCodeDocument.get("scanned");
                         if (!scanners.contains(uuid)) {
-                            qrCodeDocument.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
-                            addToQRDataList(key, qrDataList, qrCode);
+                            qrCodeDocument.getReference().update("scanned", FieldValue.arrayUnion(uuid));
                         }
                     }
                     else {
@@ -71,11 +66,6 @@ public class QRCodeController {
                 }
             }
         });
-    }
-
-    private void addToQRDataList(String key, QRDataList qrDataList, QRCode qrCode) {
-//        qrDataList.setTotalQRCodesScanned(qrDataList.getTotalQRCodesScanned()+1);
-//        qrDataList.setSumOfScoresScanned(qrDataList.getSumOfScoresScanned() + qrCode.getQRScore());
-        QRDataListDocRef.update("qrCodes", FieldValue.arrayUnion(db.collection("QRCode").document(key)));
+        accountColRef.document(uuid).update("QRCodes", FieldValue.arrayUnion(qrCode.getHash()));
     }
 }

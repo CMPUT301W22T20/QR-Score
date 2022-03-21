@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

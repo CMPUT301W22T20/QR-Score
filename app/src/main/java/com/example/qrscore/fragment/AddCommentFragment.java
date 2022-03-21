@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.qrscore.Comment;
 import com.example.qrscore.R;
+import com.example.qrscore.controller.ProfileController;
 
 /**
  * Purpose: This class creates a dialog fragment for the user to input a string into
