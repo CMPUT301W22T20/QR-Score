@@ -1,30 +1,27 @@
-package com.example.qrscore;
+package com.example.qrscore.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.qrscore.Account;
+import com.example.qrscore.QRCode;
+import com.example.qrscore.QRCodeAdapter;
+import com.example.qrscore.QRDataList;
+import com.example.qrscore.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Purpose: This class shows a list of QRCodes that another player owns. Also shows total scanned,
@@ -44,7 +41,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     final String TAG = "OTHER_PLAYER_ACTIVITY";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Account account;
-    private QRDataList qrDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +52,8 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         String userUID = intent.getStringExtra("userID");
 
         account = new Account(userUID);
-        qrDataList = new QRDataList();
-        qrDataList.setQRCodes(new ArrayList<QRCode>());
-        account.setQrDataList(qrDataList);
 
-        ArrayList<QRCode> qrCodes = new ArrayList<QRCode>();
+        ArrayList<QRCode> qrCodes = new ArrayList<>();
         QRCodeAdapter qrCodesAdapter = new QRCodeAdapter(this, com.example.qrscore.R.layout.qr_codes_list_content, qrCodes);
         qrCodesList = findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);
@@ -76,14 +69,53 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         usernameTextView.setText(userUID);
         qrCodeTitleTextView.setText(userUID + "'s QR Codes");
 
-        DocumentReference profileRef = db.collection("Profile").document(userUID);
-        DocumentReference QRDataListRef = db.collection("QRDataList").document(userUID);
+        DocumentReference accountRef = db.collection("Account").document(userUID);
+        CollectionReference codeRef = db.collection("QRCode");
 
-        //                                                        scoreTextView.setText(qrDataListDocument.getData().get("sumOfScoresScanned").toString());
-//                                                        scannedTextView.setText(qrDataListDocument.getData().get("totalQRCodesScanned").toString());
-//                                                        rankTextView.setText(qrDataListDocument.getData().get("rank").toString());
+        accountRef.get()    // get account document
+                .addOnCompleteListener(taskAccount -> {
+            qrCodesAdapter.clear();
+            if (taskAccount.isSuccessful()) {
+                DocumentSnapshot accountDocument = taskAccount.getResult();
 
-        QRDataListRef.get()
+
+                if (accountDocument.exists()) {
+                    Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
+
+                    // set textviews
+                    String total = (String) accountDocument.get("Total");
+                    String score = (String) accountDocument.get("Score");
+                    scannedTextView.setText(total);
+                    scoreTextView.setText(score);
+
+                    ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("QRCodes");   // get the QRCodes array
+
+                    // get each QRCode object
+                    for (String codeStr : qrCodesArray) {
+                        codeRef.document(codeStr).get()
+                                .addOnCompleteListener(taskQRCodes -> {
+                                    if (taskQRCodes.isSuccessful()) {
+                                        DocumentSnapshot document = taskQRCodes.getResult();
+
+                                        // Get QRCode object and add to adapter
+                                        if (document.exists()) {
+                                            Log.d(TAG, "QRCode DocumentSnapshot data: " + document.getData());
+                                            QRCode code = document.toObject(QRCode.class);
+                                            qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
+                                            qrCodesAdapter.notifyDataSetChanged();
+
+                                        } else {
+                                            Log.d(TAG, "No such qr code document");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", taskQRCodes.getException());
+                                    }
+                                });
+                    }
+                }
+            }
+        });
+      /*  QRDataListRef.get()
                 .addOnCompleteListener(taskQRDataList -> {
                     qrCodesAdapter.clear();
                     if (taskQRDataList.isSuccessful()) {
@@ -113,7 +145,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                             }
                         }
                     }
-                });
+                });*/
 
         // GOTO QRCodeActivity when code is clicked on
         qrCodesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

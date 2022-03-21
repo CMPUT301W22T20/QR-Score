@@ -5,19 +5,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.view.View;
 import android.widget.EditText;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.qrscore.activity.MainActivity;
+import com.example.qrscore.controller.ProfileController;
 import com.robotium.solo.Solo;
 
 import org.junit.After;

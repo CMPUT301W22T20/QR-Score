@@ -3,12 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.MapFragment"
     android:id="@+id/map_fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:backgroundTint="@color/white"
+        android:id="@+id/button_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:src="@drawable/ic_baseline_gps_fixed_24"
+        android:text="center"
+        android:layout_gravity="bottom|right" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/map_nav_ic" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/map_edit_text_background"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/map_lat_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/white"
+                android:inputType="numberDecimal|numberSigned"
+                android:maxLength="12"
+                android:layout_weight="1"
+                android:hint="Latitude" />
+
+            <EditText
+                android:id="@+id/map_lon_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/white"
+                android:inputType="numberDecimal|numberSigned"
+                android:maxLength="12"
+                android:layout_weight="1"
+                android:hint="Longitude" />
+
+            <Button
+                android:id="@+id/button_map_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:layout_weight="1" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/map_error_text_view"
+            android:layout_width="match_parent"
+            android:textColor="@color/blue"
+            android:layout_height="wrap_content"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
 </FrameLayout>

@@ -1,10 +1,11 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
 import com.example.qrscore.Photo;
+import com.example.qrscore.PhotoCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

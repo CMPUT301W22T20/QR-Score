@@ -6,7 +6,7 @@
     android:id="@+id/leaderboard_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LeaderboardFragment"
+    tools:context=".fragment.LeaderboardFragment"
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout

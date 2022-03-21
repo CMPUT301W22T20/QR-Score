@@ -6,7 +6,7 @@ Allow user to click add comment from this screen.
 Outstanding issues:
 */
 
-package com.example.qrscore;
+package com.example.qrscore.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +25,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.qrscore.Comment;
+import com.example.qrscore.CommentCustomList;
+import com.example.qrscore.PhotoCallback;
+import com.example.qrscore.Player;
+import com.example.qrscore.R;
+import com.example.qrscore.controller.PhotoController;
+import com.example.qrscore.controller.ProfileController;
+import com.example.qrscore.fragment.AddCommentFragment;
+import com.example.qrscore.fragment.DisplayCommentFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -117,7 +125,8 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
             }
         });
 
-        db.collection("Location").whereEqualTo("qrID", qrID).whereArrayContains("uuids", uuid)
+        // Getting all locations where the uuids match
+        db.collection("Location").whereArrayContains("uuids", uuid)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -125,9 +134,15 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
                     List<DocumentSnapshot> docs = task.getResult().getDocuments();
                     for (DocumentSnapshot doc: docs) {
                         System.out.println(doc);
-                        GeoPoint geoPoint = (GeoPoint) doc.get("geoPoint");
-                        String text = geoPoint.getLatitude() + ", " + geoPoint.getLongitude();
-                        geoText.setText(text);
+                        ArrayList<String> qrIDs = (ArrayList<String>) doc.getData().get("qrIDs");
+
+                        // Checking if the doc contains the unique qrID
+                        if (qrIDs.contains(qrID)) {
+                            GeoPoint geoPoint = (GeoPoint) doc.get("geoPoint");
+                            String text = geoPoint.getLatitude() + ", " + geoPoint.getLongitude();
+                            geoText.setText(text);
+                            break;
+                        }
                     }
                 }
             }
@@ -195,18 +210,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     }
 
     /**
-     * This adds a player to hasScanned for a specific QRCode
-     * @param codeID
-     *          firebase document ID of the QRCode
-     * @param player
-     *          The player that scanned the code
-     */
-    public void updateHasScanned(String codeID, Player player) {
-        DocumentReference id = qrCodeRef.document(codeID);
-//        id.update("hasScanned", FieldValue.arrayUnion(player.getUsername()));
-    }
-
-    /**
      * Loads who has scanned a QRCode from firebase and outputs to screen
      * @param codeID
      *          firebase document ID of the QRCode
@@ -219,8 +222,9 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
+                                playerDataList.clear();
                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                ArrayList<String> userIDs = (ArrayList<String>) document.getData().get("hasScanned");
+                                ArrayList<String> userIDs = (ArrayList<String>) document.getData().get("scanned");
 
                                 // Add each player from hasScanned to playerDataList
                                 playerDataList.addAll(userIDs);

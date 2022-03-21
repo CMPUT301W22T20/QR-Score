@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,11 +21,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
+import com.example.qrscore.Account;
+import com.example.qrscore.Photo;
+import com.example.qrscore.QRCode;
+import com.example.qrscore.R;
+import com.example.qrscore.controller.AccountController;
+import com.example.qrscore.controller.LocationController;
+import com.example.qrscore.controller.PhotoController;
+import com.example.qrscore.controller.ProfileController;
+import com.example.qrscore.controller.QRCodeController;
 import com.google.common.hash.Hashing;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
