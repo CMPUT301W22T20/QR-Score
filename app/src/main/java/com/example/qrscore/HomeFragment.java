@@ -94,18 +94,15 @@ public class HomeFragment extends Fragment {
         userUID = profileController.getProfile().getUserUID();
         myAccount = new Account(userUID);
         myAccount.setProfile(profileController.getProfile());
-        myQRDataList = new QRDataList();
-        myQRDataList.setQRCodes(new ArrayList<QRCode>());
+        myAccount.setQrDataList(new ArrayList<QRCode>());
         myAccount.setQrDataList(myQRDataList);
 
         qrCollectionRef = db.collection("QRCode");
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
-        QRDataListCollectionRef = db.collection("QRDataList");
 
         accountRef = accountCollectionRef.document(userUID);
         profileRef = profileCollectionRef.document(userUID);
-        QRDataListRef = QRDataListCollectionRef.document(userUID);
 
 //        qrRef = db.collection("QRCode");
 //        direction = Query.Direction.DESCENDING;
@@ -113,6 +110,62 @@ public class HomeFragment extends Fragment {
 
     private void populateData(View view) {
 
+        // get an array of strings of QRCode document ids
+        accountRef.get()
+                .addOnCompleteListener(taskAccount -> {
+                    if (taskAccount.isSuccessful()) {
+                        DocumentSnapshot accountDocument = taskAccount.getResult();
+                        if (accountDocument.exists()) {
+                            Log.d(TAG, "Account Document data: " + accountDocument.getData());
+
+                            int total = ((Number) accountDocument.get("Total")).intValue();
+
+                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("QRCodes");
+
+                            // get each QRCode from array
+                            for (String codeid : qrCodesArray) {
+                                qrCollectionRef.document(codeid).get()
+                                        .addOnCompleteListener(taskQRCodes -> {
+                                            if (taskQRCodes.isSuccessful()) {
+                                                DocumentSnapshot qrCodesDocument = taskQRCodes.getResult();
+                                                if (qrCodesDocument.exists()) {
+                                                    Log.d(TAG, "qrCodesdocument data: " + qrCodesDocument.getData());
+
+                                                    QRCode code = qrCodesDocument.toObject(QRCode.class);   // get the QRCode object
+
+                                                    myQRDataList.addQRCode(code);
+                                                    myAccount.setQrDataList(myQRDataList);
+                                                    myAccount.setScanned(myAccount.getQrDataList().getSumOfScoresScanned());
+                                                    myAccount.setScore(myAccount.getQrDataList().getTotalQRCodesScanned());
+
+                                                    Log.i(TAG, "myAccount.getQrDataList().getSumOfScoresScanned(): " + myAccount.getQrDataList().getSumOfScoresScanned());
+                                                    Log.i(TAG, "myAccount.getQrDataList().getTotalQRCodesScanned(): " + myAccount.getQrDataList().getTotalQRCodesScanned());
+                                                    Log.i(TAG, "myAccount.getScanned(): " + myAccount.getScanned());
+                                                    Log.i(TAG, "myAccount.getScanned() after setScore: " + myAccount.getScanned());
+
+                                                    // Instantiate Textview classes to fill layout parameters
+                                                    TextView myScannedCodes = (TextView) view.findViewById(R.id.home_fragment_scanned_text_view);
+                                                    TextView myQRScore = (TextView) view.findViewById(R.id.home_fragment_score_text_view);
+                                                    TextView myRank = (TextView) view.findViewById(R.id.home_fragment_rank_text_view);
+                                                    QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
+
+                                                    // Set the text of all TextViews
+                                                    myScannedCodes.setText(myAccount.getScanned().toString());
+                                                    myQRScore.setText(myAccount.getScore().toString());
+                                                    myRank.setText("NIL");
+                                                    setAdapter();
+                                                } else {
+                                                    Log.d(TAG, "No such qr code document");
+                                                }
+                                            } else {
+                                                Log.d(TAG, "get failed with ", taskQRCodes.getException());
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+/*
         QRDataListRef.get()
                 .addOnCompleteListener(taskQRDataList -> {
                     if (taskQRDataList.isSuccessful()) {
@@ -164,6 +217,7 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 });
+*/
     }
 
 

@@ -44,7 +44,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     final String TAG = "OTHER_PLAYER_ACTIVITY";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Account account;
-    private QRDataList qrDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +52,10 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        String userUID = intent.getStringExtra("userID");
+        // String userUID = intent.getStringExtra("userID"); TODO: after done remove comment
+        String userUID = "uGqhx7YYddg8l1wUwQg0RlXUZwq1";
 
-        account = new Account(userUID);
-        qrDataList = new QRDataList();
-        qrDataList.setQRCodes(new ArrayList<QRCode>());
-        account.setQrDataList(qrDataList);
-
+        // Attach adapter for qr_codes_list_view
         ArrayList<QRCode> qrCodes = new ArrayList<QRCode>();
         QRCodeAdapter qrCodesAdapter = new QRCodeAdapter(this, com.example.qrscore.R.layout.qr_codes_list_content, qrCodes);
         qrCodesList = findViewById(R.id.qr_codes_list_view);
@@ -76,14 +72,50 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         usernameTextView.setText(userUID);
         qrCodeTitleTextView.setText(userUID + "'s QR Codes");
 
-        DocumentReference profileRef = db.collection("Profile").document(userUID);
-        DocumentReference QRDataListRef = db.collection("QRDataList").document(userUID);
+        DocumentReference accountRef = db.collection("Account").document(userUID);
+        CollectionReference codeRef = db.collection("QRCode");
+        //DocumentReference QRDataListRef = db.collection("QRDataList").document(userUID);
 
         //                                                        scoreTextView.setText(qrDataListDocument.getData().get("sumOfScoresScanned").toString());
 //                                                        scannedTextView.setText(qrDataListDocument.getData().get("totalQRCodesScanned").toString());
+//
 //                                                        rankTextView.setText(qrDataListDocument.getData().get("rank").toString());
 
-        QRDataListRef.get()
+        accountRef.get()    // get account document
+                .addOnCompleteListener(taskAccount -> {
+            qrCodesAdapter.clear();
+            if (taskAccount.isSuccessful()) {
+                DocumentSnapshot accountDocument = taskAccount.getResult();
+
+                if (accountDocument.exists()) {
+                    Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
+                    ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("QRCodes");   // get the QRCodes array
+
+                    // get each QRCode object
+                    for (String codeStr : qrCodesArray) {
+                        codeRef.document(codeStr).get()
+                                .addOnCompleteListener(taskQRCodes -> {
+                                    if (taskQRCodes.isSuccessful()) {
+                                        DocumentSnapshot document = taskQRCodes.getResult();
+
+                                        // Get QRCode object and add to adapter
+                                        if (document.exists()) {
+                                            Log.d(TAG, "QRCode DocumentSnapshot data: " + document.getData());
+                                            QRCode code = document.toObject(QRCode.class);
+                                            qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
+                                            qrCodesAdapter.notifyDataSetChanged();
+                                        } else {
+                                            Log.d(TAG, "No such qr code document");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", taskQRCodes.getException());
+                                    }
+                                });
+                    }
+                }
+            }
+        });
+      /*  QRDataListRef.get()
                 .addOnCompleteListener(taskQRDataList -> {
                     qrCodesAdapter.clear();
                     if (taskQRDataList.isSuccessful()) {
@@ -113,7 +145,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                             }
                         }
                     }
-                });
+                });*/
 
         // GOTO QRCodeActivity when code is clicked on
         qrCodesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
