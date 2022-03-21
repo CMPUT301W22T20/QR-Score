@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.Manifest;
 import android.app.Activity;
@@ -41,6 +41,8 @@ public class LocationController {
     private Location currLocation;
     private FirebaseFirestore db;
     private CollectionReference locationRef;
+    private static double lat;
+    private static double lon;
 
     public LocationController(Activity activity) {
         this.activity = activity;
@@ -78,6 +80,8 @@ public class LocationController {
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 for (Location location : locationResult.getLocations()) {
                     currLocation = location;
+                    lat = currLocation.getLatitude();
+                    lon = currLocation.getLongitude();
 
                 }
             }
@@ -90,8 +94,12 @@ public class LocationController {
      * @return
      *      A location instance of the user.
      */
-    protected Location getLocation() {
-        return currLocation;
+    public double getLatitude() {
+        return lat;
+    }
+
+    public double getLongitude() {
+        return lon;
     }
 
     /**
@@ -122,8 +130,16 @@ public class LocationController {
                                 // Check if a saved location is already close to the current one
                                 if (diffLat < 0.0025 && diffLon < 0.0025) {
                                     // Saved location is already close to current
-                                    // Update the array of UUIDs with new one
+
                                     ArrayList<String> uuids = (ArrayList<String>) doc.get("uuids");
+                                    ArrayList<String> qrIDs = (ArrayList<String>) doc.get("qrIDs");
+
+                                    // Update the array of qrIDs with the new one
+                                    if (!qrIDs.contains(qrID)) {
+                                        doc.getReference().update("qrIDs", FieldValue.arrayUnion(qrID));
+                                    }
+
+                                    // Update the array of UUIDs with new one
                                     if (!uuids.contains(UUID)) {
                                         // Person hasn't scanned it before
                                         doc.getReference().update("uuids", FieldValue.arrayUnion(UUID));

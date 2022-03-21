@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.fragment;
 
 import android.os.Bundle;
 
@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.example.qrscore.Account;
+import com.example.qrscore.LeaderboardPlayerRecyclerAdapter;
+import com.example.qrscore.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;

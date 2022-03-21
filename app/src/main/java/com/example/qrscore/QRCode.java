@@ -23,9 +23,7 @@ public class QRCode {
     private String id;   // firestore document ID
     private String hash;
     private Integer qrscore;
-    private String location;
     private List<String> hasScanned;
-    private ArrayList<Comment> comments;
 
     /**
      * Constructor for the QR code.
@@ -34,12 +32,9 @@ public class QRCode {
      *      a String identifier for the QR code.
      */
     public QRCode(String hash) {
-        Random random = new Random();
         this.hash = hash;
         this.qrscore = this.calculateQRScore(this.hash);
         this.id = this.qrscore.toString();
-//        this.location = loc;
-        this.comments  = new ArrayList<>();
         this.hasScanned = new ArrayList<>();
     }
 
@@ -67,7 +62,17 @@ public class QRCode {
      *      a String identifier for the QR code.
      */
     public Integer calculateQRScore(String hash) {
-        return hash.length() - hash.replace("0", "").length();
+        String hash5 = hash.replace("00000", "");
+        String hash4 = hash5.replace("0000", "");
+        String hash3 = hash4.replace("000", "");
+        String hash2 = hash3.replace("00", "");
+        Integer count5 = (hash.length() - hash5.length())/5;
+        Integer count4 = (hash.length() - hash4.length())/4;
+        Integer count3 = (hash.length() - hash3.length())/3;
+        Integer count2 = (hash.length() - hash2.length())/2;
+        Integer score = count2*20 + count3*400 + count4*8000 + count5*160000;
+
+        return score;
     }
 
     /**
@@ -88,103 +93,9 @@ public class QRCode {
         hasScanned.add(playerUsername);
     }
 
-    /**
-     * Removes a player from the list.
-     *
-     * @param player
-     *      the id of the player to remove.
-     */
-    public void deleteScanned(String player) {
-        for (int i=0; i<hasScanned.size(); i++) {
-            if (hasScanned.get(i) == player) {
-                hasScanned.remove(player);
-            }
-        }
-    }
-
-    /**
-     * Checks if a player is in the list.
-     *
-     * @param player
-     *      the player to find.
-     * @return
-     *      true if the player is in the list, false otherwise.
-     */
-    public boolean findScanned(Player player) {
-        return hasScanned.contains(player);
-    }
-
-    /**
-     * Adds a comment to the list.
-     *
-     * @param comment
-     *      the comment to add.
-     */
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
-
-    /**
-     * Removes a comment from the list.
-     *
-     * @param comment
-     *      the comment to remove.
-     */
-    public void deleteComment(Comment comment) {
-        comments.remove(comment);
-    }
-
-    /**
-     * Checks if a comment is in the list.
-     *
-     * @param comment
-     *      the comment to find.
-     * @return
-     *      true if the comment is in the list, false otherwise.
-     */
-    public boolean findComment(Comment comment) {
-        return comments.contains(comment);
-    }
-
-    /**
-     * Returns the list of comments.
-     *
-     * return
-     *      an ArrayList of Strings.
-     */
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-
     public String getHash() {
         return hash;
     }
-
-//    public String getLongitude() {
-//        return longitude;
-//    }
-//
-//    public String getLatitude() {
-//        return latitude;
-//    }
-    /**
-     * Constructor for QRCode
-     *
-     * @param hasScanned
-     *      list of players that have scanned the QRCode
-     */
-    public QRCode(List<String> hasScanned) {
-        this.hasScanned = hasScanned;
-    }
-
-
-    /**
-     * Gets the players that have scanned the QRCode
-     *
-     * @return
-     *      An ArrayList of players who have scanned the QR Code
-     */
-    public List<String> getHasScanned() { return hasScanned; }
 
     /**
      *  Gets the id of the QR Code
@@ -196,15 +107,7 @@ public class QRCode {
         return id;
     }
 
-    /**
-     * Sets the id for the QR Code
-     *
-     * @param id
-     *      The id that is being set
-     */
-    public void setId(String id) {
-        this.id = id;
+    public List<String> getScanned() {
+        return hasScanned;
     }
-
-
 }

@@ -13,12 +13,13 @@ import java.util.ArrayList;
 
 public class Geolocation {
     private GeoPoint geoPoint;
-    private String qrID;
+    private ArrayList<String> qrIDs;
     private ArrayList<String> UUIDs;
 
     public Geolocation (GeoPoint geoPoint, String qrID, ArrayList<String> UUIDs) {
         this.geoPoint = geoPoint;
-        this.qrID = qrID;
+        this.qrIDs = new ArrayList<>();
+        this.qrIDs.add(qrID);
         this.UUIDs = UUIDs;
     }
 
@@ -38,8 +39,8 @@ public class Geolocation {
      * @return
      *      The QR Code hash.
      */
-    public String getQrID() {
-        return qrID;
+    public ArrayList<String> getQrIDs() {
+        return qrIDs;
     }
 
     /**
@@ -48,8 +49,8 @@ public class Geolocation {
      * @param qrID
      *      A QR Code hash.
      */
-    public void setQrID(String qrID) {
-        this.qrID = qrID;
+    public void addQrID(String qrID) {
+        this.qrIDs.add(qrID);
     }
 
     /**
