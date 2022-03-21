@@ -62,7 +62,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
 
         // Attach adapter for qr_codes_list_view
         qrCodes = new ArrayList<QRCode>();
-        qrCodesAdapter = new QRCodeAdapter(this, com.example.qrscore.R.layout.qr_codes_list_content, qrCodes);
+        qrCodesAdapter = new QRCodeAdapter(this, com.example.qrscore.R.layout.list_items, qrCodes);
         account = new Account(userUID);
         qrCodesList = findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);

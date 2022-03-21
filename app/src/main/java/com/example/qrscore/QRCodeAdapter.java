@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * Purpose: Custom adapter for QRCodes. Used to display QRCodes of a player
  *
  * Outstanding issues:
+ * TODO: set rank
  */
 
 public class QRCodeAdapter extends ArrayAdapter<QRCode> {
@@ -35,6 +36,8 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     private QRCode code;
     private TextView score_text;
     private TextView hash_text;
+    private TextView rank_text;
+    private TextView qrCode_text;
 
     // Constructor for adapter
     public QRCodeAdapter(@NonNull Context context, int resource, @NonNull ArrayList<QRCode> objects) {
@@ -56,13 +59,17 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
         convertView = inflater.inflate(mResource, parent, false);
 
         // get textviews
-        score_text = (TextView) convertView.findViewById(R.id.qr_codes_score_text_view);
-        hash_text = (TextView) convertView.findViewById(R.id.qr_codes_id_text_view);
+        score_text = (TextView) convertView.findViewById(R.id.list_item_score);
+        rank_text = (TextView) convertView.findViewById(R.id.list_item_rank);
+        hash_text = (TextView) convertView.findViewById(R.id.list_item_name);
+        qrCode_text = (TextView) convertView.findViewById(R.id.list_item_player_textView);
 
         // set textviews
+        qrCode_text.setText("QR Code");
         score_text.setText(score.toString());
         hash_text.setText(hash);
 
+        // TODO: set rank
 
         final ImageButton button = convertView.findViewById(R.id.list_item_menu_button);
 
