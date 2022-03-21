@@ -74,12 +74,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
 
         DocumentReference accountRef = db.collection("Account").document(userUID);
         CollectionReference codeRef = db.collection("QRCode");
-        //DocumentReference QRDataListRef = db.collection("QRDataList").document(userUID);
-
-        //                                                        scoreTextView.setText(qrDataListDocument.getData().get("sumOfScoresScanned").toString());
-//                                                        scannedTextView.setText(qrDataListDocument.getData().get("totalQRCodesScanned").toString());
-//
-//                                                        rankTextView.setText(qrDataListDocument.getData().get("rank").toString());
 
         accountRef.get()    // get account document
                 .addOnCompleteListener(taskAccount -> {
@@ -87,8 +81,16 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
             if (taskAccount.isSuccessful()) {
                 DocumentSnapshot accountDocument = taskAccount.getResult();
 
+
                 if (accountDocument.exists()) {
                     Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
+
+                    // set textviews
+                    String total = (String) accountDocument.get("Total");
+                    String score = (String) accountDocument.get("Score");
+                    scannedTextView.setText(total);
+                    scoreTextView.setText(score);
+
                     ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("QRCodes");   // get the QRCodes array
 
                     // get each QRCode object
@@ -104,6 +106,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                                             QRCode code = document.toObject(QRCode.class);
                                             qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
                                             qrCodesAdapter.notifyDataSetChanged();
+
                                         } else {
                                             Log.d(TAG, "No such qr code document");
                                         }

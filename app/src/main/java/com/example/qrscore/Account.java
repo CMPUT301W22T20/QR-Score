@@ -1,6 +1,5 @@
 package com.example.qrscore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /** Purpose: This class represents an account in the system.
@@ -30,7 +29,7 @@ public class Account {
     public Account(String userID) {
         this.userID = userID;
         this.profile = new Profile(userID);
-        this.qrDataList = new ArrayList<QRCode>;
+        this.qrDataList = new QRDataList();
         this.score = 0;
         this.scanned = 0;
     }
@@ -48,7 +47,7 @@ public class Account {
     public Account(String userID, Integer score, Integer scanned) {
         this.userID = userID;
         this.profile = new Profile(userID);
-        this.qrDataList = new ArrayList<QRCode>;
+        this.qrDataList = new QRDataList();
         this.scanned = scanned;
         this.score = score;
     }
