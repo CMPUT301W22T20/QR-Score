@@ -15,10 +15,13 @@
         android:textColor="@color/black"
         android:textSize="45sp"
         android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="20dp"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="0dp"
@@ -26,7 +29,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
+            android:background="@drawable/rectangle_bordered_background"
             android:layout_marginHorizontal="5dp">
             <TextView
                 android:layout_width="match_parent"
@@ -37,7 +40,7 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/home_fragment_scanned_text_view"
+                android:id="@+id/scanned_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -52,7 +55,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
+            android:background="@drawable/rectangle_bordered_background"
             android:layout_marginHorizontal="5dp">
             <TextView
                 android:layout_width="match_parent"
@@ -63,12 +66,47 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/home_fragment_score_text_view"
+                android:id="@+id/score_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:hint="(score #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="5dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/rectangle_bordered_background"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="QR Hiscore Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/hiscore_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(hiscore rank #)"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
@@ -78,27 +116,54 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
+            android:background="@drawable/rectangle_bordered_background"
             android:layout_marginHorizontal="5dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Rank"
+                android:text="Scanned Rank"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/home_fragment_rank_text_view"
+                android:id="@+id/scanned_rank_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:hint="(rank #)"
+                android:hint="(scan rank #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/rectangle_bordered_background"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Total Score Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/total_score_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(total rank #)"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/home_fragment_qr_code_title_text_view"
         android:hint="(username's QR Codes)"
