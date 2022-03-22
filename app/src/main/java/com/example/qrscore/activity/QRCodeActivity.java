@@ -210,18 +210,6 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     }
 
     /**
-     * This adds a player to hasScanned for a specific QRCode
-     * @param codeID
-     *          firebase document ID of the QRCode
-     * @param player
-     *          The player that scanned the code
-     */
-    public void updateHasScanned(String codeID, Player player) {
-        DocumentReference id = qrCodeRef.document(codeID);
-//        id.update("hasScanned", FieldValue.arrayUnion(player.getUsername()));
-    }
-
-    /**
      * Loads who has scanned a QRCode from firebase and outputs to screen
      * @param codeID
      *          firebase document ID of the QRCode

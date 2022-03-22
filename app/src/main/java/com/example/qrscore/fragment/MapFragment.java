@@ -100,8 +100,6 @@ public class MapFragment extends Fragment {
         // Enabling the marker for the player's location
         MyLocationNewOverlay mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getContext()), map);
         mLocationOverlay.enableMyLocation();
-        Bitmap myLogo = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_gps_fixed_24);
-        mLocationOverlay.setPersonIcon(myLogo);
         map.getOverlays().add(mLocationOverlay);
 
         // Set qr location markers on the map

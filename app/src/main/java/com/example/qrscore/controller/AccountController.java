@@ -58,7 +58,6 @@ public class AccountController {
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         accountCollectionRef = db.collection("Account");
-        QRDataListCollectionRef = db.collection("QRDataList");
         profileCollectionRef = db.collection("Profile");
         currentUser = firebaseAuth.getCurrentUser();
         userUID = currentUser.getUid();
@@ -84,6 +83,20 @@ public class AccountController {
                     Log.d(TAG, "Account has not been created.");
                     accountRef.set(account);
                 });
+    }
+
+    public void updateScore() {
+        accountRef = accountCollectionRef.document(userUID);
+
+        Integer newScore = account.getScore();
+        accountRef.update("Score", String.valueOf(newScore));
+    }
+
+    public void updateTotalScanned() {
+        accountRef = accountCollectionRef.document(userUID);
+
+        Integer newTotal = account.getScanned();
+        accountRef.update("Total", String.valueOf(newTotal));
     }
 
 }

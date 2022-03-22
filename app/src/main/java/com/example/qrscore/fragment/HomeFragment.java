@@ -151,14 +151,7 @@ public class HomeFragment extends Fragment {
                                qrCodesArray.add(new QRCode(qrCodeHash));
                            }
 
-                           if (qrCodesArray == null) {
-                               System.out.println("666666666666666666666666");
-                               myAccount.setQRCodesList(new ArrayList<>());
-                           }
-                           else {
-                               System.out.println("77777777777777777777777777");
-                               myAccount.setQRCodesList(qrCodesArray);
-                           }
+                           myAccount.setQRCodesList(qrCodesArray);
 
                            // Instantiate Textview classes to fill layout parameters
                            TextView myScannedCodes = (TextView) view.findViewById(R.id.home_fragment_scanned_text_view);
