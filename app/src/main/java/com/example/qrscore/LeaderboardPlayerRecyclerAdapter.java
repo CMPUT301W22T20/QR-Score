@@ -2,6 +2,7 @@ package com.example.qrscore;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.example.qrscore.fragment.OwnerLoginFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Purpose: RecyclerAdapter for Player leaderboard.
@@ -27,9 +39,13 @@ import java.util.ArrayList;
  *
  * @author: William Liu
  */
-public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder> implements OwnerLoginFragment.OnFragmentInteractionListener {
+public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder> {
 
     private ArrayList<Account> accounts;
+    private FirebaseFirestore db;
+    private boolean isOwner;
+    private FirebaseFunctions mFunctions;
+    private FirebaseAuth firebaseAuth;
 
     public LeaderboardPlayerRecyclerAdapter(ArrayList<Account> accounts) {
         this.accounts = accounts;
@@ -67,7 +83,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         holder.rank.setText("NIL");
         holder.score.setText(account.getScore().toString());
         holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account));
+        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
     }
 
     /**
@@ -100,12 +116,8 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     private class MenuButtonOnClickListener implements View.OnClickListener {
 
         String userUID;
-        Account account;
 
-        public MenuButtonOnClickListener(Account account) {
-            this.account = account;
-            this.userUID = account.getUserID();
-        }
+        public MenuButtonOnClickListener(String userUID) {this.userUID = userUID; }
 
         @Override
         public void onClick(View view) {
@@ -123,13 +135,22 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
 
                     // if delete player is clicked
                     } else if (menuItem.getItemId() == R.id.delete_player_item) {
-                        // delete player if account is owner
-                        if (account.isOwner()) {
-                            deletePlayer(userUID);
-                        // display message, cannot delete
+
+                        db = FirebaseFirestore.getInstance();   // initialize db
+
+                        // check if user is owner
+                        if (userIsOwner()) {
+                            try {
+                                deletePlayer(userUID);
+                            } catch (FirebaseAuthException e) {
+                                e.printStackTrace();
+                            }
+
+                            // display message, cannot delete
                         } else {
                             Toast.makeText(view.getContext(), "Only owners can delete players.",
                                     Toast.LENGTH_SHORT).show(); }
+                        return true;
                     }
                     return false;
                 }
@@ -151,13 +172,64 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     }
 
     /**
-     * Purpose: sets Owner status to True for a specific user
+     * Purpose: Deletes a player from the app
      *
      * @param userUID
-     *      The user to set the status true for
+     *      The user ID of the player to delete
      */
-    @Override
-    public void onOwnerConfirmed(String userUID) {
+    public void deletePlayer(String userUID) throws FirebaseAuthException {
+        firebaseAuth = FirebaseAuth.getInstance();
+        mFunctions = FirebaseFunctions.getInstance();
 
+        // delete profile and account
+        db.collection("Profile").document(userUID).delete();
+        db.collection("Account").document(userUID).delete();
+
+        // query qrcode documents that user has scanned
+        db.collection("QRCode").whereArrayContains("scanned", userUID).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+
+                        // get each individual QRCode document
+                        for (DocumentSnapshot qrCodeDocument : querySnapshot.getDocuments()) {
+
+                            // remove the player from QRCode scanned array
+                            if (qrCodeDocument.exists()) {
+                                qrCodeDocument.getReference().update("scanned", FieldValue.arrayRemove(userUID));
+                            }
+                        }
+                        }
+                    });
+
+        // delete user from firebase so they cant login to same account again
+        firebaseAuth.de
+    }
+
+    /**
+     * Purpose Checks if user is owner
+     *
+     * @return
+     *      True if user is owner, false otherwise.
+     */
+    public boolean userIsOwner() {
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        String userUID = firebaseAuth.getCurrentUser().getUid();
+
+        // get account document
+        db.collection("Account").document(userUID).get()
+                .addOnCompleteListener(taskAccount -> {
+                    if (taskAccount.isSuccessful()) {
+                        DocumentSnapshot accountDocument = taskAccount.getResult();
+
+                        if (accountDocument.exists()) {
+                            if (accountDocument.getBoolean("isOwner") != null) {
+                                isOwner = accountDocument.getBoolean("isOwner");
+                            }
+                        }
+                    }
+                });
+        return isOwner;
     }
 }

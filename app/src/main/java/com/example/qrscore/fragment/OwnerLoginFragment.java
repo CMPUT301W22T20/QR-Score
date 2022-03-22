@@ -34,20 +34,22 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class OwnerLoginFragment extends DialogFragment {
     private EditText password_edit_text;
-    private EditText email_edit_text;
     private OnFragmentInteractionListener confirmOwnerListener;
     private Button showHideButton;
     private FirebaseAuth mAuth;
+    private Context mContext;
 
     public interface OnFragmentInteractionListener {
-        void onOwnerConfirmed(String userUID);
+        void onOwnerConfirmed();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
+            mContext = context;
             confirmOwnerListener = (OnFragmentInteractionListener) context;
+
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -67,7 +69,6 @@ public class OwnerLoginFragment extends DialogFragment {
 
         // Get password from editText box
         password_edit_text = view.findViewById(R.id.password_edit_text);
-        email_edit_text = view.findViewById(R.id.email_edit_text);
 
         // Show/Hide button for password: https://www.tutorialkart.com/kotlin-android/android-show-hide-password-in-edittext/
         showHideButton = view.findViewById(R.id.showHideButton);
@@ -98,8 +99,13 @@ public class OwnerLoginFragment extends DialogFragment {
 
                     // Check if sign in is successful
                     public void onClick(DialogInterface dialogInterface, int i) {
-
-                        mAuth.signInWithEmailAndPassword(email_edit_text.getText().toString(), password_edit_text.getText().toString())
+                        String pass = password_edit_text.getText().toString();
+                        if (pass.equals("password")) {
+                            confirmOwnerListener.onOwnerConfirmed();
+                        } else {Toast.makeText(mContext, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        }
+                        /*mAuth.signInWithEmailAndPassword(email_edit_text.getText().toString(), password_edit_text.getText().toString())
                                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -112,11 +118,11 @@ public class OwnerLoginFragment extends DialogFragment {
                                         } else {
                                             // If sign in fails, display a message to the user.
                                             Log.w("TAG", "signInWithEmail:failure", task.getException());
-                                            Toast.makeText(getActivity(), "Authentication failed.",
+                                            Toast.makeText(mContext, "Authentication failed.",
                                                     Toast.LENGTH_SHORT).show();
                                         }
                                     }
-                                });
+                                });*/
                     }
                 }).create(); }
 }
