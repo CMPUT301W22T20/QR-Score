@@ -19,7 +19,7 @@ import java.util.Random;
  * TODO: Unit tests
  */
 public class QRCode {
-
+    String TAG = "QRCode";
     private String id;   // firestore document ID
     private String hash;
     private Integer qrscore;
@@ -33,6 +33,7 @@ public class QRCode {
      */
     public QRCode(String hash) {
         this.hash = hash;
+        Log.i(TAG, "new QRCode() with hash: " + this.hash);
         this.qrscore = this.calculateQRScore(this.hash);
         this.id = this.qrscore.toString();
         this.hasScanned = new ArrayList<>();
