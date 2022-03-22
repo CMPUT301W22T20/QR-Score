@@ -22,6 +22,7 @@ public class Account {
     private ArrayList<QRCode> qrCodes;
     private Integer score;
     private Integer scanned;
+    private boolean isOwner;
 
     /**
      * Purpose: Constructor for an account instance.
@@ -35,6 +36,7 @@ public class Account {
         this.score = 0;
         this.scanned = 0;
         this.qrCodes = new ArrayList<>();
+        this.isOwner = false;
     }
 
     /**
@@ -145,6 +147,26 @@ public class Account {
                 return;
             }
         }
+    }
+
+    /**
+     * Returns if the account is an owner or not
+     *
+     * @return
+     *      true if account is an owner, false otherwise
+     */
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    /**
+     * Sets the owner status of the account to true
+     *
+     * @param owner
+     *      true
+     */
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 
     public void setQRCodesList(ArrayList<QRCode> qrCodesArray) {

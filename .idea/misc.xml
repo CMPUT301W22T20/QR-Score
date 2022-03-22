@@ -49,6 +49,7 @@
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/fragment_other_player_account.xml" value="0.26510416666666664" />
         <entry key="app/src/main/res/layout/fragment_other_player_profile.xml" value="0.26902173913043476" />
+        <entry key="app/src/main/res/layout/fragment_owner_login_layout.xml" value="0.31929347826086957" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/fragment_scan.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/layout/home_fragment_layout.xml" value="0.26902173913043476" />
@@ -59,6 +60,7 @@
         <entry key="app/src/main/res/layout/scanned_by_content.xml" value="0.17755825734549138" />
         <entry key="app/src/main/res/layout/temp_layout_qrcodes.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.26916198730468743" />
+        <entry key="app/src/main/res/menu/leaderboard_profile_menu.xml" value="0.2796875" />
       </map>
     </option>
   </component>

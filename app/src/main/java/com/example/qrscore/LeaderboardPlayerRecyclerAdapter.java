@@ -1,5 +1,6 @@
 package com.example.qrscore;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -8,11 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
+import com.example.qrscore.activity.QRCodeActivity;
+import com.example.qrscore.fragment.OwnerLoginFragment;
 
 import java.util.ArrayList;
 
@@ -23,7 +27,7 @@ import java.util.ArrayList;
  *
  * @author: William Liu
  */
-public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder>{
+public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder> implements OwnerLoginFragment.OnFragmentInteractionListener {
 
     private ArrayList<Account> accounts;
 
@@ -63,7 +67,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         holder.rank.setText("NIL");
         holder.score.setText(account.getScore().toString());
         holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
+        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account));
     }
 
     /**
@@ -96,8 +100,11 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     private class MenuButtonOnClickListener implements View.OnClickListener {
 
         String userUID;
-        public MenuButtonOnClickListener(String userUID) {
-            this.userUID = userUID;
+        Account account;
+
+        public MenuButtonOnClickListener(Account account) {
+            this.account = account;
+            this.userUID = account.getUserID();
         }
 
         @Override
@@ -106,9 +113,24 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    Intent intent = new Intent(view.getContext(), OtherPlayerAccountActivity.class);
-                    intent.putExtra("userID", userUID);
-                    view.getContext().startActivity(intent);
+
+                    // start OtherPlayerAccountActivity if view profile is clicked
+                    if (menuItem.getItemId() == R.id.leaderboard_profile_item) {
+                        Intent intent = new Intent(view.getContext(), OtherPlayerAccountActivity.class);
+                        intent.putExtra("userID", userUID);
+                        view.getContext().startActivity(intent);
+                        return true;
+
+                    // if delete player is clicked
+                    } else if (menuItem.getItemId() == R.id.delete_player_item) {
+                        // delete player if account is owner
+                        if (account.isOwner()) {
+                            deletePlayer(userUID);
+                        // display message, cannot delete
+                        } else {
+                            Toast.makeText(view.getContext(), "Only owners can delete players.",
+                                    Toast.LENGTH_SHORT).show(); }
+                    }
                     return false;
                 }
             });
@@ -126,5 +148,16 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     public void updateList(ArrayList<Account> accountsFiltered) {
         accounts = accountsFiltered;
         notifyDataSetChanged();
+    }
+
+    /**
+     * Purpose: sets Owner status to True for a specific user
+     *
+     * @param userUID
+     *      The user to set the status true for
+     */
+    @Override
+    public void onOwnerConfirmed(String userUID) {
+
     }
 }

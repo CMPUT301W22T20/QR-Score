@@ -75,6 +75,7 @@ public class AccountController {
         newAccount.put("Score", "0");
         newAccount.put("Total", "0");
         newAccount.put("QRCodes", account.getQRList());
+        newAccount.put("isOwner", account.isOwner());
         accountRef.set(newAccount)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
