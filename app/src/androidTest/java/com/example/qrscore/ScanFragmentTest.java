@@ -45,32 +45,4 @@ public class ScanFragmentTest {
 
         assertTrue(solo.searchButton("Scan"));
     }
-
-    @Test
-    public void scanFragmentAndConfirmUpdatedHome() throws InterruptedException {
-        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
-        View view = solo.getView(R.id.scan_fragment_item);
-
-        solo.clickOnView(view);
-        assertTrue(solo.searchButton("Scan"));
-        solo.clickOnButton("Scan");
-        solo.waitForText("Confirm");
-        solo.clickOnButton("Confirm");
-        view = solo.getView(R.id.home_fragment_item);
-        solo.clickOnView(view);
-        solo.sleep(2000);
-        assertTrue(solo.getCurrentActivity() instanceof MainActivity);
-        TextView myScanned = solo.getView(TextView.class, 2);
-        TextView myQRScore = solo.getView(TextView.class, 4);
-        TextView myRank = solo.getView(TextView.class, 6);
-        String myScannedString = (String) myScanned.getText();
-        String myQRScoreString = (String) myQRScore.getText();
-        String myRankString = (String) myRank.getText();
-        assertEquals(myScanned.getHint(), "(# scanned)");
-        assertEquals(myQRScore.getHint(), "(score #)");
-        assertEquals(myRank.getHint(), "(rank #)");
-        assertEquals(myScannedString, "1");
-        assertEquals(myQRScoreString, "0");
-        assertEquals(myRankString, "NIL");
-    }
 }
