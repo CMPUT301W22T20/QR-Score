@@ -6,7 +6,7 @@
     tools:context=".fragment.LeaderboardQRcodeFragment">
 
     <TextView
-        android:background="@drawable/useruid_text_box"
+        android:background="@drawable/round_box_background"
         android:backgroundTint="@color/green"
         android:layout_width="330dp"
         android:layout_height="60dp"

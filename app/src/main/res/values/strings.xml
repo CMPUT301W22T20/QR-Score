@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">QR Score</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="auth_text_view">Signing In</string>
+    <string name="auth_welcome_text_view">Welcome to QR Score</string>
+    <string name="auth_login_text_view">Logging In!</string>
+    <string name="auth_new_user">New User</string>
+    <string name="auth_returning_user">Returning</string>
+    <string name="auth_login_by_qr_user">Login by QR</string>
 
     <!--  Nav bar icon  -->
     <string name="home_nav_ic">Home</string>
@@ -17,7 +19,7 @@
     <string name="profile_username">Username</string>
     <string name="profile_email">Email</string>
     <string name="profile_phone_number">Phone Number</string>
-    <string name="profile_refreshQR">Refresh QR</string>
+    <string name="profile_generateQR">Generate QR</string>
     <string name="profile_save_button">SAVE</string>
 
     <!--  Leaderboard  -->
