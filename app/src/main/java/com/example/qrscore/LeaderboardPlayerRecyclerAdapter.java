@@ -36,6 +36,7 @@ import java.util.List;
  * Purpose: RecyclerAdapter for Player leaderboard.
  *
  * Outstanding Issues:
+ *      TODO: delete the player from firebase auth
  *
  * @author: William Liu
  */
@@ -203,7 +204,6 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
                     });
 
         // delete user from firebase so they cant login to same account again
-        firebaseAuth.de
     }
 
     /**
