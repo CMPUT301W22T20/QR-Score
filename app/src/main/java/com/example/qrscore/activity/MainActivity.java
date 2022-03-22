@@ -80,30 +80,30 @@ public class MainActivity extends AppCompatActivity {
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.scan_fragment_open);
         fabClose = AnimationUtils.loadAnimation(this,R.anim.scan_fragment_close);
 
-        if (savedInstanceState != null) {
-            lastViewedFragment = savedInstanceState.getString("SAVED_FRAGMENT");
-
-            switch (lastViewedFragment) {
-                case "homeFragment":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
-                    break;
-                case "mapFragment":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
-                    break;
-                case "scanFragment":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
-                    break;
-                case "leaderboardFramgent":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
-                    break;
-                case "profileFragment":
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
-                    break;
-            }
-        }
-        else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
-        }
+//        if (savedInstanceState != null) {
+//            lastViewedFragment = savedInstanceState.getString("SAVED_FRAGMENT");
+//
+//            switch (lastViewedFragment) {
+//                case "homeFragment":
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+//                    break;
+//                case "mapFragment":
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, mapFragment).commit();
+//                    break;
+//                case "scanFragment":
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
+//                    break;
+//                case "leaderboardFramgent":
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
+//                    break;
+//                case "profileFragment":
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
+//                    break;
+//            }
+//        }
+//        else {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
+//        }
     }
 
     // Bottom Nav selector.

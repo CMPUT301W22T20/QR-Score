@@ -231,14 +231,14 @@ public class HomeFragment extends Fragment {
         sortByButton.setOnClickListener(new sortByButtonOnClickListener(sortByButton, HomeFragQRCodeRA, myAccount));
 
         // Instantiate Textview classes to fill layout parameters
-        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
+//        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
         TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
 
         String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
 
         // Set username TextViews
         usernamesQRCodes.setText(usernamesQRCodesString);
-        userName.setText(myAccount.getUserID());
+//        userName.setText(myAccount.getUserID());
 
         populateData(view);
 
