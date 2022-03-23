@@ -1,8 +1,6 @@
 package com.example.qrscore;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,39 +15,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
 import com.example.qrscore.activity.QRCodeActivity;
-import com.example.qrscore.fragment.OwnerLoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Purpose: RecyclerAdapter for Player leaderboard.
- *
- * Outstanding Issues:
- *      TODO: delete the player from firebase auth
- *
- * @author: William Liu
- */
-public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<LeaderboardPlayerRecyclerAdapter.MyViewHolder> {
+public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<LeaderboardQRCodeRecyclerAdapter.MyViewHolder> {
 
-    private ArrayList<Account> accounts;
+    private ArrayList<QRCode> qrCodes;
     private FirebaseFirestore db;
     private boolean isOwner;
     private FirebaseFunctions mFunctions;
     private FirebaseAuth firebaseAuth;
 
-    public LeaderboardPlayerRecyclerAdapter(ArrayList<Account> accounts) {
-        this.accounts = accounts;
+    public LeaderboardQRCodeRecyclerAdapter(ArrayList<QRCode> qrCodes) {
+        this.qrCodes = qrCodes;
     }
 
     /**
@@ -59,6 +44,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         private TextView rank;
         private TextView score;
         private TextView name;
+        private TextView qrCodeTitle;
         private ImageButton playerMenuButton;
 
         public MyViewHolder(final View itemView) {
@@ -66,6 +52,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
             rank = itemView.findViewById(R.id.list_item_rank);
             score = itemView.findViewById(R.id.list_item_score);
             name = itemView.findViewById(R.id.list_item_name);
+            qrCodeTitle = itemView.findViewById(R.id.list_item_player_textView);
             playerMenuButton = itemView.findViewById(R.id.list_item_menu_button);
         }
     }
@@ -79,13 +66,15 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      *      Represents the position on the ViewHolder.
      */
     @Override
-    public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
-        Account account = accounts.get(position);
+    public void onBindViewHolder(@NonNull LeaderboardQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
+        QRCode qrCode = qrCodes.get(position);
         holder.rank.setText("NIL");
-        holder.score.setText(account.getScore().toString());
-        holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
+        holder.score.setText("NIL");
+        holder.name.setText(qrCode.getHash());
+        holder.playerMenuButton.setOnClickListener(new LeaderboardQRCodeRecyclerAdapter.MenuButtonOnClickListener(qrCode.getHash()));
+        holder.qrCodeTitle.setText("QR Code");
     }
+
 
     /**
      * Purpose: Returns the item count of the ViewHolder.
@@ -95,7 +84,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     @Override
     public int getItemCount() {
-        return accounts.size();
+        return qrCodes.size();
     }
 
     @Override
@@ -105,10 +94,11 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
 
     @NonNull
     @Override
-    public LeaderboardPlayerRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LeaderboardQRCodeRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items, parent, false);
         return new MyViewHolder(itemView);
     }
+
 
     /**
      * Purpose: Implements OnClickListener for menu button on item.
@@ -116,9 +106,9 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     // https://www.youtube.com/watch?v=s1fW7CpiB9c
     private class MenuButtonOnClickListener implements View.OnClickListener {
 
-        String userUID;
+        String hash;
 
-        public MenuButtonOnClickListener(String userUID) {this.userUID = userUID; }
+        public MenuButtonOnClickListener(String hash) {this.hash = hash; }
 
         @Override
         public void onClick(View view) {
@@ -127,83 +117,70 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
 
-                    // start OtherPlayerAccountActivity if view profile is clicked
-                    if (menuItem.getItemId() == R.id.leaderboard_profile_item) {
-                        Intent intent = new Intent(view.getContext(), OtherPlayerAccountActivity.class);
-                        intent.putExtra("userID", userUID);
+                    // start QRCodeActivity if view qrCode is clicked
+                    if (menuItem.getItemId() == R.id.leaderboard_qrcode_item) {
+                        Intent intent = new Intent(view.getContext(), QRCodeActivity.class);
+                        intent.putExtra("QR_ID", hash);
                         view.getContext().startActivity(intent);
                         return true;
 
-                    // if delete player is clicked
-                    } else if (menuItem.getItemId() == R.id.delete_player_item) {
+                        // if delete player is clicked
+                    } else if (menuItem.getItemId() == R.id.delete_qrcode_item) {
 
                         db = FirebaseFirestore.getInstance();   // initialize db
 
                         // check if user is owner
                         if (userIsOwner()) {
                             try {
-                                deletePlayer(userUID);
+                                deleteCode(hash);
                             } catch (FirebaseAuthException e) {
                                 e.printStackTrace();
                             }
 
-                        // display message, cannot delete
+                            // display message, cannot delete
                         } else {
-                            Toast.makeText(view.getContext(), "Only owners can delete players.",
+                            Toast.makeText(view.getContext(), "Only owners can delete QR Codes.",
                                     Toast.LENGTH_SHORT).show(); }
                         return true;
                     }
                     return false;
                 }
             });
-            popupMenu.inflate(R.menu.leaderboard_profile_menu);
+            popupMenu.inflate(R.menu.leaderboard_qrcode_menu);
             popupMenu.show();
         }
     }
 
-    /**
-     * Purpose: Update Adapter with filtered players when using the search function.
-     *
-     * @param accountsFiltered
-     *      Represents the players that have been filtered out.
-     */
-    public void updateList(ArrayList<Account> accountsFiltered) {
-        accounts = accountsFiltered;
-        notifyDataSetChanged();
-    }
 
     /**
-     * Purpose: Deletes a player from the app
+     * Purpose: Deletes a code from the app
      *
-     * @param userUID
-     *      The user ID of the player to delete
+     * @param hash
+     *      The hash of the code to delete
      */
-    public void deletePlayer(String userUID) throws FirebaseAuthException {
+    public void deleteCode(String hash) throws FirebaseAuthException {
         firebaseAuth = FirebaseAuth.getInstance();
-        mFunctions = FirebaseFunctions.getInstance();
 
-        // delete profile and account
-        db.collection("Profile").document(userUID).delete();
-        db.collection("Account").document(userUID).delete();
+        // delete qrcode
+        db.collection("QRCode").document(hash).delete();
 
         // query qrcode documents that user has scanned
-        db.collection("QRCode").whereArrayContains("scanned", userUID).get()
+        db.collection("Account").whereArrayContains("QRCodes", hash).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
 
                         // get each individual QRCode document
-                        for (DocumentSnapshot qrCodeDocument : querySnapshot.getDocuments()) {
+                        for (DocumentSnapshot accountDocument : querySnapshot.getDocuments()) {
 
                             // remove the player from QRCode scanned array
-                            if (qrCodeDocument.exists()) {
-                                qrCodeDocument.getReference().update("scanned", FieldValue.arrayRemove(userUID));
+                            if (accountDocument.exists()) {
+                                accountDocument.getReference().update("scanned", FieldValue.arrayRemove(hash));
                             }
                         }
-                        }
-                    });
-
-        // delete user from firebase so they cant login to same account again
+                    }
+                });
+        notifyDataSetChanged();
     }
 
     /**
@@ -233,3 +210,4 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         return isOwner;
     }
 }
+

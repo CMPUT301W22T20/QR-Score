@@ -82,14 +82,14 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         accountRef = db.collection("Account").document(userUID);
         codeRef = db.collection("QRCode");
 
-        populateData();
+        loadQRCodes();
     }
 
 
     /**
      * Purpose: Populates the listview with the QRCodes of a specific user
      */
-    public void populateData() {
+    public void loadQRCodes() {
         accountRef.get()    // get account document
                 .addOnCompleteListener(taskAccount -> {
                     qrCodesAdapter.clear();
