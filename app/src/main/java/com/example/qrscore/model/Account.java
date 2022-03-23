@@ -1,6 +1,4 @@
-package com.example.qrscore;
-
-import org.checkerframework.checker.units.qual.A;
+package com.example.qrscore.model;
 
 import java.util.ArrayList;
 import java.util.List;

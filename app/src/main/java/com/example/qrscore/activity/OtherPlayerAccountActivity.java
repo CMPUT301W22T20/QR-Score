@@ -3,18 +3,14 @@ package com.example.qrscore.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.qrscore.Account;
-import com.example.qrscore.QRCode;
-import com.example.qrscore.QRCodeAdapter;
-import com.example.qrscore.QRDataList;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.model.QRCode;
+import com.example.qrscore.controller.QRCodeAdapter;
 import com.example.qrscore.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,7 +18,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Purpose: This class shows a list of QRCodes that another player owns. Also shows total scanned,

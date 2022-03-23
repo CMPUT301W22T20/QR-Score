@@ -3,7 +3,6 @@ package com.example.qrscore.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qrscore.Account;
-import com.example.qrscore.HomeFragmentQRCodeRecyclerAdapter;
-import com.example.qrscore.QRCode;
-import com.example.qrscore.QRDataList;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
+import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
-import com.example.qrscore.controller.LocationController;
 import com.example.qrscore.controller.ProfileController;
 import com.example.qrscore.controller.QRCodeController;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,7 +33,6 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -72,7 +68,6 @@ public class HomeFragment extends Fragment {
 
     private DocumentReference qrRef;
     private DocumentReference accountRef;
-    private DocumentReference QRDataListRef;
     private DocumentReference profileRef;
 
     private DocumentSnapshot accountSnapshot;
@@ -83,7 +78,6 @@ public class HomeFragment extends Fragment {
     private String userUID;
     private int score;
     private int total;
-    private QRDataList myQRDataList;
     private List<QRCode> qrCodes;
 
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -111,17 +105,13 @@ public class HomeFragment extends Fragment {
         userUID = profileController.getProfile().getUserUID();
         myAccount = new Account(userUID);
         myAccount.setProfile(profileController.getProfile());
-        myQRDataList = new QRDataList();
-        myQRDataList.setQRCodes(new ArrayList<QRCode>());
 
         qrCollectionRef = db.collection("QRCode");
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
-        QRDataListCollectionRef = db.collection("QRDataList");
 
         accountRef = accountCollectionRef.document(userUID);
         profileRef = profileCollectionRef.document(userUID);
-        QRDataListRef = QRDataListCollectionRef.document(userUID);
 
         requestPermissionsIfNecessary(new String[] {
                 // if you need to show the current location, uncomment the line below
@@ -264,7 +254,6 @@ public class HomeFragment extends Fragment {
         Button sortByButton;
         HomeFragmentQRCodeRecyclerAdapter HFQRCodeRA;
         Account myAccount;
-        QRDataList qrDataListToSort;
         ArrayList<QRCode> qrCodesToSort;
 
         public sortByButtonOnClickListener(Button sortByButton, HomeFragmentQRCodeRecyclerAdapter homeFragmentQRCodeRecyclerAdapter, Account account) {
@@ -302,7 +291,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                qrDataListToSort.setQRCodes(qrCodesToSort);
+//                qrDataListToSort.setQRCodes(qrCodesToSort);
                 HFQRCodeRA.updateList(myAccount);
             }
         }
@@ -319,7 +308,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                qrDataListToSort.setQRCodes(qrCodesToSort);
+//                qrDataListToSort.setQRCodes(qrCodesToSort);
                 HFQRCodeRA.updateList(myAccount);
             }
         }

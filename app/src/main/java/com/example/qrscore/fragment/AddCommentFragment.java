@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.qrscore.Comment;
+import com.example.qrscore.model.Comment;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.ProfileController;
 

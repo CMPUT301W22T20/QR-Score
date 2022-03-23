@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 /**
  * Purpose: Interface for q QR Code call back.

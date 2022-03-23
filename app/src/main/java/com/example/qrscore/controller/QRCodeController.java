@@ -2,12 +2,10 @@ package com.example.qrscore.controller;
 
 import androidx.annotation.NonNull;
 
-import com.example.qrscore.QRCode;
-import com.example.qrscore.QRDataList;
+import com.example.qrscore.model.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,14 +39,6 @@ public class QRCodeController {
      *      User UID of user that added it.
      */
     public void add(String key, QRCode qrCode, String uuid) {
-//        QRDataListDocRef.get().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()) {
-//                DocumentSnapshot qrDataDoc = task.getResult();
-//                if (qrDataDoc.exists()) {
-//                    qrDataList = qrDataDoc.toObject(QRDataList.class);
-//                }
-//            }
-//        });
         QRCodeColRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

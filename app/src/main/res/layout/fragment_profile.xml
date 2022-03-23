@@ -9,7 +9,7 @@
     android:id="@+id/profile_fragment">
 
     <include
-        layout="@layout/profile_actionbar"/>
+        layout="@layout/actionbar_profile"/>
 
     <TextView
         android:id="@+id/profile_refreshQR_button"
