@@ -79,7 +79,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         leaderboardSearchPlayerET.addTextChangedListener(this);
         setAdapter();
 
-        Fragment ownerLoginFragment = new OwnerLoginFragment();
         return view;
     }
 

@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,7 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qrscore.activity.OtherPlayerAccountActivity;
+import com.example.qrscore.R;
+import com.example.qrscore.model.QRCode;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
