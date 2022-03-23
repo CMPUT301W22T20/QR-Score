@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.content.Intent;
 import android.util.Log;
@@ -13,7 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrscore.R;
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
+import com.example.qrscore.model.Account;
 
 import java.util.ArrayList;
 

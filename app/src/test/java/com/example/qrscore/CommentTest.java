@@ -3,6 +3,8 @@ package com.example.qrscore;
 import org.junit.*;
 import static org.junit.Assert.*;
 
+import com.example.qrscore.model.Comment;
+
 import java.util.ArrayList;
 
 public class CommentTest {

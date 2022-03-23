@@ -2,22 +2,13 @@ package com.example.qrscore.controller;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
-import com.example.qrscore.Photo;
-import com.example.qrscore.PhotoCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.qrscore.model.Photo;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Purpose: A controller to interact with the photos and firebase storage.

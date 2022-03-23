@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.model;
 
 import com.google.firebase.firestore.GeoPoint;
 

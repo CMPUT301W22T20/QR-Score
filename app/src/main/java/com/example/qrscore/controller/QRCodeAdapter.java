@@ -1,8 +1,7 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
+import com.example.qrscore.model.QRCode;
 
 import java.util.ArrayList;
 
