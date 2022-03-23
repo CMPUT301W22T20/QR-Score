@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -21,6 +22,7 @@ import com.example.qrscore.Account;
 import com.example.qrscore.HomeFragmentQRCodeRecyclerAdapter;
 import com.example.qrscore.QRCode;
 import com.example.qrscore.QRDataList;
+import com.example.qrscore.QRGeneratorDialog;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.LocationController;
@@ -94,6 +96,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 //    private CollectionReference qrRef;
     private static Query.Direction direction;
+    private ImageButton profileQRButton;
+    private TextView actionBarNameTextView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -240,6 +244,10 @@ public class HomeFragment extends Fragment {
         usernamesQRCodes.setText(usernamesQRCodesString);
 //        userName.setText(myAccount.getUserID());
 
+        profileQRButton = view.findViewById(R.id.home_fragment_actionbar_qr_code);
+        profileQRButton.setOnClickListener(new profileGeneratorButtonListener(userUID));
+        actionBarNameTextView = view.findViewById(R.id.home_fragment_actionbar_textview);
+
         populateData(view);
 
         return view;
@@ -355,6 +363,31 @@ public class HomeFragment extends Fragment {
                     getActivity(),
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private class profileGeneratorButtonListener implements View.OnClickListener {
+        String userUID;
+
+        public profileGeneratorButtonListener(String userUID) {
+            this.userUID = userUID;
+        }
+
+        @Override
+        public void onClick(View view) {
+            openQRDialog();
+        }
+
+        private void openQRDialog() {
+            // https://stackoverflow.com/a/15459259
+            Bundle args = new Bundle();
+            args.putString("email", "");
+            args.putString("userUID", userUID);
+            args.putBoolean("login", false);
+
+            QRGeneratorDialog qrGeneratorDialog = new QRGeneratorDialog();
+            qrGeneratorDialog.setArguments(args);
+            qrGeneratorDialog.show(getChildFragmentManager(), "QR Dialog");
         }
     }
 }
