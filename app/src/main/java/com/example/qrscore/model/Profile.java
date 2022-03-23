@@ -15,6 +15,7 @@ public class Profile {
     private String email;
     private String phoneNumber;
     private final String userUID;
+    private Boolean permanent;
 
     /**
      * Purpose: Empty Constructor for a profile.
@@ -25,6 +26,7 @@ public class Profile {
         this.email = null;
         this.phoneNumber = null;
         this.userUID = null;
+        this.permanent = false;
     }
 
     /**
@@ -38,6 +40,7 @@ public class Profile {
         this.email = null;
         this.phoneNumber = null;
         this.userUID = userUID;
+        this.permanent = false;
     }
 
     /**
@@ -59,6 +62,16 @@ public class Profile {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.userUID = userUID;
+        this.permanent = false;
+    }
+
+    public Profile(String firstName, String lastName, String email, String phoneNumber, String userUID, boolean permanent) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.email = email;
+            this.phoneNumber = phoneNumber;
+            this.userUID = userUID;
+            this.permanent = permanent;
     }
 
     /**
@@ -140,6 +153,14 @@ public class Profile {
      */
     public String getUserUID() {
         return userUID;
+    }
+
+    public Boolean getPermanent() {
+        return permanent;
+    }
+
+    public void setPermanent(Boolean permanent) {
+        this.permanent = permanent;
     }
 }
 
