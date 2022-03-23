@@ -9,7 +9,7 @@
     android:id="@+id/profile_fragment">
 
     <include
-        layout="@layout/profile_actionbar"/>
+        layout="@layout/actionbar_profile"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userUID_textInputLayout"

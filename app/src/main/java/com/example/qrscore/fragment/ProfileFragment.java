@@ -24,8 +24,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qrscore.Profile;
 import com.example.qrscore.QRGeneratorDialog;
+import com.example.qrscore.model.Profile;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.ProfileController;
 import com.google.android.material.textfield.TextInputEditText;

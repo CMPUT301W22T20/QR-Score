@@ -2,6 +2,8 @@ package com.example.qrscore;
 
 import static org.junit.Assert.assertEquals;
 
+import com.example.qrscore.model.Photo;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
