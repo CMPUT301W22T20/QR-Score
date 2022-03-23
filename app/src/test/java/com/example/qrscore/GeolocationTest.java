@@ -3,6 +3,7 @@ package com.example.qrscore;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import com.example.qrscore.model.Geolocation;
 import com.google.firebase.firestore.GeoPoint;
 
 import org.junit.Test;

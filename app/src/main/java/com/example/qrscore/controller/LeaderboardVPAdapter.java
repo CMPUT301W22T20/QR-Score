@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

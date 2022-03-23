@@ -2,6 +2,8 @@ package com.example.qrscore;
 
 import static org.junit.Assert.assertEquals;
 
+import com.example.qrscore.model.Profile;
+
 import org.junit.Test;
 
 public class ProfileTest {

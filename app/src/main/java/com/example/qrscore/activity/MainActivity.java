@@ -2,8 +2,6 @@ package com.example.qrscore.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.os.Build;
@@ -26,6 +24,11 @@ import android.os.Bundle;
 
 import android.view.MenuItem;
 import com.example.qrscore.Account;
+import android.os.Bundle;
+
+import android.view.MenuItem;
+
+import com.example.qrscore.model.Account;
 import com.example.qrscore.R;
 import com.example.qrscore.fragment.HomeFragment;
 import com.example.qrscore.fragment.LeaderboardFragment;
@@ -35,8 +38,6 @@ import com.example.qrscore.fragment.ScanFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.util.ArrayList;
 
 /**
  * Purpose: This class is the main activity

@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.model;
 
 /**
  * Purpose: This class is used to store profile info. (name, email, phone, username,etc.)

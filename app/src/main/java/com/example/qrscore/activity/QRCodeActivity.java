@@ -25,10 +25,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.qrscore.Comment;
-import com.example.qrscore.CommentCustomList;
-import com.example.qrscore.PhotoCallback;
-import com.example.qrscore.Player;
+import com.example.qrscore.model.Comment;
+import com.example.qrscore.model.CommentCustomList;
+import com.example.qrscore.controller.PhotoCallback;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.PhotoController;
 import com.example.qrscore.controller.ProfileController;
@@ -37,7 +36,6 @@ import com.example.qrscore.fragment.DisplayCommentFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -94,8 +92,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         // Create array adapter for players who have scanned a specific QR code
         playerDataList = new ArrayList<String>();
         playerList = findViewById(R.id.scanned_by_list_view);
-        playerAdapter = new ArrayAdapter<>(this,
-                com.example.qrscore.R.layout.scanned_by_content, playerDataList);
+        playerAdapter = new ArrayAdapter<>(this, com.example.qrscore.R.layout.scanned_by_content, playerDataList);
         playerList.setAdapter(playerAdapter);
 
         // Initialize the DB

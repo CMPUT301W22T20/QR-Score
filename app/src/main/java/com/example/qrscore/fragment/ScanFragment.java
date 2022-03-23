@@ -21,9 +21,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.qrscore.Account;
-import com.example.qrscore.Photo;
-import com.example.qrscore.QRCode;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.model.Photo;
+import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.LocationController;

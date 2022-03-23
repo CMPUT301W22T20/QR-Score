@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.model;
 
 /**
  * Purpose: Represents a Photo instance.

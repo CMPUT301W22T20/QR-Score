@@ -1,9 +1,10 @@
 package com.example.qrscore;
 
 import static org.junit.Assert.*;
-import org.junit.Test;
 
-import java.util.Random;
+import com.example.qrscore.model.Account;
+
+import org.junit.Test;
 
 public class AccountTest {
     @Test

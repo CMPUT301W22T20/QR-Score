@@ -8,6 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.qrscore.activity.QRCodeActivity;
+import com.example.qrscore.model.Comment;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.robotium.solo.Solo;
@@ -104,7 +105,6 @@ public class QRCodeActivityTest {
 //
 //        Profile profile2 = new Profile("newuser2");
 //        Account account2 = new Account(profile2);
-//        Player player2 = new Player(account2);
 //
 //        // Create test QRCode
 //        String[] hasScannedArray = {};

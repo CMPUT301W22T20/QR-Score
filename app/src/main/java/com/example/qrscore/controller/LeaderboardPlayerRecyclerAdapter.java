@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrscore.R;
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.example.qrscore.fragment.OwnerLoginFragment;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 import com.google.firebase.functions.FirebaseFunctions;
+import com.example.qrscore.model.Account;
 
 import java.util.ArrayList;
 import java.util.List;
