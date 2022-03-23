@@ -26,6 +26,13 @@ import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.ArrayList;
 
+/**
+ * Purpose:
+ *
+ * Outstanding issues:
+ * TODO: Delete Comment
+ *
+ */
 public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<LeaderboardQRCodeRecyclerAdapter.MyViewHolder> {
 
     private ArrayList<QRCode> qrCodes;
@@ -177,6 +184,23 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                             // remove the player from QRCode scanned array
                             if (accountDocument.exists()) {
                                 accountDocument.getReference().update("scanned", FieldValue.arrayRemove(hash));
+                            }
+                        }
+                    }
+                });
+
+        // query location that QRCode has
+        db.collection("Location").whereArrayContains("qrIDs", hash).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+
+                        // get each individual Location document
+                        for (DocumentSnapshot locationDocument : querySnapshot.getDocuments()) {
+
+                            // remove the QRCode from Location qr codes
+                            if (locationDocument.exists()) {
+                                locationDocument.getReference().update("qrIDs", FieldValue.arrayRemove(hash));
                             }
                         }
                     }

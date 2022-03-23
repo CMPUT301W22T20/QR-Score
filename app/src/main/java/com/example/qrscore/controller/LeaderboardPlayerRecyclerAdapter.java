@@ -38,7 +38,9 @@ import java.util.List;
  * Purpose: RecyclerAdapter for Player leaderboard.
  *
  * Outstanding Issues:
- *      TODO: delete the player from firebase auth
+ *      TODO: add user id to comments to delete comment
+ *      TODO: Have a list of blocked players that cant login
+ *      TODO: Delete player from location
  *
  * @author: William Liu
  */
