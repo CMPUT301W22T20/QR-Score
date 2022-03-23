@@ -70,6 +70,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         holder.rank.setText("NIL");
         holder.score.setText(String.valueOf(account.getQRList().get(position).getQRScore()));
 
+        holder.score.setText(qrCodes.get(position).getQRScore().toString());
         String name = account.getProfile().getFirstName() + " " + account.getProfile().getLastName();
         if (account.getProfile().getFirstName() == null) {
             holder.name.setText(account.getUserID());

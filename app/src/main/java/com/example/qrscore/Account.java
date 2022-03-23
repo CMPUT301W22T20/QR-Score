@@ -90,7 +90,8 @@ public class Account {
      *      Integer representing the total score
      */
     public Integer getScore() {
-        calculateTotalScore();
+//        calculateTotalScore();
+//        return score;
         return score;
     }
 
@@ -151,11 +152,11 @@ public class Account {
         this.qrCodes = qrCodesArray;
     }
 
-    private void calculateTotalScore() {
-        int sum = 0;
-        for (QRCode qrCode: qrCodes) {
-            sum = sum + qrCode.getQRScore();
-        }
-        score = sum;
-    }
+//    private void calculateTotalScore() {
+//        int sum = 0;
+//        for (QRCode qrCode: qrCodes) {
+//            sum = sum + qrCode.getQRScore();
+//        }
+//        score = sum;
+//    }
 }
