@@ -58,7 +58,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         CollectionReference accountRef = db.collection("Account");
         accountListener = accountRef
                 .addSnapshotListener((value, error) -> {
-                    accounts.clear();
+                   accounts.clear();
                    for (QueryDocumentSnapshot documentSnapshot: value)  {
                        String userUID = documentSnapshot.getString("UserUID");
                        String score = documentSnapshot.getString("Score");

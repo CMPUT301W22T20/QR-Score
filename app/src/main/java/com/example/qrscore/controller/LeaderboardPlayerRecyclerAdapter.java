@@ -1,6 +1,7 @@
 package com.example.qrscore.controller;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,6 +65,7 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
         Account account = accounts.get(position);
         holder.rank.setText("NIL");
         holder.score.setText(account.getScore().toString());
+        Log.d("Account score", account.getScore().toString());
         holder.name.setText(account.getUserID());
         holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
     }

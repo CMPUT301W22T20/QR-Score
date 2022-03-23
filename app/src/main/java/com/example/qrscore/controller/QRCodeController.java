@@ -57,5 +57,19 @@ public class QRCodeController {
             }
         });
         accountColRef.document(uuid).update("QRCodes", FieldValue.arrayUnion(qrCode.getHash()));
+
+        // TODO: Add functionality to update Score & Total in FireBase Account collection
+        accountColRef.document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot accDoc = task.getResult();
+                    Integer score = Integer.parseInt(accDoc.getString("Score"))+qrCode.getQRScore();
+                    Integer total = Integer.parseInt(accDoc.getString("Total"))+1;
+                    accountColRef.document(uuid).update("Score", score.toString());
+                    accountColRef.document(uuid).update("Total", total.toString());
+                }
+            }
+        });
     }
 }

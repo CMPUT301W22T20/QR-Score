@@ -131,6 +131,9 @@ public class HomeFragment extends Fragment {
                            ArrayList<String> qrCodeHashes = (ArrayList<String>) doc.getData().get("QRCodes");
                            ArrayList<QRCode> qrCodesArray = new ArrayList<>();
 
+                           myAccount.setScore(Integer.parseInt(doc.getString("Score")));
+                           myAccount.setScanned(Integer.parseInt(doc.getString("Total")));
+
                            for (String qrCodeHash: qrCodeHashes) {
                                System.out.println(qrCodeHash);
                                qrCodesArray.add(new QRCode(qrCodeHash));
