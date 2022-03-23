@@ -23,7 +23,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import android.view.MenuItem;
-import com.example.qrscore.Account;
 import android.os.Bundle;
 
 import android.view.MenuItem;
@@ -80,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         scanFragmentView = (FloatingActionButton) findViewById(R.id.scan_fragment_view_profile_fab);
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.scan_fragment_open);
         fabClose = AnimationUtils.loadAnimation(this,R.anim.scan_fragment_close);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
 
 //        if (savedInstanceState != null) {
 //            lastViewedFragment = savedInstanceState.getString("SAVED_FRAGMENT");
@@ -198,12 +198,5 @@ public class MainActivity extends AppCompatActivity {
             closeScanFab();
         }
     }
-
-    // https://www.youtube.com/watch?v=N8mDDevOj-I
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
-    }
-
 }
 

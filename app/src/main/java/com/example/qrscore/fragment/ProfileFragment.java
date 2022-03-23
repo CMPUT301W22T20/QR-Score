@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qrscore.Profile;
 import com.example.qrscore.QRGeneratorDialog;
 import com.example.qrscore.model.Profile;
 import com.example.qrscore.R;
@@ -244,7 +243,7 @@ public class ProfileFragment extends Fragment {
                 profileController.convertAccount(getContext(), converted -> {
                     if (converted) {
                         Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
-                        profile = profileController.getProfile();
+                        profile.setPermanent(true);
                         openQRDialog();
                     }
                     else {
