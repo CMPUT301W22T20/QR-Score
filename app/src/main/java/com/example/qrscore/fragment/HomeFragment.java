@@ -153,17 +153,17 @@ public class HomeFragment extends Fragment {
                            // Instantiate Textview classes to fill layout parameters
                            TextView myScannedCodes = (TextView) view.findViewById(R.id.scanned_text_view);
                            TextView myQRScore = (TextView) view.findViewById(R.id.score_text_view);
-                           TextView qrCodeHiscoreRank = (TextView) view.findViewById(R.id.hiscore_rank_text_view);
-                           TextView scannedRank = (TextView) view.findViewById(R.id.scanned_rank_text_view);
-                           TextView totalScoreRank = (TextView) view.findViewById(R.id.total_score_rank_text_view);
+                           TextView myQRHiscoreRank = (TextView) view.findViewById(R.id.hiscore_rank_text_view);
+                           TextView myScannedRank = (TextView) view.findViewById(R.id.scanned_rank_text_view);
+                           TextView myTotalScoreRank = (TextView) view.findViewById(R.id.total_score_rank_text_view);
                            QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
                            // Set the text of all TextViews
                            myScannedCodes.setText(myAccount.getScanned().toString());
                            myQRScore.setText(myAccount.getScore().toString());
-                           qrCodeHiscoreRank.setText("NIL");
-                           scannedRank.setText("NIL");
-                           totalScoreRank.setText("NIL");
+                           myQRHiscoreRank.setText("NIL");
+                           myScannedRank.setText("NIL");
+                           myTotalScoreRank.setText("NIL");
                            setAdapter();
                        }
                    }
