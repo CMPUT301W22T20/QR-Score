@@ -1,9 +1,7 @@
 package com.example.qrscore.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -13,18 +11,13 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.qrscore.QRGeneratorDialog;
 import com.example.qrscore.model.Profile;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.ProfileController;

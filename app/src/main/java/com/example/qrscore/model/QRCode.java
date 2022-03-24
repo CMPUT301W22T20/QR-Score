@@ -22,7 +22,7 @@ public class QRCode {
     String TAG = "QRCode";
     private String id;   // firestore document ID
     private String hash;
-    private Integer qrscore;
+    private String qrscore;
     private List<String> hasScanned;
 
     /**
@@ -51,7 +51,7 @@ public class QRCode {
      * @param qrscore
      *      The QRCode score
      */
-    public QRCode(String hash, Integer qrscore) {
+    public QRCode(String hash, String qrscore) {
         this.hash = hash;
         this.qrscore = qrscore;
     }
@@ -62,7 +62,7 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-    public Integer calculateQRScore(String hash) {
+    public String calculateQRScore(String hash) {
         String hash5 = hash.replace("00000", "");
         String hash4 = hash5.replace("0000", "");
         String hash3 = hash4.replace("000", "");
@@ -73,14 +73,14 @@ public class QRCode {
         Integer count2 = (hash.length() - hash2.length())/2;
         Integer score = count2*20 + count3*400 + count4*8000 + count5*160000;
 
-        return score;
+        return score.toString();
     }
 
     /**
      * Get QR Score from member
      *
      */
-    public Integer getQRScore() {
+    public String getQRScore() {
         return this.qrscore;
     }
 

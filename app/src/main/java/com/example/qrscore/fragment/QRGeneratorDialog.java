@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.qrscore.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;

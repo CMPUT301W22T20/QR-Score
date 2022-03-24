@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.example.qrscore.controller.QRCodeAdapter;
+
 import com.example.qrscore.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;

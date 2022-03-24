@@ -54,6 +54,9 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         loginByQRButton.setOnClickListener(this);
         newUserButton = findViewById(R.id.auth_new_user_button);
         newUserButton.setOnClickListener(this);
+
+        email = "ejhffh@uab.cs";
+        userUID = "xvTcku7tInRU7UC5rNtGIdEF9iQ2";
     }
 
     @Override

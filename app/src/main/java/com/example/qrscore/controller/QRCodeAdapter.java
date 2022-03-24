@@ -32,7 +32,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     private Context mContext;
     private int mResource;
     private LayoutInflater inflater;
-    private Integer score;
+    private String score;
     private String hash;
     private QRCode code;
     private TextView score_text;

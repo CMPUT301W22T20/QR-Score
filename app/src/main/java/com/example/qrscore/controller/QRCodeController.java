@@ -64,8 +64,8 @@ public class QRCodeController {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot accDoc = task.getResult();
-                    Integer score = Integer.parseInt(accDoc.getString("Score"))+qrCode.getQRScore();
-                    Integer total = Integer.parseInt(accDoc.getString("Total"))+1;
+                    Integer score = Integer.parseInt(accDoc.getString("Score")) + Integer.parseInt(qrCode.getQRScore());
+                    Integer total = Integer.parseInt(accDoc.getString("Total")) + 1;
                     accountColRef.document(uuid).update("Score", score.toString());
                     accountColRef.document(uuid).update("Total", total.toString());
                 }

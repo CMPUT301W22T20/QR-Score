@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.qrscore.QRGeneratorDialog;
+
 import com.example.qrscore.model.Account;
 import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
 import com.example.qrscore.model.QRCode;
@@ -243,7 +243,7 @@ public class HomeFragment extends Fragment {
                 Collections.sort(qrCodesToSort, new Comparator<QRCode>() {
                     @Override
                     public int compare(QRCode qrCode, QRCode t1) {
-                        return -(qrCode.getQRScore() - t1.getQRScore());
+                        return -(Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
                     }
                 });
 
@@ -259,7 +259,7 @@ public class HomeFragment extends Fragment {
                 Collections.sort(qrCodes, new Comparator<QRCode>() {
                     @Override
                     public int compare(QRCode qrCode, QRCode t1) {
-                        return (qrCode.getQRScore() - t1.getQRScore());
+                        return (Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
                     }
                 });
 

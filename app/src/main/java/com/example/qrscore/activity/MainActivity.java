@@ -2,21 +2,14 @@ package com.example.qrscore.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-
 import android.app.Activity;
 import android.os.Build;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -28,6 +21,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.qrscore.model.Account;
+
 import com.example.qrscore.R;
 import com.example.qrscore.fragment.HomeFragment;
 import com.example.qrscore.fragment.LeaderboardFragment;
@@ -56,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     Animation fabClose;
     Boolean isfabOpen;
 
-    static private Account account;
-    final static public String ACCOUNT_KEY = "ACCOUNT";
     String lastViewedFragment;
 
     @Override
@@ -72,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Authorize User.
         // Initialize HomeFragment when open app.
-        bottomNavView = (BottomNavigationView) findViewById(R.id.bottom_nav_view);
+        bottomNavView = findViewById(R.id.bottom_nav_view);
         bottomNavView.setOnItemSelectedListener(new NavBarOnItemSelectedListener());
         isfabOpen = false;
-        scanFragmentAdd = (FloatingActionButton) findViewById(R.id.scan_fragment_add_qr_fab);
-        scanFragmentView = (FloatingActionButton) findViewById(R.id.scan_fragment_view_profile_fab);
+        scanFragmentAdd = findViewById(R.id.scan_fragment_add_qr_fab);
+        scanFragmentView = findViewById(R.id.scan_fragment_view_profile_fab);
         fabOpen = AnimationUtils.loadAnimation(this, R.anim.scan_fragment_open);
         fabClose = AnimationUtils.loadAnimation(this,R.anim.scan_fragment_close);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
@@ -94,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 //                case "scanFragment":
 //                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
 //                    break;
-//                case "leaderboardFramgent":
+//                case "leaderboardFragment":
 //                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, leaderboardFragment).commit();
 //                    break;
 //                case "profileFragment":
@@ -137,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                         closeScanFab();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
                     });
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
                     lastViewedFragment = "scanFragment";
                     return true;
                 case R.id.leaderboard_fragment_item:
@@ -163,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putString("SAVED_FRAGMENT", lastViewedFragment);
-
         super.onSaveInstanceState(savedInstanceState);
     }
 
