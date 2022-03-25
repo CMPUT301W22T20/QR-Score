@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
                         closeScanFab();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
                     });
-                    getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
                     lastViewedFragment = "scanFragment";
                     return true;
                 case R.id.leaderboard_fragment_item:
