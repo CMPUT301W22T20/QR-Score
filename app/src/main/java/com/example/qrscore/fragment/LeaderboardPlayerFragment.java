@@ -53,20 +53,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         populatePlayerArrayList();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference accountRef = db.collection("Account");
-        accountListener = accountRef
-                .addSnapshotListener((value, error) -> {
-                   accounts.clear();
-                   for (QueryDocumentSnapshot documentSnapshot: value)  {
-                       String userUID = documentSnapshot.getString("UserUID");
-                       String score = documentSnapshot.getString("Score");
-                       String total = documentSnapshot.getString("Total");
-                       accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
-                       leaderboardRA.updateList(accounts);
-                   }
-                });
     }
 
     @Override
@@ -86,18 +72,20 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      */
     private void populatePlayerArrayList() {
         accounts = new ArrayList<Account>();
+        accounts.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference accountRef = db.collection("Account");
-        accountRef.get().addOnCompleteListener(task -> {
-           if (task.isSuccessful()) {
-               for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                   String userUID = documentSnapshot.getString("UserUID");
-                   String score = documentSnapshot.getString("Score");
-                   String total = documentSnapshot.getString("Total");
-                   accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
-               }
-           }
-        });
+        accountListener = accountRef
+                .addSnapshotListener((value, error) -> {
+                    accounts.clear();
+                    for (QueryDocumentSnapshot documentSnapshot: value)  {
+                        String userUID = documentSnapshot.getString("UserUID");
+                        String score = documentSnapshot.getString("Score");
+                        String total = documentSnapshot.getString("Total");
+                        accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
+                        leaderboardRA.updateList(accounts);
+                    }
+                });
     }
 
     /**
