@@ -74,6 +74,7 @@ public class AccountController {
         newAccount.put("UserUID", userUID);
         newAccount.put("Score", "0");
         newAccount.put("Total", "0");
+        newAccount.put("Hiscore", "0");
         newAccount.put("QRCodes", account.getQRList());
         accountRef.set(newAccount)
                 .addOnSuccessListener(unused -> {

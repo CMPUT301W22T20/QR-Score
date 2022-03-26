@@ -2,6 +2,7 @@ package com.example.qrscore.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,15 +23,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 // https://www.youtube.com/watch?v=__OMnFR-wZU
 // https://www.youtube.com/watch?v=OWwOSLfWboY
@@ -45,7 +50,7 @@ import java.util.Collections;
  * @author William Liu
  */
 public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
-
+    String TAG = "LeaderboardFragment";
     private ArrayList<Account> accounts;
     private RecyclerView playerRecyclerView;
     private LeaderboardPlayerRecyclerAdapter leaderboardRA;
@@ -64,6 +69,66 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference accountRef = db.collection("Account");
+
+        //TOP 5 SCORES
+        Query accountSortByScore = accountRef.orderBy("Score", Query.Direction.DESCENDING).limit(5);
+//        Task<QuerySnapshot> accountSortByScoreSnapshot = accountSortByScore.get();
+        accountSortByScore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<DocumentSnapshot> docs = task.getResult().getDocuments();
+                    int i = 0;
+                    for (DocumentSnapshot doc: docs) {
+//                        System.out.println(doc);
+                        String top5score = (String) doc.getData().get("Score");
+                        String top5uid = (String) doc.getData().get("UserUID");
+                        Log.i(TAG, "Score Rank " + i + ": " + top5uid + "(" + top5score + ")");
+                        // Checking if the doc contains the unique qrID
+                        i++;
+                    }
+                }
+            }
+        });
+
+        Query accountSortByScanned = accountRef.orderBy("Total", Query.Direction.DESCENDING).limit(5);
+        accountSortByScanned.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<DocumentSnapshot> docs = task.getResult().getDocuments();
+                    int i = 0;
+                    for (DocumentSnapshot doc: docs) {
+//                        System.out.println(doc);
+                        String top5scanned = (String) doc.getData().get("Total");
+                        String top5uid = (String) doc.getData().get("UserUID");
+                        Log.i(TAG, "Scanned Rank " + i + ": " + top5uid + "(" + top5scanned + ")");
+                        // Checking if the doc contains the unique qrID
+                        i++;
+                    }
+                }
+            }
+        });
+
+        Query accountSortByHiscore = accountRef.orderBy("Hiscore", Query.Direction.DESCENDING).limit(5);
+        accountSortByHiscore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<DocumentSnapshot> docs = task.getResult().getDocuments();
+                    int i = 0;
+                    for (DocumentSnapshot doc: docs) {
+//                        System.out.println(doc);
+                        String top5hiscore = (String) doc.getData().get("Hiscore");
+                        String top5uid = (String) doc.getData().get("UserUID");
+                        Log.i(TAG, "Hiscore Rank " + i + ": " + top5uid + "(" + top5hiscore + ")");
+                        // Checking if the doc contains the unique qrID
+                        i++;
+                    }
+                }
+            }
+        });
+
         accountListener = accountRef
                 .addSnapshotListener((value, error) -> {
                     accounts.clear();

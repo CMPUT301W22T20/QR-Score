@@ -123,6 +123,9 @@ public class HomeFragment extends Fragment {
         profileRef = profileCollectionRef.document(userUID);
         QRDataListRef = QRDataListCollectionRef.document(userUID);
 
+        Query highestRankingQRScore = accountCollectionRef.orderBy("Score", Query.Direction.DESCENDING).limit(5);
+//        highestRankingQRScore.
+        
         requestPermissionsIfNecessary(new String[] {
                 // if you need to show the current location, uncomment the line below
                 Manifest.permission.ACCESS_COARSE_LOCATION,
