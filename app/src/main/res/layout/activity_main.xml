@@ -7,21 +7,56 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/background_activity">
-    <FrameLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_container"
-        android:layout_above="@+id/bottom_nav_view"/>
+        android:layout_above="@+id/bottom_nav_view"
+        android:onClick="hideFab">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scan_fragment_add_qr_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_qr_code_scanner"
+            android:visibility="invisible"
+            android:focusableInTouchMode="true"
+            app:fabCustomSize="60dp"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scan_fragment_view_profile_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:src="@drawable/ic_qr_view_profile"
+            android:visibility="invisible"
+            android:focusableInTouchMode="true"
+            app:fabCustomSize="60dp"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/scan_fragment_add_qr_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu"
         android:background="@drawable/nav_bar_round"
-        app:itemRippleColor="@color/white"
-        app:labelVisibilityMode="labeled"
-        app:itemTextAppearanceActive="@color/black"
         app:itemIconTint="@drawable/nav_bar_selector"
-        app:itemTextColor="@drawable/nav_bar_selector"/>
+        app:itemRippleColor="@color/white"
+        app:itemTextAppearanceActive="@color/black"
+        app:itemTextColor="@drawable/nav_bar_selector"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu"/>
+
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.content.Intent;
 import android.util.Log;
@@ -12,7 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.model.QRCode;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,6 +73,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         holder.rank.setText("NIL");
         holder.score.setText(String.valueOf(account.getQRList().get(position).getQRScore()));
 
+        holder.score.setText(qrCodes.get(position).getQRScore().toString());
         String name = account.getProfile().getFirstName() + " " + account.getProfile().getLastName();
         if (account.getProfile().getFirstName() == null) {
             holder.name.setText(account.getUserID());

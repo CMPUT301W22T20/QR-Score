@@ -3,11 +3,11 @@ package com.example.qrscore.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
@@ -16,14 +16,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.qrscore.Account;
-import com.example.qrscore.HomeFragmentQRCodeRecyclerAdapter;
-import com.example.qrscore.QRCode;
-import com.example.qrscore.QRDataList;
+import com.example.qrscore.QRGeneratorDialog;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
+import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
-import com.example.qrscore.controller.LocationController;
 import com.example.qrscore.controller.ProfileController;
 import com.example.qrscore.controller.QRCodeController;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,7 +34,6 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -67,23 +64,19 @@ public class HomeFragment extends Fragment {
 
     private CollectionReference qrCollectionRef;
     private CollectionReference accountCollectionRef;
-    private CollectionReference QRDataListCollectionRef;
     private CollectionReference profileCollectionRef;
 
     private DocumentReference qrRef;
     private DocumentReference accountRef;
-    private DocumentReference QRDataListRef;
     private DocumentReference profileRef;
 
     private DocumentSnapshot accountSnapshot;
-    private DocumentSnapshot QRDataListSnapshot;
     private DocumentSnapshot profileSnapshot;
 
     private Account myAccount;
     private String userUID;
     private int score;
     private int total;
-    private QRDataList myQRDataList;
     private List<QRCode> qrCodes;
 
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
@@ -94,6 +87,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 //    private CollectionReference qrRef;
     private static Query.Direction direction;
+    private ImageButton profileQRButton;
+    private TextView actionBarNameTextView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -111,17 +106,13 @@ public class HomeFragment extends Fragment {
         userUID = profileController.getProfile().getUserUID();
         myAccount = new Account(userUID);
         myAccount.setProfile(profileController.getProfile());
-        myQRDataList = new QRDataList();
-        myQRDataList.setQRCodes(new ArrayList<QRCode>());
 
         qrCollectionRef = db.collection("QRCode");
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
-        QRDataListCollectionRef = db.collection("QRDataList");
 
         accountRef = accountCollectionRef.document(userUID);
         profileRef = profileCollectionRef.document(userUID);
-        QRDataListRef = QRDataListCollectionRef.document(userUID);
 
         Query highestRankingQRScore = accountCollectionRef.orderBy("Score", Query.Direction.DESCENDING).limit(5);
 //        highestRankingQRScore.
@@ -145,6 +136,9 @@ public class HomeFragment extends Fragment {
                        if (doc.exists()) {
                            ArrayList<String> qrCodeHashes = (ArrayList<String>) doc.getData().get("QRCodes");
                            ArrayList<QRCode> qrCodesArray = new ArrayList<>();
+
+                           myAccount.setScore(Integer.parseInt(doc.getString("Score")));
+                           myAccount.setScanned(Integer.parseInt(doc.getString("Total")));
 
                            for (String qrCodeHash: qrCodeHashes) {
                                System.out.println(qrCodeHash);
@@ -171,58 +165,6 @@ public class HomeFragment extends Fragment {
                        }
                    }
                 });
-
-//        QRDataListRef.get()
-//                .addOnCompleteListener(taskQRDataList -> {
-//                    if (taskQRDataList.isSuccessful()) {
-//                        DocumentSnapshot qrDataListDocument = taskQRDataList.getResult();
-//                        if (qrDataListDocument.exists()) {
-//                            Log.d(TAG, "qrDataListDocument data: " + qrDataListDocument.getData());
-//
-//                            int total = ((Number) qrDataListDocument.get("totalQRCodesScanned")).intValue();
-//
-//                            ArrayList<DocumentReference> qrCodesArray = (ArrayList<DocumentReference>) qrDataListDocument.getData().get("qrCodes");
-//
-//                            // get each QRCode from array
-//                            for (DocumentReference codeRef : qrCodesArray) {
-//                                codeRef.get()
-//                                        .addOnCompleteListener(taskQRCodes -> {
-//                                            if (taskQRCodes.isSuccessful()) {
-//                                                DocumentSnapshot qrCodesDocument = taskQRCodes.getResult();
-//                                                if (qrCodesDocument.exists()) {
-//                                                    Log.d(TAG, "qrCodesdocument data: " + qrCodesDocument.getData());
-//                                                    QRCode code = qrCodesDocument.toObject(QRCode.class);
-//                                                    myQRDataList.addQRCode(code);
-//                                                    myAccount.setQrDataList(myQRDataList);
-//                                                    Log.i(TAG, "myAccount.getQrDataList().getSumOfScoresScanned(): " + myAccount.getQrDataList().getSumOfScoresScanned());
-//                                                    Log.i(TAG, "myAccount.getQrDataList().getTotalQRCodesScanned(): " + myAccount.getQrDataList().getTotalQRCodesScanned());
-//                                                    Log.i(TAG, "myAccount.getScanned(): " + myAccount.getScanned());
-//                                                    myAccount.setScanned(myAccount.getQrDataList().getSumOfScoresScanned());
-//                                                    myAccount.setScore(myAccount.getQrDataList().getTotalQRCodesScanned());
-//                                                    Log.i(TAG, "myAccount.getScanned() after setScore: " + myAccount.getScanned());
-//
-//                                                    // Instantiate Textview classes to fill layout parameters
-//                                                    TextView myScannedCodes = (TextView) view.findViewById(R.id.home_fragment_scanned_text_view);
-//                                                    TextView myQRScore = (TextView) view.findViewById(R.id.home_fragment_score_text_view);
-//                                                    TextView myRank = (TextView) view.findViewById(R.id.home_fragment_rank_text_view);
-//                                                    QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
-//
-//                                                    // Set the text of all TextViews
-//                                                    myScannedCodes.setText(myAccount.getScanned().toString());
-//                                                    myQRScore.setText(myAccount.getScore().toString());
-//                                                    myRank.setText("NIL");
-//                                                    setAdapter();
-//                                                } else {
-//                                                    Log.d(TAG, "No such qr code document");
-//                                                }
-//                                            } else {
-//                                                Log.d(TAG, "get failed with ", taskQRCodes.getException());
-//                                            }
-//                                        });
-//                            }
-//                        }
-//                    }
-//                });
     }
 
 
@@ -238,14 +180,18 @@ public class HomeFragment extends Fragment {
         sortByButton.setOnClickListener(new sortByButtonOnClickListener(sortByButton, HomeFragQRCodeRA, myAccount));
 
         // Instantiate Textview classes to fill layout parameters
-        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
+//        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
         TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
 
         String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
 
         // Set username TextViews
         usernamesQRCodes.setText(usernamesQRCodesString);
-        userName.setText(myAccount.getUserID());
+//        userName.setText(myAccount.getUserID());
+
+        profileQRButton = view.findViewById(R.id.home_fragment_actionbar_qr_code);
+        profileQRButton.setOnClickListener(new profileGeneratorButtonListener(userUID));
+        actionBarNameTextView = view.findViewById(R.id.home_fragment_actionbar_textview);
 
         populateData(view);
 
@@ -271,7 +217,6 @@ public class HomeFragment extends Fragment {
         Button sortByButton;
         HomeFragmentQRCodeRecyclerAdapter HFQRCodeRA;
         Account myAccount;
-        QRDataList qrDataListToSort;
         ArrayList<QRCode> qrCodesToSort;
 
         public sortByButtonOnClickListener(Button sortByButton, HomeFragmentQRCodeRecyclerAdapter homeFragmentQRCodeRecyclerAdapter, Account account) {
@@ -309,7 +254,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                qrDataListToSort.setQRCodes(qrCodesToSort);
                 HFQRCodeRA.updateList(myAccount);
             }
         }
@@ -326,7 +270,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-                qrDataListToSort.setQRCodes(qrCodesToSort);
                 HFQRCodeRA.updateList(myAccount);
             }
         }
@@ -362,6 +305,31 @@ public class HomeFragment extends Fragment {
                     getActivity(),
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    private class profileGeneratorButtonListener implements View.OnClickListener {
+        String userUID;
+
+        public profileGeneratorButtonListener(String userUID) {
+            this.userUID = userUID;
+        }
+
+        @Override
+        public void onClick(View view) {
+            openQRDialog();
+        }
+
+        private void openQRDialog() {
+            // https://stackoverflow.com/a/15459259
+            Bundle args = new Bundle();
+            args.putString("email", "");
+            args.putString("userUID", userUID);
+            args.putBoolean("login", false);
+
+            QRGeneratorDialog qrGeneratorDialog = new QRGeneratorDialog();
+            qrGeneratorDialog.setArguments(args);
+            qrGeneratorDialog.show(getChildFragmentManager(), "QR Dialog");
         }
     }
 }

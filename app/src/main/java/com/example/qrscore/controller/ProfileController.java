@@ -7,11 +7,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.qrscore.Profile;
+import com.example.qrscore.ConvertAccountCallback;
+import com.example.qrscore.model.Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,6 +47,8 @@ public class ProfileController {
     private ListenerRegistration profileListener;
     private SharedPreferences profileSP;
     private SharedPreferences.Editor profileSPEditor;
+    private String email;
+    private Boolean permanent;
 
     private static final String PROFILE_PREFS = "profilePrefs";
     private static final String TAG = "Profile";
@@ -54,7 +60,6 @@ public class ProfileController {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        this.userUID = currentUser.getUid();
         // https://www.youtube.com/watch?v=fJEFZ6EOM9o
         profileSP = context.getSharedPreferences(PROFILE_PREFS, Context.MODE_PRIVATE);
         profileSPEditor = profileSP.edit();
@@ -64,7 +69,7 @@ public class ProfileController {
      * Purpose: To create a new profile locally and on firestore db.
      * To create a new account on firestore db.
      */
-    public void createNewUser() {
+    public void createNewUser(String userUID) {
         newProfile = new Profile(userUID);
         // https://firebase.google.com/docs/firestore/manage-data/add-data
         profileRef = db.collection("Profile").document(userUID);
@@ -91,6 +96,7 @@ public class ProfileController {
      * Purpose: Add a profileListener for firestore data.
      */
     public void addProfileListener() {
+        userUID = currentUser.getUid();
         profileRef = db.collection("Profile").document(userUID);
         profileListener = profileRef.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
@@ -115,19 +121,24 @@ public class ProfileController {
 
     /**
      * Purpose: Updates the current players profile on firestore db and locally.
-     * @param updatedProfile
-     *      An instance of their updated profile.
-     * @param context
-     *      ProfileFragment activity to display toast message.
+     *
+     * @param updatedProfile An instance of their updated profile.
+     * @param context        ProfileFragment activity to display toast message.
      */
+
+    // Profile Callback
     public void updateProfile(Profile updatedProfile, Context context) {
         // https://firebase.google.com/docs/firestore/manage-data/add-data
+        userUID = currentUser.getUid();
         profileRef = db.collection("Profile").document(userUID);
         Map<String, Object> profile = new HashMap<>();
         profile.put("firstName", updatedProfile.getFirstName());
         profile.put("lastName", updatedProfile.getLastName());
         profile.put("email", updatedProfile.getEmail());
+        email = updatedProfile.getEmail();
+        permanent = updatedProfile.getPermanent();
         profile.put("phoneNumber", updatedProfile.getPhoneNumber());
+        profile.put("permanent", updatedProfile.getPermanent());
 
         // Update profile of user.
         profileRef
@@ -151,8 +162,8 @@ public class ProfileController {
 
     /**
      * Purpose: Set/Update profile info in SharedPrefs.
-     * @param newProfile
-     *      Profile to be set/updated with locally.
+     *
+     * @param newProfile Profile to be set/updated with locally.
      */
     public void setProfile(Profile newProfile) {
         profileSPEditor.putString("firstName", newProfile.getFirstName());
@@ -160,13 +171,14 @@ public class ProfileController {
         profileSPEditor.putString("email", newProfile.getEmail());
         profileSPEditor.putString("phoneNumber", newProfile.getPhoneNumber());
         profileSPEditor.putString("userUID", newProfile.getUserUID());
-        profileSPEditor.commit();
+        profileSPEditor.putBoolean("permanent", newProfile.getPermanent());
+        profileSPEditor.apply();
     }
 
     /**
      * Purpose: Return an instance of the profile saved locally
-     * @return
-     *      Represents the Profile object locally.
+     *
+     * @return Represents the Profile object locally.
      */
     public Profile getProfile() {
         String firstName = profileSP.getString("firstName", null);
@@ -174,8 +186,31 @@ public class ProfileController {
         String email = profileSP.getString("email", null);
         String phoneNumber = profileSP.getString("phoneNumber", null);
         String userUID = profileSP.getString("userUID", currentUser.getUid());
-        Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID);
+        Boolean permanent = profileSP.getBoolean("permanent", false);
+        Profile profile = new Profile(firstName, lastName, email, phoneNumber, userUID, permanent);
         return profile;
     }
+
+    public void convertAccount(Context context, ConvertAccountCallback convertAccountCallback) {
+        Profile profile = getProfile();
+        AuthCredential credential = EmailAuthProvider.getCredential(profile.getEmail(), profile.getUserUID());
+        firebaseAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = task.getResult().getUser();
+                            profile.setPermanent(true);
+                            updateProfile(profile, context);
+                            convertAccountCallback.onCallback(true);
+                            Log.d(TAG, "linkWithCredential:success");
+                        } else {
+                            Log.w(TAG, "linkWithCredential:failure", task.getException());
+                            convertAccountCallback.onCallback(false);
+                        }
+                    }
+                });
+    }
 }
+
 

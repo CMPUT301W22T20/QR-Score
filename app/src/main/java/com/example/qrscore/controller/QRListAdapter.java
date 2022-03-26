@@ -1,4 +1,4 @@
-package com.example.qrscore;
+package com.example.qrscore.controller;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.qrscore.R;
+import com.example.qrscore.model.QRCode;
 
 import java.util.ArrayList;
 

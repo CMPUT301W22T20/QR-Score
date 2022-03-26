@@ -14,10 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import com.example.qrscore.Account;
-import com.example.qrscore.LeaderboardPlayerRecyclerAdapter;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.controller.LeaderboardPlayerRecyclerAdapter;
 import com.example.qrscore.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,7 +33,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 // https://www.youtube.com/watch?v=__OMnFR-wZU
@@ -131,7 +129,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
 
         accountListener = accountRef
                 .addSnapshotListener((value, error) -> {
-                    accounts.clear();
+                   accounts.clear();
                    for (QueryDocumentSnapshot documentSnapshot: value)  {
                        String userUID = documentSnapshot.getString("UserUID");
                        String score = documentSnapshot.getString("Score");
