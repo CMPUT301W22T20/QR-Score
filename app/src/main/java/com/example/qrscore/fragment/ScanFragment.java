@@ -110,7 +110,8 @@ public class ScanFragment extends Fragment {
                     String userID = profileController.getProfile().getUserUID();
                     QRCode qrCode = new QRCode(qrHashed);
                     qrCode.addScanned(userID);
-                    qrCodeController.add(qrHashed, qrCode, userID);
+
+                    qrCodeController.add(qrHashed, qrCode, userID, accountController);
 
                     if (switchButton.isChecked()) {
                         locationController.saveLocation(qrHashed, userID);

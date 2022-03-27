@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,7 +42,7 @@ public class QRCodeController {
      * @param uuid
      *      User UID of user that added it.
      */
-    public void add(String key, QRCode qrCode, String uuid) {
+    public void add(String key, QRCode qrCode, String uuid, AccountController accountController) {
         QRCodeColRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -67,11 +68,25 @@ public class QRCodeController {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot accDoc = task.getResult();
+
                     Log.i(TAG, "accDoc.getString(\"Score\"): " + accDoc.getString("Score"));
-                    Integer score = Integer.parseInt(accDoc.getString("Score"))+qrCode.getQRScore();
-                    Integer total = Integer.parseInt(accDoc.getString("Total"))+1;
-                    accountColRef.document(uuid).update("Score", score.toString());
-                    accountColRef.document(uuid).update("Total", total.toString());
+
+                    Account account = accountController.getAccount();
+
+                    //Update total score
+                    Integer updatedScore = account.getScore() + qrCode.getQRScore();
+                    accountController.updateScore(updatedScore);
+
+                    //Update high score if new code is higher
+                    Integer hiscore = account.getHiscore();
+                    if (qrCode.getQRScore() > hiscore) {
+                        accountController.updateHiscore(qrCode.getQRScore());
+                    }
+
+                    //Update total scanned QR codes
+                    Integer updatedTotalScanned = account.getScanned()+1;
+                    accountController.updateTotalScanned(updatedTotalScanned);
+
                 }
             }
         });

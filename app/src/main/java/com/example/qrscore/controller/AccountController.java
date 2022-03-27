@@ -93,9 +93,9 @@ public class AccountController {
     }
 
     /**
-     * Purpose: Return an instance of the profile saved locally
+     * Purpose: Return an instance of the account saved locally
      *
-     * @return Represents the Profile object locally.
+     * @return Represents the Account object locally.
      */
     public Account getAccount() {
         String userUID = accountSP.getString("userUID", currentUser.getUid());
