@@ -180,7 +180,6 @@ public class HomeFragment extends Fragment {
 
         // Set username TextViews
         usernamesQRCodes.setText(usernamesQRCodesString);
-//        userName.setText(myAccount.getUserID());
 
         profileQRButton = view.findViewById(R.id.home_fragment_actionbar_qr_code);
         profileQRButton.setOnClickListener(new profileGeneratorButtonListener(userUID));
