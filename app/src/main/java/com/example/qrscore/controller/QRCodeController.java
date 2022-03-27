@@ -108,7 +108,7 @@ public class QRCodeController {
 
         // Remove code from hasScanned and Account
         qrCodeRef.update("scanned", FieldValue.arrayRemove(uuid));
-        accountRef.update("QRCodes", FieldValue.arrayRemove(hash));
+        accountRef.update("qrCodes", FieldValue.arrayRemove(hash));
 
         accountColRef.document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
