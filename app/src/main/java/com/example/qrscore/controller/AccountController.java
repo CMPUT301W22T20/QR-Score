@@ -149,7 +149,7 @@ public class AccountController {
      */
     public void updateScore(Integer updatedScore) {
         accountRef = accountCollectionRef.document(currentUser.getUid());
-        accountRef.update("score", String.valueOf(updatedScore));
+        accountRef.update("score", updatedScore);
     }
 
     /**
@@ -159,7 +159,7 @@ public class AccountController {
      */
     public void updateTotalScanned(Integer updatedTotal) {
         accountRef = accountCollectionRef.document(currentUser.getUid());
-        accountRef.update("scanned", String.valueOf(updatedTotal));
+        accountRef.update("scanned", updatedTotal);
     }
 
     /**
@@ -169,7 +169,7 @@ public class AccountController {
      */
     public void updateHiscore(Integer updatedHiscore) {
         accountRef = accountCollectionRef.document(currentUser.getUid());
-        accountRef.update("hiscore", String.valueOf(updatedHiscore));
+        accountRef.update("hiscore", updatedHiscore);
     }
 
 }

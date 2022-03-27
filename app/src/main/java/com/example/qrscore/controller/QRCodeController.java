@@ -67,12 +67,12 @@ public class QRCodeController {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot accDoc = task.getResult();
+                    DocumentSnapshot accountDocument = task.getResult();
 
-                    String total = accDoc.get("scanned").toString();
-                    String score = accDoc.get("score").toString();
-                    String hiScore = accDoc.get("hiscore").toString();
-                    Log.i(TAG, "accDoc.get(\"score\").toString(): " + accDoc.get("score").toString());
+                    String total = accountDocument.get("scanned").toString();
+                    String score = accountDocument.get("score").toString();
+                    String hiScore = accountDocument.get("hiscore").toString();
+                    Log.i(TAG, "accDoc.get(\"score\").toString(): " + accountDocument.get("score").toString());
 
                     Account account = accountController.getAccount();
 
