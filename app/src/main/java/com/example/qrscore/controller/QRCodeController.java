@@ -97,7 +97,7 @@ public class QRCodeController {
         });
     }
 
-    public void remove(String hash, QRCode qrCode, String uuid) {
+    public void remove(String hash, QRCode qrCode, String uuid, AccountController accountController) {
         if (qrCode == null) {
             throw new IllegalArgumentException("No valid QRCode was passed into this function.");
         }
@@ -114,11 +114,24 @@ public class QRCodeController {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot accDoc = task.getResult();
-                    Integer score = Integer.parseInt(accDoc.getString("score"))-qrCode.getQRScore();
-                    Integer scanned = Integer.parseInt(accDoc.getString("scanned"))-1;
-                    accountColRef.document(uuid).update("score", score.toString());
-                    accountColRef.document(uuid).update("scanned", scanned.toString());
+                    DocumentSnapshot accountDocument = task.getResult();
+
+                    Account account = accountController.getAccount();
+
+                    //Subtract from total score
+                    Integer updatedScore = account.getScore() - qrCode.getQRScore();
+                    accountController.updateScore(updatedScore);
+
+                    //Update high score if deleted code is current high score
+                    Integer hiscore = account.getHiscore();
+                    if (qrCode.getQRScore() == hiscore) {
+                        //TODO: Recalculate next-highest hiscore
+                        accountController.updateHiscore(0);
+                    }
+
+                    //Update total scanned QR codes
+                    Integer updatedTotalScanned = account.getScanned()-1;
+                    accountController.updateTotalScanned(updatedTotalScanned);
                 }
             }
         });

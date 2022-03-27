@@ -186,11 +186,7 @@ public class HomeFragment extends Fragment {
                             ArrayList<QRCode> qrCodesArray = new ArrayList<>();
 
 
-                            //This should be in AccountController
-//                            Integer scoreInt = (Integer) accountDocument.getData().get("score");
-//                            Integer scannedInt = (Integer) accountDocument.getData().get("scanned");
-//                            myAccount.setScore(scoreInt);
-//                            myAccount.setScanned(scannedInt);
+                            //TODO: Fix QR code not removing from list after deletion
 
                             for (String qrCodeHash: qrCodeHashes) {
                                 System.out.println(qrCodeHash);

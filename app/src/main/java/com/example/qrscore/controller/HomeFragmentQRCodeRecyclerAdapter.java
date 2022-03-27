@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,6 +119,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         }
         @Override
         public void onClick(View view) {
+            AccountController accountController = new AccountController(view.getContext());
             PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
             popupMenu.setOnMenuItemClickListener(menuItem -> {
                 switch (menuItem.getItemId()) {
@@ -126,7 +129,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
                         view.getContext().startActivity(intent);
                         break;
                     case R.id.home_fragment_qr_delete_qr_item:
-                        deleteQRCode(account.getUserUID(), hash);
+                        deleteQRCode(account.getUserUID(), hash, accountController);
                         updateList(account);
                 }
                 return false;
@@ -154,9 +157,9 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
      * @param hash
      *      The hash code of the QRCode.
      */
-    public void deleteQRCode(String userID, String hash) {
+    public void deleteQRCode(String userID, String hash, AccountController accountController) {
         QRCodeController qrController = new QRCodeController();
-        qrController.remove(hash, account.getQRByHash(hash), userID);
+        qrController.remove(hash, account.getQRByHash(hash), userID, accountController);
         account.removeQR(hash);
     }
 
