@@ -77,7 +77,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                     for (DocumentSnapshot doc: docs) {
 //                        System.out.println(doc);
                         String top5score = (String) doc.getData().get("score");
-                        String top5uid = (String) doc.getData().get("UserUID");
+                        String top5uid = (String) doc.getData().get("userUID");
                         Log.i(TAG, "Score Rank " + i + ": " + top5uid + "(" + top5score + ")");
                         // Checking if the doc contains the unique qrID
                         i++;
@@ -96,7 +96,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                     for (DocumentSnapshot doc: docs) {
 //                        System.out.println(doc);
                         String top5scanned = (String) doc.getData().get("scanned");
-                        String top5uid = (String) doc.getData().get("UserUID");
+                        String top5uid = (String) doc.getData().get("userUID");
                         Log.i(TAG, "Scanned Rank " + i + ": " + top5uid + "(" + top5scanned + ")");
                         // Checking if the doc contains the unique qrID
                         i++;
@@ -115,7 +115,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                     for (DocumentSnapshot doc: docs) {
 //                        System.out.println(doc);
                         String top5hiscore = (String) doc.getData().get("hiscore");
-                        String top5uid = (String) doc.getData().get("UserUID");
+                        String top5uid = (String) doc.getData().get("userUID");
                         Log.i(TAG, "Hiscore Rank " + i + ": " + top5uid + "(" + top5hiscore + ")");
                         // Checking if the doc contains the unique qrID
                         i++;
@@ -127,12 +127,17 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         accountListener = accountRef
                 .addSnapshotListener((value, error) -> {
                    accounts.clear();
-                   for (QueryDocumentSnapshot documentSnapshot: value)  {
-                       String userUID = documentSnapshot.getString("UserUID");
-                       Integer score = Integer.parseInt(documentSnapshot.getString("score"));
-                       Integer hiscore = Integer.parseInt(documentSnapshot.getString("hiscore"));
-                       Integer total = Integer.parseInt(documentSnapshot.getString("scanned"));
-                       accounts.add(new Account(userUID, score, hiscore, total));
+                   for (QueryDocumentSnapshot accountDocument: value)  {
+                       String userUID = accountDocument.getString("userUID");
+                       Integer score = (Integer) accountDocument.get("score");
+                       Integer hiscore = (Integer) accountDocument.get("hiscore");
+                       Log.i(TAG, "accountDocument.get(\"score\"): " + accountDocument.get("score"));
+                       Log.i(TAG, "userUID: " + userUID);
+                       Log.i(TAG, "score: " + score.toString());
+                       Log.i(TAG, "hiscore: " + hiscore.toString());
+                       Integer scanned = (Integer) accountDocument.get("scanned");
+
+                       accounts.add(new Account(userUID, score, hiscore, scanned));
                        leaderboardRA.updateList(accounts);
                    }
                 });
@@ -160,11 +165,11 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         accountRef.get().addOnCompleteListener(task -> {
            if (task.isSuccessful()) {
                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                   String userUID = documentSnapshot.getString("UserUID");
+                   String userUID = documentSnapshot.getString("userUID");
                    Integer score = Integer.parseInt(documentSnapshot.getString("score"));
                    Integer hiscore = Integer.parseInt(documentSnapshot.getString("hiscore"));
-                   Integer total = Integer.parseInt(documentSnapshot.getString("scanned"));
-                   accounts.add(new Account(userUID, score, hiscore, total));
+                   Integer scanned = Integer.parseInt(documentSnapshot.getString("scanned"));
+                   accounts.add(new Account(userUID, score, hiscore, scanned));
                }
            }
         });
