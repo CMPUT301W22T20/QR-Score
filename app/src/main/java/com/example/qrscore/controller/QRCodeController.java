@@ -1,5 +1,7 @@
 package com.example.qrscore.controller;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.qrscore.model.QRCode;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
  * Outstanding issues:
  */
 public class QRCodeController {
+    final String TAG = "QRCodeController";
     private FirebaseFirestore db;
     private CollectionReference QRCodeColRef;
     private CollectionReference accountColRef;
@@ -64,6 +67,7 @@ public class QRCodeController {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot accDoc = task.getResult();
+                    Log.i(TAG, "accDoc.getString(\"Score\"): " + accDoc.getString("Score"));
                     Integer score = Integer.parseInt(accDoc.getString("Score"))+qrCode.getQRScore();
                     Integer total = Integer.parseInt(accDoc.getString("Total"))+1;
                     accountColRef.document(uuid).update("Score", score.toString());
