@@ -107,6 +107,8 @@ public class HomeFragment extends Fragment {
         accountController = new AccountController(getContext());
         qrCodeController = new QRCodeController();
 
+        accountController.addAccountListener();
+
         db = FirebaseFirestore.getInstance();
         userUID = profileController.getProfile().getUserUID();
 
@@ -128,7 +130,7 @@ public class HomeFragment extends Fragment {
         accountRef = accountCollectionRef.document(userUID);
         profileRef = profileCollectionRef.document(userUID);
 
-//        Query highestRankingQRScore = accountCollectionRef.orderBy("Score", Query.Direction.DESCENDING).limit(5);
+//        Query highestRankingQRScore = accountCollectionRef.orderBy("score", Query.Direction.DESCENDING).limit(5);
 //        highestRankingQRScore.
 
         requestPermissionsIfNecessary(new String[] {
@@ -139,6 +141,12 @@ public class HomeFragment extends Fragment {
                 // WRITE_EXTERNAL_STORAGE is required in order to show the map
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accountController.removeAccountListener();
     }
 
     private void populateData(View view) {
@@ -161,9 +169,9 @@ public class HomeFragment extends Fragment {
                             QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
 
-                            String total = accountDocument.get("Total").toString();
-                            String score = accountDocument.get("Score").toString();
-                            String hiScore = accountDocument.get("Hiscore").toString();
+                            String total = accountDocument.get("scanned").toString();
+                            String score = accountDocument.get("score").toString();
+                            String hiScore = accountDocument.get("hiscore").toString();
 //                           scannedTextView.setText(total);
 //                           scoreTextView.setText(score);
 
@@ -174,13 +182,13 @@ public class HomeFragment extends Fragment {
                             myScannedRankTextView.setText("NIL");
                             myTotalScoreRankTextView.setText("NIL");
 
-                            ArrayList<String> qrCodeHashes = (ArrayList<String>) accountDocument.getData().get("QRCodes");
+                            ArrayList<String> qrCodeHashes = (ArrayList<String>) accountDocument.getData().get("qrCodes");
                             ArrayList<QRCode> qrCodesArray = new ArrayList<>();
 
 
                             //This should be in AccountController
-//                            Integer scoreInt = (Integer) accountDocument.getData().get("Score");
-//                            Integer scannedInt = (Integer) accountDocument.getData().get("Total");
+//                            Integer scoreInt = (Integer) accountDocument.getData().get("score");
+//                            Integer scannedInt = (Integer) accountDocument.getData().get("scanned");
 //                            myAccount.setScore(scoreInt);
 //                            myAccount.setScanned(scannedInt);
 

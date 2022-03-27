@@ -96,12 +96,12 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
 
                             // set textviews
-                            String total = (String) accountDocument.get("Total");
-                            String score = (String) accountDocument.get("Score");
+                            String total = (String) accountDocument.get("scanned");
+                            String score = (String) accountDocument.get("score");
                             scannedTextView.setText(total);
                             scoreTextView.setText(score);
 
-                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("QRCodes");   // get the QRCodes array
+                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("qrCodes");   // get the QRCodes array
 
                             // get each QRCode id
                             for (String codeStr : qrCodesArray) {

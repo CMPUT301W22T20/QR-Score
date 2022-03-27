@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.qrscore.model.Account;
+import com.example.qrscore.model.Profile;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.HashMap;
 
@@ -39,6 +41,7 @@ public class AccountController {
     private Account savedAccount;
     private SharedPreferences accountSP;
     private SharedPreferences.Editor accountSPEditor;
+    private ListenerRegistration accountListener;
 
     private static final String ACCOUNT_PREFS = "accountPrefs";
 
@@ -57,15 +60,16 @@ public class AccountController {
      * Purpose: Create an account on firestore.
      */
     public void createNewAccount(String userUID) {
+        Log.i(TAG, "Creating new account for uid " + userUID);
         newAccount = new Account(userUID);
         accountRef = accountCollectionRef.document(userUID);
 
         HashMap<String, Object> account = new HashMap<>();
-        account.put("UserUID", newAccount.getUserUID());
-        account.put("Score", newAccount.getScore());
-        account.put("Hiscore", newAccount.getHiscore());
-        account.put("Total", newAccount.getScanned());
-        account.put("QRCodes", newAccount.getQRList());
+        account.put("userUID", newAccount.getUserUID());
+        account.put("score", newAccount.getScore());
+        account.put("hiscore", newAccount.getHiscore());
+        account.put("scanned", newAccount.getScanned());
+        account.put("qrCodes", newAccount.getQRList());
         accountRef.set(account)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
@@ -80,15 +84,47 @@ public class AccountController {
     }
 
     /**
+     * Purpose: Add a profileListener for firestore data.
+     */
+    public void addAccountListener() {
+        userUID = currentUser.getUid();
+        accountRef = db.collection("Account").document(userUID);
+        accountListener = accountRef.addSnapshotListener((accountDocument, error) -> {
+            if (error != null) {
+                return;
+            }
+            if (accountDocument != null && accountDocument.exists()) {
+                Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
+                Account savedAccount = accountDocument.toObject(Account.class);
+                Log.i(TAG, "savedAccount UID: " + savedAccount.getUserUID());
+                Log.i(TAG, "savedAccount Score: " + savedAccount.getScore());
+                Log.i(TAG, "savedAccount Hiscore: " + savedAccount.getHiscore());
+                Log.i(TAG, "savedAccount Scanned Total: " + savedAccount.getScanned());
+                setAccount(savedAccount);    // Update account locally
+                Log.d(TAG, savedAccount.getUserUID() + " account snapshot exists!");
+            } else {
+                Log.d(TAG, "Current data: null");
+            }
+        });
+    }
+
+    /**
+     * Purpose: Remove accountListener when player leaves AccountFragment.
+     */
+    public void removeAccountListener() {
+        accountListener.remove();
+    }
+
+    /**
      * Purpose: Set/Update account info in SharedPrefs.
      *
      * @param newAccount Account to be set/updated with locally.
      */
     public void setAccount(Account newAccount) {
         accountSPEditor.putString("userUID", newAccount.getUserUID());
-        accountSPEditor.putString("Score", (newAccount.getScore()).toString());
-        accountSPEditor.putString("Hiscore", (newAccount.getHiscore()).toString());
-        accountSPEditor.putString("Total", (newAccount.getScanned()).toString());
+        accountSPEditor.putString("score", (newAccount.getScore()).toString());
+        accountSPEditor.putString("hiscore", (newAccount.getHiscore()).toString());
+        accountSPEditor.putString("scanned", (newAccount.getScanned()).toString());
         accountSPEditor.apply();
     }
 
@@ -99,9 +135,9 @@ public class AccountController {
      */
     public Account getAccount() {
         String userUID = accountSP.getString("userUID", currentUser.getUid());
-        Integer score = Integer.parseInt(accountSP.getString("Score", null));
-        Integer hiscore = Integer.parseInt(accountSP.getString("Hiscore", null));
-        Integer scanned = Integer.parseInt(accountSP.getString("Total", null));
+        Integer score = Integer.parseInt(accountSP.getString("score", null));
+        Integer hiscore = Integer.parseInt(accountSP.getString("hiscore", null));
+        Integer scanned = Integer.parseInt(accountSP.getString("scanned", null));
         Account account = new Account(userUID, score, hiscore, scanned);
         return account;
     }
@@ -112,8 +148,8 @@ public class AccountController {
      * @param updatedScore An instance of their updated score.
      */
     public void updateScore(Integer updatedScore) {
-        accountRef = accountCollectionRef.document(userUID);
-        accountRef.update("Score", String.valueOf(updatedScore));
+        accountRef = accountCollectionRef.document(currentUser.getUid());
+        accountRef.update("score", String.valueOf(updatedScore));
     }
 
     /**
@@ -122,8 +158,8 @@ public class AccountController {
      * @param updatedTotal An instance of their updated total scanned QR codes.
      */
     public void updateTotalScanned(Integer updatedTotal) {
-        accountRef = accountCollectionRef.document(userUID);
-        accountRef.update("Total", String.valueOf(updatedTotal));
+        accountRef = accountCollectionRef.document(currentUser.getUid());
+        accountRef.update("scanned", String.valueOf(updatedTotal));
     }
 
     /**
@@ -132,8 +168,8 @@ public class AccountController {
      * @param updatedHiscore An instance of their updated high score.
      */
     public void updateHiscore(Integer updatedHiscore) {
-        accountRef = accountCollectionRef.document(userUID);
-        accountRef.update("Hiscore", String.valueOf(updatedHiscore));
+        accountRef = accountCollectionRef.document(currentUser.getUid());
+        accountRef.update("hiscore", String.valueOf(updatedHiscore));
     }
 
 }
@@ -151,8 +187,8 @@ public class AccountController {
 //                        // If it does, retrieve data from the account doc in
 //                        // the db to build the account object.
 //                        Map<String, Object> data = doc.getData();
-//                        totalScore[0] = Integer.parseInt(data.get("Score").toString());
-//                        scanned[0] = Integer.parseInt(data.get("Total").toString());
+//                        totalScore[0] = Integer.parseInt(data.get("score").toString());
+//                        scanned[0] = Integer.parseInt(data.get("scanned").toString());
 //                        System.out.println("In docref: "+totalScore[0].toString()+" "+scanned[0].toString());
 //                    } else {
 //                        System.out.println("Doc does not exist, creating new.");
@@ -165,8 +201,8 @@ public class AccountController {
 //                        // https://stackoverflow.com/users/3095195/trojek
 //                        data.put("Profile", db.collection("Profile").document(userID));
 //
-//                        data.put("Score", "0");
-//                        data.put("Total", "0");
+//                        data.put("score", "0");
+//                        data.put("scanned", "0");
 //                        collectionReference.document(userID)
 //                                .set(data)
 //                                .addOnSuccessListener(new OnSuccessListener<Void>() {

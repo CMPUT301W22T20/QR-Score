@@ -23,6 +23,18 @@ public class Account {
     private Integer scanned;
 
     /**
+     * Purpose: Empty Constructor for a account.
+     */
+    public Account() {
+        this.userUID = null;
+        this.profile = null;
+        this.score = null;
+        this.hiscore = null;
+        this.scanned = null;
+        this.qrCodes = null;
+    }
+
+    /**
      * Purpose: Constructor for an account instance.
      *
      * @param userUID
@@ -121,12 +133,13 @@ public class Account {
      *      Integer representing the number of QR codes scanned.
      */
     public Integer getScanned() {
-        return qrCodes.size();
+        return this.scanned;
     }
+//        return qrCodes.size();
 
     /**
      * Purpose: Set the highest individual QR score for a player.
-     * @param scanned
+     * @param hiscore
      *      Integer representing the highest individual QR score.
      */
     public void setHiscore(Integer hiscore) {
