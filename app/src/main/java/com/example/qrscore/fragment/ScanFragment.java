@@ -65,7 +65,7 @@ public class ScanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountController = new AccountController();
+        accountController = new AccountController(getContext());
         photoController = new PhotoController();
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());

@@ -38,7 +38,6 @@ import com.google.firebase.firestore.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * Purpose: This class is the home fragment which shows some of your player information
@@ -105,7 +104,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         profileController = new ProfileController(getContext());
-        accountController = new AccountController();
+        accountController = new AccountController(getContext());
         qrCodeController = new QRCodeController();
 
         db = FirebaseFirestore.getInstance();
@@ -179,11 +178,11 @@ public class HomeFragment extends Fragment {
                             ArrayList<QRCode> qrCodesArray = new ArrayList<>();
 
 
-                            //Delete?
-                            Integer scoreInt = (Integer) accountDocument.getData().get("Score");
-                            Integer scannedInt = (Integer) accountDocument.getData().get("Total");
-                            myAccount.setScore(scoreInt);
-                            myAccount.setScanned(scannedInt);
+                            //This should be in AccountController
+//                            Integer scoreInt = (Integer) accountDocument.getData().get("Score");
+//                            Integer scannedInt = (Integer) accountDocument.getData().get("Total");
+//                            myAccount.setScore(scoreInt);
+//                            myAccount.setScanned(scannedInt);
 
                             for (String qrCodeHash: qrCodeHashes) {
                                 System.out.println(qrCodeHash);
@@ -227,7 +226,7 @@ public class HomeFragment extends Fragment {
 //        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
         TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
 
-        String usernamesQRCodesString = (myAccount.getUserID() + "'s QR Codes");
+        String usernamesQRCodesString = (myAccount.getUserUID() + "'s QR Codes");
 
         // Set username TextViews
         usernamesQRCodes.setText(usernamesQRCodesString);

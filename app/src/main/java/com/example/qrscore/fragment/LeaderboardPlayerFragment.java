@@ -23,10 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -132,9 +129,10 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                    accounts.clear();
                    for (QueryDocumentSnapshot documentSnapshot: value)  {
                        String userUID = documentSnapshot.getString("UserUID");
-                       String score = documentSnapshot.getString("Score");
-                       String total = documentSnapshot.getString("Total");
-                       accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
+                       Integer score = Integer.parseInt(documentSnapshot.getString("Score"));
+                       Integer hiscore = Integer.parseInt(documentSnapshot.getString("Hiscore"));
+                       Integer total = Integer.parseInt(documentSnapshot.getString("Total"));
+                       accounts.add(new Account(userUID, score, hiscore, total));
                        leaderboardRA.updateList(accounts);
                    }
                 });
@@ -163,9 +161,10 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
            if (task.isSuccessful()) {
                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                    String userUID = documentSnapshot.getString("UserUID");
-                   String score = documentSnapshot.getString("Score");
-                   String total = documentSnapshot.getString("Total");
-                   accounts.add(new Account(userUID, Integer.parseInt(score), Integer.parseInt(total)));
+                   Integer score = Integer.parseInt(documentSnapshot.getString("Score"));
+                   Integer hiscore = Integer.parseInt(documentSnapshot.getString("Hiscore"));
+                   Integer total = Integer.parseInt(documentSnapshot.getString("Total"));
+                   accounts.add(new Account(userUID, score, hiscore, total));
                }
            }
         });
@@ -221,7 +220,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         }
         else {
             for (Account account : accounts) {
-                if (account.getUserID().toLowerCase().startsWith(username.toLowerCase())) {
+                if (account.getUserUID().toLowerCase().startsWith(username.toLowerCase())) {
                     accountsFiltered.add(account);
                 }
             }

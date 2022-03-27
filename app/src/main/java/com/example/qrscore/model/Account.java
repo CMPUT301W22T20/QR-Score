@@ -15,22 +15,24 @@ import java.util.List;
  */
 public class Account {
     private static final String TAG = "ACCOUNT";
-    private String userID;
+    private String userUID;
     private Profile profile;
     private ArrayList<QRCode> qrCodes;
     private Integer score;
+    private Integer hiscore;
     private Integer scanned;
 
     /**
      * Purpose: Constructor for an account instance.
      *
-     * @param userID
+     * @param userUID
      *      The players unique user ID;
      */
-    public Account(String userID) {
-        this.userID = userID;
-        this.profile = new Profile(userID);
+    public Account(String userUID) {
+        this.userUID = userUID;
+        this.profile = new Profile(userUID);
         this.score = 0;
+        this.hiscore = 0;
         this.scanned = 0;
         this.qrCodes = new ArrayList<>();
     }
@@ -38,18 +40,19 @@ public class Account {
     /**
      * Purpose: Constructor for an account instance.
      *
-     * @param userID
+     * @param userUID
      *      The players unique user ID.
      * @param score
      *      The players running total.
      * @param scanned
      *      The players total scanned QRs.
      */
-    public Account(String userID, Integer score, Integer scanned) {
-        this.userID = userID;
-        this.profile = new Profile(userID);
+    public Account(String userUID, Integer score, Integer hiscore, Integer scanned) {
+        this.userUID = userUID;
+        this.profile = new Profile(userUID);
         this.scanned = scanned;
         this.score = score;
+        this.hiscore = hiscore;
         this.qrCodes = new ArrayList<>();
     }
 
@@ -59,8 +62,8 @@ public class Account {
      * @return
      *      user ID as a string.
      */
-    public String getUserID() {
-        return userID;
+    public String getUserUID() {
+        return userUID;
     }
 
     /**
@@ -119,6 +122,24 @@ public class Account {
      */
     public Integer getScanned() {
         return qrCodes.size();
+    }
+
+    /**
+     * Purpose: Set the highest individual QR score for a player.
+     * @param scanned
+     *      Integer representing the highest individual QR score.
+     */
+    public void setHiscore(Integer hiscore) {
+        this.hiscore = hiscore;
+    }
+
+    /**
+     * Purpose: Return the highest individual QR score for a player
+     * @return
+     *      Integer representing highest individual QR score.
+     */
+    public Integer getHiscore() {
+        return this.hiscore;
     }
 
     /**

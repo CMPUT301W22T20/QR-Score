@@ -1,5 +1,7 @@
 package com.example.qrscore.controller;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.qrscore.model.Account;
@@ -33,53 +35,105 @@ public class AccountController {
     private DocumentSnapshot QRDataListSnapshot;
     private DocumentSnapshot profileSnapshot;
     private String userUID;
-    private Account account;
+    private Account newAccount;
     private Account savedAccount;
+    private SharedPreferences accountSP;
+    private SharedPreferences.Editor accountSPEditor;
 
-    public AccountController() {
+    private static final String ACCOUNT_PREFS = "accountPrefs";
+
+    public AccountController(Context context) {
         firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+        accountSP = context.getSharedPreferences(ACCOUNT_PREFS, Context.MODE_PRIVATE);
+        accountSPEditor = accountSP.edit();
+
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
-        currentUser = firebaseAuth.getCurrentUser();
-        userUID = currentUser.getUid();
     }
 
     /**
      * Purpose: Create an account on firestore.
      */
-    public void createNewAccount() {
-        account = new Account(userUID);
+    public void createNewAccount(String userUID) {
+        newAccount = new Account(userUID);
         accountRef = accountCollectionRef.document(userUID);
 
-        HashMap<String, Object> newAccount = new HashMap<>();
-        newAccount.put("UserUID", userUID);
-        newAccount.put("Score", "0");
-        newAccount.put("Total", "0");
-        newAccount.put("Hiscore", "0");
-        newAccount.put("QRCodes", account.getQRList());
-        accountRef.set(newAccount)
+        HashMap<String, Object> account = new HashMap<>();
+        account.put("UserUID", newAccount.getUserUID());
+        account.put("Score", newAccount.getScore());
+        account.put("Hiscore", newAccount.getHiscore());
+        account.put("Total", newAccount.getScanned());
+        account.put("QRCodes", newAccount.getQRList());
+        accountRef.set(account)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
+                    setAccount(newAccount);
                 })
                 .addOnFailureListener(e -> {
                     Log.d(TAG, "Account has not been created.");
-                    accountRef.set(account);
+
+                    //Should this be here?
+                    accountRef.set(newAccount);
                 });
     }
 
-    public void updateScore() {
-        accountRef = accountCollectionRef.document(userUID);
-
-        Integer newScore = account.getScore();
-        accountRef.update("Score", String.valueOf(newScore));
+    /**
+     * Purpose: Set/Update account info in SharedPrefs.
+     *
+     * @param newAccount Account to be set/updated with locally.
+     */
+    public void setAccount(Account newAccount) {
+        accountSPEditor.putString("userUID", newAccount.getUserUID());
+        accountSPEditor.putString("Score", (newAccount.getScore()).toString());
+        accountSPEditor.putString("Hiscore", (newAccount.getHiscore()).toString());
+        accountSPEditor.putString("Total", (newAccount.getScanned()).toString());
+        accountSPEditor.apply();
     }
 
-    public void updateTotalScanned() {
-        accountRef = accountCollectionRef.document(userUID);
+    /**
+     * Purpose: Return an instance of the profile saved locally
+     *
+     * @return Represents the Profile object locally.
+     */
+    public Account getAccount() {
+        String userUID = accountSP.getString("userUID", currentUser.getUid());
+        Integer score = Integer.parseInt(accountSP.getString("Score", null));
+        Integer hiscore = Integer.parseInt(accountSP.getString("Hiscore", null));
+        Integer scanned = Integer.parseInt(accountSP.getString("Total", null));
+        Account account = new Account(userUID, score, hiscore, scanned);
+        return account;
+    }
 
-        Integer newTotal = account.getScanned();
-        accountRef.update("Total", String.valueOf(newTotal));
+    /**
+     * Purpose: Updates the current player's total score on firestore db and locally.
+     *
+     * @param updatedScore An instance of their updated score.
+     */
+    public void updateScore(Integer updatedScore) {
+        accountRef = accountCollectionRef.document(userUID);
+        accountRef.update("Score", String.valueOf(updatedScore));
+    }
+
+    /**
+     * Purpose: Updates the current player's total scanned QR codes on firestore db and locally.
+     *
+     * @param updatedTotal An instance of their updated total scanned QR codes.
+     */
+    public void updateTotalScanned(Integer updatedTotal) {
+        accountRef = accountCollectionRef.document(userUID);
+        accountRef.update("Total", String.valueOf(updatedTotal));
+    }
+
+    /**
+     * Purpose: Updates the current player's high score on firestore db and locally.
+     *
+     * @param updatedHiscore An instance of their updated high score.
+     */
+    public void updateHiscore(Integer updatedHiscore) {
+        accountRef = accountCollectionRef.document(userUID);
+        accountRef.update("Hiscore", String.valueOf(updatedHiscore));
     }
 
 }

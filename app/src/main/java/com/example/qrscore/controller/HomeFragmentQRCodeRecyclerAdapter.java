@@ -76,7 +76,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         holder.score.setText(qrCodes.get(position).getQRScore().toString());
         String name = account.getProfile().getFirstName() + " " + account.getProfile().getLastName();
         if (account.getProfile().getFirstName() == null) {
-            holder.name.setText(account.getUserID());
+            holder.name.setText(account.getUserUID());
         }
         else {
             holder.name.setText(name);
@@ -124,7 +124,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
                         view.getContext().startActivity(intent);
                         break;
                     case R.id.home_fragment_qr_delete_qr_item:
-                        deleteQRCode(account.getUserID(), hash);
+                        deleteQRCode(account.getUserUID(), hash);
                         updateList(account);
                 }
                 return false;

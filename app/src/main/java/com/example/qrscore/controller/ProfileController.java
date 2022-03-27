@@ -41,7 +41,6 @@ public class ProfileController {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private DocumentReference profileRef;
-    private AccountController accountController;
     private Profile newProfile;
     private String userUID;
     private ListenerRegistration profileListener;
@@ -69,7 +68,7 @@ public class ProfileController {
      * Purpose: To create a new profile locally and on firestore db.
      * To create a new account on firestore db.
      */
-    public void createNewUser(String userUID) {
+    public void createNewProfile(String userUID) {
         newProfile = new Profile(userUID);
         // https://firebase.google.com/docs/firestore/manage-data/add-data
         profileRef = db.collection("Profile").document(userUID);
@@ -80,8 +79,6 @@ public class ProfileController {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "Profile Created");
                         setProfile(newProfile);
-                        accountController = new AccountController();
-                        accountController.createNewAccount();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -120,7 +117,7 @@ public class ProfileController {
     }
 
     /**
-     * Purpose: Updates the current players profile on firestore db and locally.
+     * Purpose: Updates the current player's profile on firestore db and locally.
      *
      * @param updatedProfile An instance of their updated profile.
      * @param context        ProfileFragment activity to display toast message.
