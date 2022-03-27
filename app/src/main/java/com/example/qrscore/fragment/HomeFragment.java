@@ -161,9 +161,9 @@ public class HomeFragment extends Fragment {
                             QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
 
-                            String total = (String) accountDocument.get("Total");
-                            String score = (String) accountDocument.get("Score");
-                            String hiScore = (String) accountDocument.get("Hiscore");
+                            String total = accountDocument.get("Total").toString();
+                            String score = accountDocument.get("Score").toString();
+                            String hiScore = accountDocument.get("Hiscore").toString();
 //                           scannedTextView.setText(total);
 //                           scoreTextView.setText(score);
 
