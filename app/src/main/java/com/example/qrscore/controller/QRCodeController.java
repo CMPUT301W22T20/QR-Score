@@ -9,6 +9,7 @@ import com.example.qrscore.model.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,15 +36,17 @@ public class QRCodeController {
 
     /**
      * Purpose: To add a QR Code to firestore db.
-     * @param key
+     * @param hash
      *      The hash of the QR Code.
+     * @param accountController
+     *      Instance of the AccountController
      * @param qrCode
      *      Instance of the QR Code.
      * @param uuid
      *      User UID of user that added it.
      */
-    public void add(String key, QRCode qrCode, String uuid, AccountController accountController) {
-        QRCodeColRef.document(key).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public void add(String hash, QRCode qrCode, String uuid, AccountController accountController) {
+        QRCodeColRef.document(hash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -55,14 +58,13 @@ public class QRCodeController {
                         }
                     }
                     else {
-                        QRCodeColRef.document(key).set(qrCode);
+                        QRCodeColRef.document(hash).set(qrCode);
                     }
                 }
             }
         });
         accountColRef.document(uuid).update("qrCodes", FieldValue.arrayUnion(qrCode.getHash()));
 
-        // TODO: Add functionality to update Score & Total in FireBase Account collection
         accountColRef.document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -90,6 +92,33 @@ public class QRCodeController {
                     Integer updatedTotalScanned = account.getScanned()+1;
                     accountController.updateTotalScanned(updatedTotalScanned);
 
+                }
+            }
+        });
+    }
+
+    public void remove(String hash, QRCode qrCode, String uuid) {
+        if (qrCode == null) {
+            throw new IllegalArgumentException("No valid QRCode was passed into this function.");
+        }
+
+        // Get document references
+        DocumentReference qrCodeRef = db.collection("QRCode").document(hash);
+        DocumentReference accountRef = db.collection("Account").document(uuid);
+
+        // Remove code from hasScanned and Account
+        qrCodeRef.update("scanned", FieldValue.arrayRemove(uuid));
+        accountRef.update("QRCodes", FieldValue.arrayRemove(hash));
+
+        accountColRef.document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot accDoc = task.getResult();
+                    Integer score = Integer.parseInt(accDoc.getString("score"))-qrCode.getQRScore();
+                    Integer scanned = Integer.parseInt(accDoc.getString("scanned"))-1;
+                    accountColRef.document(uuid).update("score", score.toString());
+                    accountColRef.document(uuid).update("scanned", scanned.toString());
                 }
             }
         });

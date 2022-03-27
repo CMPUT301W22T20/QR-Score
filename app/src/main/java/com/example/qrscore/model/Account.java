@@ -165,6 +165,15 @@ public class Account {
         return qrCodes;
     }
 
+    public QRCode getQRByHash(String hash) {
+        for (QRCode qrCode: qrCodes) {
+            if (qrCode.getHash().equals(hash)) {
+                return qrCode;
+            }
+        }
+        return null;
+    }
+
     /**
      * Removes a QR code from the list if it exists.
      *

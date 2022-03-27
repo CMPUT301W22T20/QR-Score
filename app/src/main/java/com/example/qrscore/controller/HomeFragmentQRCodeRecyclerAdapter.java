@@ -16,11 +16,15 @@ import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Purpose: RecyclerAdapter for HomeFragment Players QR Codes.
@@ -30,7 +34,7 @@ import java.util.ArrayList;
  * @author: William Liu
  */
 public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<HomeFragmentQRCodeRecyclerAdapter.MyViewHolder>{
-
+    private final String TAG = "HF_QR_ADAPTER";
     private Account account;
     private ArrayList<QRCode> qrCodes;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -71,8 +75,6 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     public void onBindViewHolder(@NonNull HomeFragmentQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
 
         holder.rank.setText("NIL");
-        holder.score.setText(String.valueOf(account.getQRList().get(position).getQRScore()));
-
         holder.score.setText(qrCodes.get(position).getQRScore().toString());
         String name = account.getProfile().getFirstName() + " " + account.getProfile().getLastName();
         if (account.getProfile().getFirstName() == null) {
@@ -153,17 +155,9 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
      *      The hash code of the QRCode.
      */
     public void deleteQRCode(String userID, String hash) {
-
-        // Get document references
-        DocumentReference qrCodeRef = db.collection("QRCode").document(hash);
-
-        // Remove code from account
+        QRCodeController qrController = new QRCodeController();
+        qrController.remove(hash, account.getQRByHash(hash), userID);
         account.removeQR(hash);
-
-        // Remove code from hasScanned
-        qrCodeRef.update("scanned", FieldValue.arrayRemove(userID));
-
-
     }
 
 }
