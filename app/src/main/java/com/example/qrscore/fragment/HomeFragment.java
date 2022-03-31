@@ -78,8 +78,8 @@ public class HomeFragment extends Fragment {
 
     private Account myAccount;
     private String userUID;
-    private int score;
-    private int total;
+    private int totalScore;
+    private int totalScanned;
     private ArrayList<QRCode> qrCodes;
     private QRCodeAdapter qrCodesAdapter;
     private ListView qrCodesList;
@@ -161,6 +161,7 @@ public class HomeFragment extends Fragment {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
 
                             // Instantiate Textview classes to fill layout parameters
+                            TextView myHiscoreTextView = (TextView) view.findViewById(R.id.hiscore_text_view);
                             TextView myScannedCodesTextView = (TextView) view.findViewById(R.id.scanned_text_view);
                             TextView myQRScoreTextView = (TextView) view.findViewById(R.id.score_text_view);
                             TextView myQRHiscoreRankTextView = (TextView) view.findViewById(R.id.hiscore_rank_text_view);
@@ -169,18 +170,22 @@ public class HomeFragment extends Fragment {
                             QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
 
-                            String total = accountDocument.get("totalScanned").toString();
-                            String score = accountDocument.get("totalScore").toString();
-                            String hiScore = accountDocument.get("hiscore").toString();
-//                           scannedTextView.setText(total);
-//                           scoreTextView.setText(score);
+                            String totalScanned = accountDocument.get("totalScanned").toString();
+                            String totalScore = accountDocument.get("totalScore").toString();
+                            String hiscore = accountDocument.get("hiscore").toString();
+                            String rankTotalScore = accountDocument.get("rankTotalScore").toString();
+                            String rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
+                            String rankHiscore = accountDocument.get("rankHiscore").toString();
+//                           scannedTextView.setText(totalScanned);
+//                           scoreTextView.setText(totalScore);
 
                             // Set the text of all TextViews
-                            myScannedCodesTextView.setText(total);
-                            myQRScoreTextView.setText(score);
-                            myQRHiscoreRankTextView.setText(hiScore);
-                            myScannedRankTextView.setText("NIL");
-                            myTotalScoreRankTextView.setText("NIL");
+                            myScannedCodesTextView.setText(totalScanned);
+                            myQRScoreTextView.setText(totalScore);
+                            myHiscoreTextView.setText(hiscore);
+                            myQRHiscoreRankTextView.setText(rankHiscore);
+                            myScannedRankTextView.setText(rankTotalScanned);
+                            myTotalScoreRankTextView.setText(rankTotalScore);
 
                             ArrayList<String> qrCodeHashes = (ArrayList<String>) accountDocument.getData().get("qrCodes");
                             ArrayList<QRCode> qrCodesArray = new ArrayList<>();
