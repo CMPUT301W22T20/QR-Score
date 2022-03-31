@@ -65,7 +65,7 @@ public class ScanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountController = new AccountController();
+        accountController = new AccountController(getContext());
         photoController = new PhotoController();
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
@@ -109,8 +109,9 @@ public class ScanFragment extends Fragment {
                     // so we don't overwrite existing data
                     String userID = profileController.getProfile().getUserUID();
                     QRCode qrCode = new QRCode(qrHashed);
-                    qrCode.addScanned(userID);
-                    qrCodeController.add(qrHashed, qrCode, userID);
+                    qrCode.addToHasScanned(userID);
+
+                    qrCodeController.add(qrHashed, qrCode, userID, accountController);
 
                     if (switchButton.isChecked()) {
                         locationController.saveLocation(qrHashed, userID);
