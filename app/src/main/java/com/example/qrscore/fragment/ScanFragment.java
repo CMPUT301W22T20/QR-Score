@@ -109,7 +109,7 @@ public class ScanFragment extends Fragment {
                     // so we don't overwrite existing data
                     String userID = profileController.getProfile().getUserUID();
                     QRCode qrCode = new QRCode(qrHashed);
-                    qrCode.addScanned(userID);
+                    qrCode.addToHasScanned(userID);
 
                     qrCodeController.add(qrHashed, qrCode, userID, accountController);
 

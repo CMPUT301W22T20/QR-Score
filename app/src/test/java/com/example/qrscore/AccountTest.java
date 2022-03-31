@@ -12,8 +12,8 @@ public class AccountTest {
         Account test = new Account("test_id");
         assertNotNull(test);
         assertEquals("test_id", test.getUserUID());
-        assertEquals("0", test.getScore().toString());
-        assertEquals("0", test.getScanned().toString());
+        assertEquals("0", test.getTotalScore().toString());
+        assertEquals("0", test.getTotalScanned().toString());
     }
 
     @Test
@@ -21,7 +21,7 @@ public class AccountTest {
         Account test = new Account("test_id", 2, 1, 3);
         assertNotNull(test);
         assertEquals("test_id", test.getUserUID());
-        assertEquals("2", test.getScore().toString());
-        assertEquals("3", test.getScanned().toString());
+        assertEquals("2", test.getTotalScore().toString());
+        assertEquals("3", test.getTotalScanned().toString());
     }
 }

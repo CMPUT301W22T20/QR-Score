@@ -37,7 +37,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Account account;
     private DocumentReference accountRef;
-    private CollectionReference codeRef;
+    private CollectionReference qrCodeRef;
     private QRCodeAdapter qrCodesAdapter;
     private ArrayList<QRCode> qrCodes;
     private TextView scannedTextView;
@@ -75,7 +75,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
 
         // get collection/document references
         accountRef = db.collection("Account").document(userUID);
-        codeRef = db.collection("QRCode");
+        qrCodeRef = db.collection("QRCode");
 
         populateData();
     }
@@ -96,8 +96,8 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
 
                             // set textviews
-                            String total = (String) accountDocument.get("scanned");
-                            String score = (String) accountDocument.get("score");
+                            String total = (String) accountDocument.get("totalScanned");
+                            String score = (String) accountDocument.get("totalScore");
                             scannedTextView.setText(total);
                             scoreTextView.setText(score);
 
@@ -106,7 +106,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                             // get each QRCode id
                             for (String codeStr : qrCodesArray) {
 
-                                codeRef.document(codeStr).get()
+                                qrCodeRef.document(codeStr).get()
                                         .addOnCompleteListener(taskQRCodes -> {
                                             if (taskQRCodes.isSuccessful()) {
                                                 DocumentSnapshot document = taskQRCodes.getResult();

@@ -1,6 +1,7 @@
 package com.example.qrscore.controller;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -27,11 +28,20 @@ public class QRCodeController {
     private FirebaseFirestore db;
     private CollectionReference QRCodeColRef;
     private CollectionReference accountColRef;
+    private boolean playerHasAlreadyScannedThisCode;
 
     public QRCodeController() {
         db = FirebaseFirestore.getInstance();
         QRCodeColRef = db.collection("QRCode");
         accountColRef = db.collection("Account");
+    }
+
+    public boolean getPlayerHasAlreadyScannedThisCode() {
+        return playerHasAlreadyScannedThisCode;
+    }
+
+    public void setPlayerHasAlreadyScannedThisCode(boolean playerHasAlreadyScannedThisCode) {
+        this.playerHasAlreadyScannedThisCode = playerHasAlreadyScannedThisCode;
     }
 
     /**
@@ -46,15 +56,21 @@ public class QRCodeController {
      *      User UID of user that added it.
      */
     public void add(String hash, QRCode qrCode, String uuid, AccountController accountController) {
+        //Add account UUID to QRCode's hasScanned list
         QRCodeColRef.document(hash).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot qrCodeDocument = task.getResult();
                     if (qrCodeDocument.exists()) {
-                        ArrayList<String> scanners = (ArrayList<String>) qrCodeDocument.get("scanned");
-                        if (!scanners.contains(uuid)) {
-                            qrCodeDocument.getReference().update("scanned", FieldValue.arrayUnion(uuid));
+                        ArrayList<String> hasScanned = (ArrayList<String>) qrCodeDocument.get("hasScanned");
+                        //Check if player has already scanned this QRCode
+                        if (!hasScanned.contains(uuid)) {
+                            setPlayerHasAlreadyScannedThisCode(false);
+                            qrCodeDocument.getReference().update("hasScanned", FieldValue.arrayUnion(uuid));
+                        }
+                        else {
+                            setPlayerHasAlreadyScannedThisCode(true);
                         }
                     }
                     else {
@@ -71,27 +87,33 @@ public class QRCodeController {
                 if (task.isSuccessful()) {
                     DocumentSnapshot accountDocument = task.getResult();
 
-                    String total = accountDocument.get("scanned").toString();
-                    String score = accountDocument.get("score").toString();
+                    String total = accountDocument.get("totalScanned").toString();
+                    String score = accountDocument.get("totalScore").toString();
                     String hiScore = accountDocument.get("hiscore").toString();
-                    Log.i(TAG, "accDoc.get(\"score\").toString(): " + accountDocument.get("score").toString());
+                    Log.i(TAG, "accDoc.get(\"score\").toString(): " + accountDocument.get("totalScore").toString());
 
-                    Account account = accountController.getAccount();
-
-                    //Update total score
-                    Integer updatedScore = account.getScore() + qrCode.getQRScore();
-                    accountController.updateScore(updatedScore);
-
-                    //Update high score if new code is higher
-                    Integer hiscore = account.getHiscore();
-                    if (qrCode.getQRScore() > hiscore) {
-                        accountController.updateHiscore(qrCode.getQRScore());
+                    //Don't update stats if player has already scanned this QR Code
+                    if (getPlayerHasAlreadyScannedThisCode() == true) {
+                        Log.i(TAG, "Player " + uuid + " has already scanned QR Code " + hash);
                     }
+                    else {
+                        Account account = accountController.getAccount();
 
-                    //Update total scanned QR codes
-                    Integer updatedTotalScanned = account.getScanned()+1;
-                    accountController.updateTotalScanned(updatedTotalScanned);
+                        //Update total score
+                        Integer updatedScore = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
+                        accountController.updateScore(updatedScore.toString());
 
+                        //Update high score if new code is higher
+                        Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                        Integer newQRCodeScore = Integer.parseInt(qrCode.getQRScore());
+                        if (newQRCodeScore > currentHiscore) {
+                            accountController.updateHiscore(newQRCodeScore.toString());
+                        }
+
+                        //Update total scanned QR codes
+                        Integer updatedTotalScanned = Integer.parseInt(account.getTotalScanned())+1;
+                        accountController.updateTotalScanned(updatedTotalScanned.toString());
+                    }
                 }
             }
         });
@@ -107,7 +129,7 @@ public class QRCodeController {
         DocumentReference accountRef = db.collection("Account").document(uuid);
 
         // Remove code from hasScanned and Account
-        qrCodeRef.update("scanned", FieldValue.arrayRemove(uuid));
+        qrCodeRef.update("hasScanned", FieldValue.arrayRemove(uuid));
         accountRef.update("qrCodes", FieldValue.arrayRemove(hash));
 
         accountColRef.document(uuid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -119,19 +141,20 @@ public class QRCodeController {
                     Account account = accountController.getAccount();
 
                     //Subtract from total score
-                    Integer updatedScore = account.getScore() - qrCode.getQRScore();
-                    accountController.updateScore(updatedScore);
+                    Integer updatedScore = Integer.parseInt(account.getTotalScore()) - Integer.parseInt(qrCode.getQRScore());
+                    accountController.updateScore(updatedScore.toString());
 
                     //Update high score if deleted code is current high score
-                    Integer hiscore = account.getHiscore();
-                    if (qrCode.getQRScore() == hiscore) {
+                    Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                    Integer deletedQRCodeScore = Integer.parseInt(qrCode.getQRScore());
+                    if (deletedQRCodeScore == currentHiscore) {
                         //TODO: Recalculate next-highest hiscore
-                        accountController.updateHiscore(0);
+                        accountController.updateHiscore("0");
                     }
 
                     //Update total scanned QR codes
-                    Integer updatedTotalScanned = account.getScanned()-1;
-                    accountController.updateTotalScanned(updatedTotalScanned);
+                    Integer updatedTotalScanned = Integer.parseInt(account.getTotalScanned())-1;
+                    accountController.updateTotalScanned(updatedTotalScanned.toString());
                 }
             }
         });

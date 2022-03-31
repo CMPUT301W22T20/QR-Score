@@ -43,7 +43,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
 
     public HomeFragmentQRCodeRecyclerAdapter(Account account) {
         this.account = account;
-        this.qrCodes = (ArrayList<QRCode>) account.getQRList();
+        this.qrCodes = (ArrayList<QRCode>) account.getQRCodesList();
     }
 
     /**
@@ -86,7 +86,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
             holder.name.setText(name);
         }
 
-        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(account.getQRList().get(position).getHash()));
+        holder.menuButton.setOnClickListener(new MenuButtonOnClickListener(account.getQRCodesList().get(position).getHash()));
     }
 
     /**
@@ -146,7 +146,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
      */
     public void updateList(Account account) {
         this.account = account;
-        this.qrCodes = (ArrayList<QRCode>) account.getQRList();
+        this.qrCodes = (ArrayList<QRCode>) account.getQRCodesList();
         notifyDataSetChanged();
     }
 

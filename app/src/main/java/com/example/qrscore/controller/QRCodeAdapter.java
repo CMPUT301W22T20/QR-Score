@@ -51,7 +51,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // get information
-        score = getItem(position).getQRScore();
+        score = Integer.parseInt(getItem(position).getQRScore());
         hash = getItem(position).getHash();
 
         code = new QRCode(hash, score);   // create new QRCode object

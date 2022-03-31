@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
 
     private FirebaseFirestore db;
 
-    private CollectionReference qrCollectionRef;
+    private CollectionReference qrCodeRef;
     private CollectionReference accountCollectionRef;
     private CollectionReference profileCollectionRef;
 
@@ -123,14 +123,14 @@ public class HomeFragment extends Fragment {
 //        qrCodesList = getView().findViewById(R.id.qr_codes_list_view);
 //        qrCodesList.setAdapter(qrCodesAdapter);
 
-        qrCollectionRef = db.collection("QRCode");
+        qrCodeRef = db.collection("QRCode");
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
 
         accountRef = accountCollectionRef.document(userUID);
         profileRef = profileCollectionRef.document(userUID);
 
-//        Query highestRankingQRScore = accountCollectionRef.orderBy("score", Query.Direction.DESCENDING).limit(5);
+//        Query highestRankingQRScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).limit(5);
 //        highestRankingQRScore.
 
         requestPermissionsIfNecessary(new String[] {
@@ -169,8 +169,8 @@ public class HomeFragment extends Fragment {
                             QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
 
-                            String total = accountDocument.get("scanned").toString();
-                            String score = accountDocument.get("score").toString();
+                            String total = accountDocument.get("totalScanned").toString();
+                            String score = accountDocument.get("totalScore").toString();
                             String hiScore = accountDocument.get("hiscore").toString();
 //                           scannedTextView.setText(total);
 //                           scoreTextView.setText(score);
@@ -269,7 +269,7 @@ public class HomeFragment extends Fragment {
             this.myAccount = account;
             this.sortByButton = sortByButton;
             this.HFQRCodeRA = homeFragmentQRCodeRecyclerAdapter;
-            this.qrCodesToSort = (ArrayList<QRCode>) account.getQRList();
+            this.qrCodesToSort = (ArrayList<QRCode>) account.getQRCodesList();
         }
 
         @Override
@@ -296,7 +296,7 @@ public class HomeFragment extends Fragment {
                 Collections.sort(qrCodesToSort, new Comparator<QRCode>() {
                     @Override
                     public int compare(QRCode qrCode, QRCode t1) {
-                        return -(qrCode.getQRScore() - t1.getQRScore());
+                        return -(Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
                     }
                 });
 
@@ -312,7 +312,7 @@ public class HomeFragment extends Fragment {
                 Collections.sort(qrCodes, new Comparator<QRCode>() {
                     @Override
                     public int compare(QRCode qrCode, QRCode t1) {
-                        return (qrCode.getQRScore() - t1.getQRScore());
+                        return (Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
                     }
                 });
 
