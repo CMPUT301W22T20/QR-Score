@@ -51,9 +51,9 @@ public class QRCode {
      * @param qrscore
      *      The QRCode score
      */
-    public QRCode(String hash, Integer qrscore) {
+    public QRCode(String hash, String qrscore) {
         this.hash = hash;
-        this.qrscore = qrscore.toString();
+        this.qrscore = qrscore;
     }
 
     /**

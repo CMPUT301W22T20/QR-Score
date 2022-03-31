@@ -1,7 +1,6 @@
 package com.example.qrscore.controller;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -99,20 +98,47 @@ public class QRCodeController {
                     else {
                         Account account = accountController.getAccount();
 
+                        String updatedTotalScore;
+                        String updatedTotalScanned;
+                        String updatedHiscore;
+                        String updatedTotalScoreRank;
+                        String updatedTotalScannedRank;
+                        String updatedHiscoreRank;
+
                         //Update total score
-                        Integer updatedScore = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
-                        accountController.updateScore(updatedScore.toString());
+                        Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
+                        updatedTotalScore = updatedTotalScoreInt.toString();
+
+                        //Update total scanned QR codes
+                        Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned())+1;
+                        updatedTotalScanned = updatedTotalScannedInt.toString();
 
                         //Update high score if new code is higher
                         Integer currentHiscore = Integer.parseInt(account.getHiscore());
                         Integer newQRCodeScore = Integer.parseInt(qrCode.getQRScore());
                         if (newQRCodeScore > currentHiscore) {
-                            accountController.updateHiscore(newQRCodeScore.toString());
+                            updatedHiscore = newQRCodeScore.toString();
+                        }
+                        else {
+                            updatedHiscore = currentHiscore.toString();
                         }
 
-                        //Update total scanned QR codes
-                        Integer updatedTotalScanned = Integer.parseInt(account.getTotalScanned())+1;
-                        accountController.updateTotalScanned(updatedTotalScanned.toString());
+                        //TODO: Update ranks
+                        //Update total score rank
+                        Integer currentTotalScoreRankInt = Integer.parseInt(account.getRankTotalScore());
+                        updatedTotalScoreRank = currentTotalScoreRankInt.toString();
+
+                        //Update total scanned QR codes rank
+                        Integer currentTotalScannedRankInt = Integer.parseInt(account.getRankTotalScanned());
+                        updatedTotalScannedRank = currentTotalScannedRankInt.toString();
+
+                        //Update high score if new code is higher
+                        Integer currentHiscoreRankInt = Integer.parseInt(account.getRankHiscore());
+                        updatedHiscoreRank = currentHiscoreRankInt.toString();
+
+                        //Upload updated Account data to firebase
+                        accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore,
+                                                        updatedTotalScoreRank, updatedTotalScannedRank, updatedHiscoreRank);
                     }
                 }
             }
@@ -137,24 +163,50 @@ public class QRCodeController {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot accountDocument = task.getResult();
-
                     Account account = accountController.getAccount();
+                    String updatedTotalScore;
+                    String updatedTotalScanned;
+                    String updatedHiscore;
+                    String updatedTotalScoreRank;
+                    String updatedTotalScannedRank;
+                    String updatedHiscoreRank;
 
-                    //Subtract from total score
-                    Integer updatedScore = Integer.parseInt(account.getTotalScore()) - Integer.parseInt(qrCode.getQRScore());
-                    accountController.updateScore(updatedScore.toString());
+                    //Update total score
+                    Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) - Integer.parseInt(qrCode.getQRScore());
+                    updatedTotalScore = updatedTotalScoreInt.toString();
+
+                    //Update total scanned QR codes
+                    Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned()) - 1;
+                    updatedTotalScanned = updatedTotalScannedInt.toString();
 
                     //Update high score if deleted code is current high score
                     Integer currentHiscore = Integer.parseInt(account.getHiscore());
                     Integer deletedQRCodeScore = Integer.parseInt(qrCode.getQRScore());
                     if (deletedQRCodeScore == currentHiscore) {
                         //TODO: Recalculate next-highest hiscore
-                        accountController.updateHiscore("0");
+                        updatedHiscore = "0";
+                    }
+                    else {
+                        updatedHiscore = currentHiscore.toString();
                     }
 
-                    //Update total scanned QR codes
-                    Integer updatedTotalScanned = Integer.parseInt(account.getTotalScanned())-1;
-                    accountController.updateTotalScanned(updatedTotalScanned.toString());
+                    //TODO: Update ranks
+                    //Update total score rank
+                    Integer currentTotalScoreRankInt = Integer.parseInt(account.getRankTotalScore());
+                    updatedTotalScoreRank = currentTotalScoreRankInt.toString();
+
+                    //Update total scanned QR codes rank
+                    Integer currentTotalScannedRankInt = Integer.parseInt(account.getRankTotalScanned());
+                    updatedTotalScannedRank = currentTotalScannedRankInt.toString();
+
+                    //Update high score if new code is higher
+                    Integer currentHiscoreRankInt = Integer.parseInt(account.getRankHiscore());
+                    updatedHiscoreRank = currentHiscoreRankInt.toString();
+
+                    //Upload updated Account data to firebase
+                    accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore,
+                            updatedTotalScoreRank, updatedTotalScannedRank, updatedHiscoreRank);
+
                 }
             }
         });

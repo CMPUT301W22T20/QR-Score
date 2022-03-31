@@ -132,13 +132,15 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                        String totalScore = accountDocument.getString("totalScore");
                        String totalScanned = accountDocument.getString("totalScanned");
                        String hiscore = accountDocument.getString("hiscore");
-                       Log.i(TAG, "accountDocument.get(\"score\"): " + accountDocument.get("totalScore"));
+                       String totalScoreRank = accountDocument.getString("rankTotalScore");
+                       String totalScannedRank = accountDocument.getString("rankTotalScanned");
+                       String hiscoreRank = accountDocument.getString("rankHiscore");
                        Log.i(TAG, "userUID: " + userUID);
                        Log.i(TAG, "totalScore: " + totalScore);
                        Log.i(TAG, "totalScanned: " + totalScanned);
                        Log.i(TAG, "hiscore: " + hiscore);
 
-                       accounts.add(new Account(userUID, totalScore, totalScanned, hiscore));
+                       accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
                        leaderboardRA.updateList(accounts);
                    }
                 });
@@ -165,12 +167,15 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         CollectionReference accountRef = db.collection("Account");
         accountRef.get().addOnCompleteListener(task -> {
            if (task.isSuccessful()) {
-               for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                   String userUID = documentSnapshot.getString("userUID");
-                   String totalScore = documentSnapshot.getString("totalScore");
-                   String totalScanned = documentSnapshot.getString("totalScanned");
-                   String hiscore = documentSnapshot.getString("hiscore");
-                   accounts.add(new Account(userUID, totalScore, totalScanned, hiscore));
+               for (QueryDocumentSnapshot accountDocument : task.getResult()) {
+                   String userUID = accountDocument.getString("userUID");
+                   String totalScore = accountDocument.getString("totalScore");
+                   String totalScanned = accountDocument.getString("totalScanned");
+                   String hiscore = accountDocument.getString("hiscore");
+                   String totalScoreRank = accountDocument.getString("rankTotalScore");
+                   String totalScannedRank = accountDocument.getString("rankTotalScanned");
+                   String hiscoreRank = accountDocument.getString("rankHiscore");
+                   accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
                }
            }
         });

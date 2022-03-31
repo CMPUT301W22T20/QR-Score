@@ -67,12 +67,12 @@ public class AccountController {
         HashMap<String, Object> account = new HashMap<>();
         account.put("userUID", newAccount.getUserUID());
         account.put("qrCodes", newAccount.getQRCodesList());
-        account.put("totalScore", newAccount.getTotalScore().toString());
-        account.put("totalScanned", newAccount.getTotalScanned().toString());
-        account.put("hiscore", newAccount.getHiscore().toString());
-        account.put("rankTotalScore", newAccount.getRankTotalScore().toString());
-        account.put("rankTotalScanned", newAccount.getRankTotalScanned().toString());
-        account.put("rankHiscore", newAccount.getRankHiscore().toString());
+        account.put("totalScore", newAccount.getTotalScore());
+        account.put("totalScanned", newAccount.getTotalScanned());
+        account.put("hiscore", newAccount.getHiscore());
+        account.put("rankTotalScore", newAccount.getRankTotalScore());
+        account.put("rankTotalScanned", newAccount.getRankTotalScanned());
+        account.put("rankHiscore", newAccount.getRankHiscore());
         accountRef.set(account)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
@@ -129,12 +129,12 @@ public class AccountController {
      */
     public void setAccount(Account newAccount) {
         accountSPEditor.putString("userUID", newAccount.getUserUID());
-        accountSPEditor.putString("totalScore", (newAccount.getTotalScore()).toString());
-        accountSPEditor.putString("totalScanned", (newAccount.getTotalScanned()).toString());
-        accountSPEditor.putString("hiscore", (newAccount.getHiscore()).toString());
-        accountSPEditor.putString("rankTotalScore", (newAccount.getRankTotalScore()).toString());
-        accountSPEditor.putString("rankTotalScanned", (newAccount.getRankTotalScanned()).toString());
-        accountSPEditor.putString("rankHiscore", (newAccount.getRankHiscore()).toString());
+        accountSPEditor.putString("totalScore", (newAccount.getTotalScore()));
+        accountSPEditor.putString("totalScanned", (newAccount.getTotalScanned()));
+        accountSPEditor.putString("hiscore", (newAccount.getHiscore()));
+        accountSPEditor.putString("rankTotalScore", (newAccount.getRankTotalScore()));
+        accountSPEditor.putString("rankTotalScanned", (newAccount.getRankTotalScanned()));
+        accountSPEditor.putString("rankHiscore", (newAccount.getRankHiscore()));
         accountSPEditor.apply();
     }
 
@@ -148,18 +148,33 @@ public class AccountController {
         String totalScore = accountSP.getString("totalScore", null);
         String totalScanned = accountSP.getString("totalScanned", null);
         String hiscore = accountSP.getString("hiscore", null);
-        Account account = new Account(userUID, totalScore, totalScanned, hiscore);
+        String totalScoreRank = accountSP.getString("rankTotalScore", null);
+        String totalScannedRank = accountSP.getString("rankTotalScanned", null);
+        String hiscoreRank = accountSP.getString("rankHiscore", null);
+        Account account = new Account(userUID, totalScore, totalScanned, hiscore,
+                totalScoreRank, totalScannedRank, hiscoreRank);
         return account;
     }
 
     /**
      * Purpose: Updates the current player's total score on firestore db and locally.
      *
-     * @param updatedScore An instance of their updated score.
+     * @param updatedTotalScore An instance of their updated total score.
+     * @param updatedTotalScanned An instance of their updated scans.
+     * @param updatedHiscore An instance of their updated hiscore.
+     * @param updatedRankTotalScore An instance of their updated total score rank.
+     * @param updatedRankTotalScanned An instance of their updated score rank.
+     * @param updatedRankHiscore An instance of their updated score rank.
      */
-    public void updateScore(String updatedScore) {
+    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore,
+                              String updatedRankTotalScore, String updatedRankTotalScanned, String updatedRankHiscore) {
         accountRef = accountCollectionRef.document(currentUser.getUid());
-        accountRef.update("totalScore", updatedScore);
+        accountRef.update("totalScore", updatedTotalScore);
+        accountRef.update("totalScanned", updatedTotalScanned);
+        accountRef.update("hiscore", updatedHiscore);
+        accountRef.update("rankTotalScore", updatedRankTotalScore);
+        accountRef.update("rankTotalScanned", updatedRankTotalScanned);
+        accountRef.update("rankHiscore", updatedRankHiscore);
     }
 
     /**
@@ -169,7 +184,6 @@ public class AccountController {
      */
     public void updateTotalScanned(String updatedTotal) {
         accountRef = accountCollectionRef.document(currentUser.getUid());
-        accountRef.update("totalScanned", updatedTotal);
     }
 
     /**
@@ -179,7 +193,6 @@ public class AccountController {
      */
     public void updateHiscore(String updatedHiscore) {
         accountRef = accountCollectionRef.document(currentUser.getUid());
-        accountRef.update("hiscore", updatedHiscore);
     }
 
 }
@@ -197,9 +210,9 @@ public class AccountController {
 //                        // If it does, retrieve data from the account doc in
 //                        // the db to build the account object.
 //                        Map<String, Object> data = doc.getData();
-//                        totalScore[0] = Integer.parseInt(data.get("totalScore").toString());
-//                        scanned[0] = Integer.parseInt(data.get("totalScanned").toString());
-//                        System.out.println("In docref: "+totalScore[0].toString()+" "+scanned[0].toString());
+//                        totalScore[0] = Integer.parseInt(data.get("totalScore"));
+//                        scanned[0] = Integer.parseInt(data.get("totalScanned"));
+//                        System.out.println("In docref: "+totalScore[0]+" "+scanned[0]);
 //                    } else {
 //                        System.out.println("Doc does not exist, creating new.");
 //                        // Else, initialize everything with default(?) values
@@ -224,7 +237,7 @@ public class AccountController {
 //                                .addOnFailureListener(new OnFailureListener() {
 //                                    @Override
 //                                    public void onFailure(@NonNull Exception e) {
-//                                        Log.d(TAG, "Data could not be added. " + e.toString());
+//                                        Log.d(TAG, "Data could not be added. " + e);
 //                                    }
 //                                });
 //                    }
@@ -233,11 +246,11 @@ public class AccountController {
 //                }
 //            }
 //        });
-//        System.out.println("Outside docref: "+totalScore[0].toString()+" "+scanned[0].toString());
+//        System.out.println("Outside docref: "+totalScore[0]+" "+scanned[0]);
 //    }
 
 //    public Account createNewAccount() {
-//        System.out.println("In create: "+totalScore[0].toString()+" "+scanned[0].toString());
+//        System.out.println("In create: "+totalScore[0]+" "+scanned[0]);
 //        return new Account(userID);
 //    }
 //}

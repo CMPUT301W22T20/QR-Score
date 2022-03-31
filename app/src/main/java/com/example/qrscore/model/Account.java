@@ -68,13 +68,17 @@ public class Account {
      * @param totalScanned
      *      The player's total totalScanned QRs.
      */
-    public Account(String userUID, String totalScore, String totalScanned, String hiscore) {
+    public Account(String userUID, String totalScore, String totalScanned, String hiscore,
+                   String rankTotalScore, String rankTotalScanned, String rankHiscore) {
         this.userUID = userUID;
         this.profile = new Profile(userUID);
         this.qrCodes = new ArrayList<>();
         this.totalScore = totalScore;
         this.totalScanned = totalScanned;
         this.hiscore = hiscore;
+        this.rankTotalScore = rankTotalScore;
+        this.rankTotalScanned = rankTotalScanned;
+        this.rankHiscore = rankHiscore;
     }
 
     /**

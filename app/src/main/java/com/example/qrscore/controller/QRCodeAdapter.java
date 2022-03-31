@@ -32,7 +32,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     private Context mContext;
     private int mResource;
     private LayoutInflater inflater;
-    private Integer score;
+    private String score;
     private String hash;
     private QRCode code;
     private TextView score_text;
@@ -51,7 +51,7 @@ public class QRCodeAdapter extends ArrayAdapter<QRCode> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // get information
-        score = Integer.parseInt(getItem(position).getQRScore());
+        score = getItem(position).getQRScore();
         hash = getItem(position).getHash();
 
         code = new QRCode(hash, score);   // create new QRCode object
