@@ -16,6 +16,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginHorizontal="20dp"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -27,33 +28,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Total Scanned"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-            <TextView
-                android:id="@+id/scanned_text_view"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:hint="(# scanned)"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
-            android:layout_marginHorizontal="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.0"
                 android:gravity="center"
                 android:text="Total Score"
                 android:textColor="@color/black"
@@ -68,6 +43,7 @@
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -79,9 +55,36 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.5"
+                android:layout_weight="1.0"
                 android:gravity="center"
-                android:text="QR Hiscore"
+                android:text="Total Scans"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/scanned_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(# scanned)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="Top QR-Score\n"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
@@ -103,58 +106,7 @@
         android:orientation="horizontal"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="5dp">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
-            android:layout_marginHorizontal="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.5"
-                android:gravity="center"
-                android:text="QR Hiscore Rank"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-            <TextView
-                android:id="@+id/hiscore_rank_text_view"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:hint="(hiscore rank #)"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
-            android:layout_marginHorizontal="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Scanned Rank"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-            <TextView
-                android:id="@+id/scanned_rank_text_view"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:hint="(scan rank #)"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-        </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -177,7 +129,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:hint="(total rank #)"
+                android:hint="(score rank #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Total Scans Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/scanned_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(scan rank #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Top QR-Score Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/hiscore_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(hiscore rank #)"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
