@@ -229,30 +229,13 @@
             android:minHeight="48dp"
             android:text="Highest"
             android:textSize="11sp" />
-        <LinearLayout
+
+        <ListView
+            android:id="@+id/qr_codes_list_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="20dp" >
-            <ListView
-                android:id="@+id/qr_codes_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-            </ListView>
-        </LinearLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_fragment_qrCode_recycler_view"
-            android:layout_width="350dp"
-            android:layout_gravity="center"
             android:layout_height="match_parent" >
-        </androidx.recyclerview.widget.RecyclerView>
+        </ListView>
+
     </LinearLayout>
-
-
-
-
 
 </LinearLayout>
