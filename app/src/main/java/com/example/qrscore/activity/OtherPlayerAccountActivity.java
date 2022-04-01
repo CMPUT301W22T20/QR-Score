@@ -125,41 +125,31 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                             totalScannedRankTextView.setText(rankTotalScanned);
                             hiscoreRankTextView.setText(rankHiscore);
 
-                            ArrayList<String> qrCodeHashes = (ArrayList<String>) accountDocument.getData().get("qrCodes");
-                            ArrayList<QRCode> qrCodesArray = new ArrayList<>();
+                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("qrCodes");
 
-                            for (String qrCodeHash: qrCodeHashes) {
-                                System.out.println(qrCodeHash);
-                                qrCodesArray.add(new QRCode(qrCodeHash));
+                            // get each QRCode id
+                            for (String codeStr : qrCodesArray) {
+
+                                qrCodeRef.document(codeStr).get()
+                                        .addOnCompleteListener(taskQRCodes -> {
+                                            if (taskQRCodes.isSuccessful()) {
+                                                DocumentSnapshot document = taskQRCodes.getResult();
+
+                                                // Get QRCode object and add to adapter
+                                                if (document.exists()) {
+                                                    Log.d(TAG, "QRCode DocumentSnapshot data: " + document.getData());
+                                                    QRCode code = document.toObject(QRCode.class);
+                                                    qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
+                                                    qrCodesAdapter.notifyDataSetChanged();
+
+                                                } else {
+                                                    Log.d(TAG, "No such qr code document");
+                                                }
+                                            } else {
+                                                Log.d(TAG, "get failed with ", taskQRCodes.getException());
+                                            }
+                                        });
                             }
-//                            myAccount.setQRCodesList(qrCodesArray);
-
-//                            setAdapter();
-//                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("qrCodes");   // get the QRCodes array
-//
-//                            // get each QRCode id
-//                            for (String codeStr : qrCodesArray) {
-//
-//                                qrCodeRef.document(codeStr).get()
-//                                        .addOnCompleteListener(taskQRCodes -> {
-//                                            if (taskQRCodes.isSuccessful()) {
-//                                                DocumentSnapshot document = taskQRCodes.getResult();
-//
-//                                                // Get QRCode object and add to adapter
-//                                                if (document.exists()) {
-//                                                    Log.d(TAG, "QRCode DocumentSnapshot data: " + document.getData());
-//                                                    QRCode code = document.toObject(QRCode.class);
-//                                                    qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
-//                                                    qrCodesAdapter.notifyDataSetChanged();
-//
-//                                                } else {
-//                                                    Log.d(TAG, "No such qr code document");
-//                                                }
-//                                            } else {
-//                                                Log.d(TAG, "get failed with ", taskQRCodes.getException());
-//                                            }
-//                                        });
-//                            }
                         }
                     }
                 });
