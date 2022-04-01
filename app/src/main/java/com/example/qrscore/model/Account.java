@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Purpose: This class represents an account in the system.
- * Has score, total scanned, list of scanned QRs and a profile.
+ * Has score, total totalScanned, list of totalScanned QRs and a profile.
  *
  * Outstanding issues:
  * TODO: Finish Purpose
@@ -15,38 +15,70 @@ import java.util.List;
  */
 public class Account {
     private static final String TAG = "ACCOUNT";
-    private String userID;
+    private String userUID;
     private Profile profile;
     private ArrayList<QRCode> qrCodes;
-    private Integer score;
-    private Integer scanned;
+    private String totalScore;
+    private String totalScanned;
+    private String hiscore;
+    private String rankTotalScore;
+    private String rankTotalScanned;
+    private String rankHiscore;
 
     /**
-     * Purpose: Constructor for an account instance.
-     *
-     * @param userID The players unique user ID;
+     * Purpose: Empty Constructor for a account.
      */
-    public Account(String userID) {
-        this.userID = userID;
-        this.profile = new Profile(userID);
-        this.score = 0;
-        this.scanned = 0;
-        this.qrCodes = new ArrayList<>();
+    public Account() {
+        this.userUID = null;
+        this.profile = null;
+        this.qrCodes = null;
+        this.totalScore = null;
+        this.totalScanned = null;
+        this.hiscore = null;
+        this.rankTotalScore = null;
+        this.rankTotalScanned = null;
+        this.rankHiscore = null;
     }
 
     /**
      * Purpose: Constructor for an account instance.
      *
-     * @param userID  The players unique user ID.
-     * @param score   The players running total.
-     * @param scanned The players total scanned QRs.
+     * @param userUID
+     *      The players unique user ID;
      */
-    public Account(String userID, Integer score, Integer scanned) {
-        this.userID = userID;
-        this.profile = new Profile(userID);
-        this.scanned = scanned;
-        this.score = score;
+    public Account(String userUID) {
+        this.userUID = userUID;
+        this.profile = new Profile(userUID);
         this.qrCodes = new ArrayList<>();
+        this.totalScore = "0";
+        this.hiscore = "0";
+        this.totalScanned = "0";
+        this.rankTotalScore = "0";
+        this.rankTotalScanned = "0";
+        this.rankHiscore = "0";
+    }
+
+    /**
+     * Purpose: Constructor for an account instance.
+     *
+     * @param userUID
+     *      The player's unique user ID.
+     * @param totalScore
+     *      The player's running total score.
+     * @param totalScanned
+     *      The player's total totalScanned QRs.
+     */
+    public Account(String userUID, String totalScore, String totalScanned, String hiscore,
+                   String rankTotalScore, String rankTotalScanned, String rankHiscore) {
+        this.userUID = userUID;
+        this.profile = new Profile(userUID);
+        this.qrCodes = new ArrayList<>();
+        this.totalScore = totalScore;
+        this.totalScanned = totalScanned;
+        this.hiscore = hiscore;
+        this.rankTotalScore = rankTotalScore;
+        this.rankTotalScanned = rankTotalScanned;
+        this.rankHiscore = rankHiscore;
     }
 
     /**
@@ -54,8 +86,8 @@ public class Account {
      *
      * @return user ID as a string.
      */
-    public String getUserID() {
-        return userID;
+    public String getUserUID() {
+        return userUID;
     }
 
     /**
@@ -81,35 +113,112 @@ public class Account {
      *
      * @return Integer representing the total score
      */
-    public Integer getScore() {
-        return score;
+    public String getTotalScore() {
+        return totalScore;
     }
 
     /**
      * Purpose: Set the score for the account.
      *
-     * @param score Integer representing the accounts score.
+     * @param totalScore
+     *      String representing the accounts score.
      */
-    public void setScore(Integer score) {
-        this.score = score;
+    public void setTotalScore(String totalScore) {
+        this.totalScore = totalScore;
     }
 
     /**
-     * Purpose: Set the number of QR codes scanned.
-     *
-     * @param scanned Integer representing the total QRs scanned.
+     * Purpose: Return the number of QR codes totalScanned.
+     * @return
+     *      String representing the number of QR codes totalScanned.
      */
-    public void setScanned(Integer scanned) {
-        this.scanned = scanned;
+    public String getTotalScanned() {
+        return totalScanned;
+    }
+//        return qrCodes.size();
+
+    /**
+     * Purpose: Set the number of QR codes totalScanned.
+     * @param totalScanned
+     *      String representing the total QRs totalScanned.
+     */
+    public void setTotalScanned(String totalScanned) {
+        this.totalScanned = totalScanned;
     }
 
     /**
-     * Purpose: Return the number of QR codes scanned.
-     *
-     * @return Integer representing the number of QR codes scanned.
+     * Purpose: Return the highest individual QR score for a player
+     * @return
+     *      String representing highest individual QR score.
      */
-    public Integer getScanned() {
-        return qrCodes.size();
+    public String getHiscore() {
+        return hiscore;
+    }
+
+    /**
+     * Purpose: Set the highest individual QR score for a player.
+     * @param hiscore
+     *      String representing the highest individual QR score.
+     */
+    public void setHiscore(String hiscore) {
+        this.hiscore = hiscore;
+    }
+
+    /**
+     * Purpose: Return the running total score rank.
+     *
+     * @return
+     *      String representing the total score rank
+     */
+    public String getRankTotalScore() {
+        return rankTotalScore;
+    }
+
+    /**
+     * Purpose: Set the score rank for the account.
+     *
+     * @param rankTotalScore
+     *      String representing the accounts score rank.
+     */
+    public void setRankTotalScore(String rankTotalScore) {
+        this.rankTotalScore = rankTotalScore;
+    }
+
+    /**
+     * Purpose: Return the rank of total QR codes scanned.
+     * @return
+     *      String representing the player's rank of total QR codes scanned.
+     */
+    public String getRankTotalScanned() {
+        return this.rankTotalScanned;
+    }
+//        return qrCodes.size();
+
+    /**
+     * Purpose: Set the player's rank of QR codes scanned.
+     * @param rankTotalScanned
+     *      String representing the rank of total QRs scanned.
+     */
+    public void setRankTotalScanned(String rankTotalScanned) {
+        this.rankTotalScanned = rankTotalScanned;
+    }
+
+    /**
+     * Purpose: Return the highest individual QR score for a player
+     * @return
+     *      String representing highest individual QR score.
+     */
+    public String getRankHiscore() {
+        return this.rankHiscore;
+    }
+
+    /**
+     * Purpose: Set the highest individual QR score rank for a player.
+     * @param rankHiscore
+     *      String representing the highest individual QR score's rank.
+     */
+    public void setRankHiscore(String rankHiscore) {
+        this.rankHiscore = rankHiscore;
     }
 
     /**
@@ -117,8 +226,22 @@ public class Account {
      *
      * @return a List of QR codes.
      */
-    public List<QRCode> getQRList() {
+    public List<QRCode> getQRCodesList() {
         return qrCodes;
+    }
+
+    public void setQRCodesList(ArrayList<QRCode> qrCodesArray) {
+        this.qrCodes = qrCodesArray;
+    }
+
+
+    public QRCode getQRByHash(String hash) {
+        for (QRCode qrCode: qrCodes) {
+            if (qrCode.getHash().equals(hash)) {
+                return qrCode;
+            }
+        }
+        return null;
     }
 
     /**
@@ -135,7 +258,11 @@ public class Account {
         }
     }
 
-    public void setQRCodesList(ArrayList<QRCode> qrCodesArray) {
-        this.qrCodes = qrCodesArray;
-    }
+//    private void calculateTotalScore() {
+//        int sum = 0;
+//        for (QRCode qrCode: qrCodes) {
+//            sum = sum + qrCode.getQRScore();
+//        }
+//        score = sum;
+//    }
 }

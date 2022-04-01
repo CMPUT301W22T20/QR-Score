@@ -20,7 +20,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginHorizontal="20dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -31,40 +33,12 @@
             android:gravity="center"
             android:background="@drawable/background_rectangle_bordered"
             android:layout_marginHorizontal="5dp">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.0"
                 android:gravity="center"
-                android:text="Scanned"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-            <TextView
-                android:id="@+id/scanned_text_view"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:hint="(# scanned)"
-                android:textColor="@color/black"
-                android:layout_marginHorizontal="5dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/background_rectangle_bordered"
-            android:layout_marginHorizontal="5dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Score"
+                android:text="Total Score"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
@@ -86,22 +60,138 @@
             android:gravity="center"
             android:background="@drawable/background_rectangle_bordered"
             android:layout_marginHorizontal="5dp">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="1.0"
                 android:gravity="center"
-                android:text="Rank"
+                android:text="Total Scans"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
             <TextView
-                android:id="@+id/rank_text_view"
+                android:id="@+id/scanned_text_view"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:hint="(rank #)"
+                android:hint="(# scanned)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:text="Top QR-Score\n"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/hiscore_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(hiscore #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Total Score Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/total_score_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(score rank #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Total Scans Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/scanned_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(scan rank #)"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@drawable/background_rectangle_bordered"
+            android:layout_marginHorizontal="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:text="Top QR-Score Rank"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="5dp" />
+            <TextView
+                android:id="@+id/hiscore_rank_text_view"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:hint="(hiscore rank #)"
                 android:textColor="@color/black"
                 android:layout_marginHorizontal="5dp" />
         </LinearLayout>
@@ -126,18 +216,18 @@
         android:layout_weight="1"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:background="@drawable/background_rectangle_bordered"
+        android:foreground="@drawable/background_rectangle_bordered"
         android:layout_marginBottom="20dp" >
 
         <Button
-            android:id="@+id/sort_by_button"
+            android:id="@+id/home_fragment_sort_by_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="10dp"
             android:minWidth="0dp"
             android:minHeight="48dp"
-            android:text="Recent"
+            android:text="Highest"
             android:textSize="11sp" />
 
         <ListView

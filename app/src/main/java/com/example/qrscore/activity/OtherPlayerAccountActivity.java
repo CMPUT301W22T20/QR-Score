@@ -38,14 +38,24 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Account account;
     private DocumentReference accountRef;
-    private CollectionReference codeRef;
+    private CollectionReference qrCodeRef;
     private QRCodeAdapter qrCodesAdapter;
     private ArrayList<QRCode> qrCodes;
-    private TextView scannedTextView;
-    private TextView scoreTextView;
     private TextView usernameTextView;
     private TextView qrCodeTitleTextView;
     private TextView rankTextView;
+    private TextView hiscoreTextView;
+    private TextView scannedCodesTextView;
+    private TextView qrScoreTextView;
+    private TextView hiscoreRankTextView;
+    private TextView totalScannedRankTextView;
+    private TextView totalScoreRankTextView;
+    private String totalScore;
+    private String totalScanned;
+    private String hiscore;
+    private String rankTotalScore;
+    private String rankTotalScanned;
+    private String rankHiscore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +73,16 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         qrCodesList = findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);
 
-        // Create textviews
-        scannedTextView = findViewById(R.id.scanned_text_view);
-        scoreTextView = findViewById(R.id.score_text_view);
+        // Instantiate Textview classes to fill layout parameters
+        hiscoreTextView = findViewById(R.id.hiscore_text_view);
+        scannedCodesTextView = findViewById(R.id.scanned_text_view);
+        qrScoreTextView = findViewById(R.id.score_text_view);
+        hiscoreRankTextView = findViewById(R.id.hiscore_rank_text_view);
+        totalScannedRankTextView = findViewById(R.id.scanned_rank_text_view);
+        totalScoreRankTextView = findViewById(R.id.total_score_rank_text_view);
+
         usernameTextView = findViewById(R.id.username_text_view);
         qrCodeTitleTextView = findViewById(R.id.qr_code_title_text_view);
-        rankTextView = findViewById(R.id.rank_text_view);
 
         // Set username textviews
         usernameTextView.setText(userUID);
@@ -76,7 +90,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
 
         // get collection/document references
         accountRef = db.collection("Account").document(userUID);
-        codeRef = db.collection("QRCode");
+        qrCodeRef = db.collection("QRCode");
 
         populateData();
     }
@@ -96,18 +110,28 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                         if (accountDocument.exists()) {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
 
-                            // set textviews
-                            String total = (String) accountDocument.get("Total");
-                            String score = (String) accountDocument.get("Score");
-                            scannedTextView.setText(total);
-                            scoreTextView.setText(score);
+                            // Get displayed data from firebase
+                            totalScore = accountDocument.get("totalScore").toString();
+                            totalScanned = accountDocument.get("totalScanned").toString();
+                            hiscore = accountDocument.get("hiscore").toString();
+                            rankTotalScore = accountDocument.get("rankTotalScore").toString();
+                            rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
+                            rankHiscore = accountDocument.get("rankHiscore").toString();
 
-                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("QRCodes");   // get the QRCodes array
+                            // Set the text of all TextViews
+                            qrScoreTextView.setText(totalScore);
+                            scannedCodesTextView.setText(totalScanned);
+                            hiscoreTextView.setText(hiscore);
+                            totalScoreRankTextView.setText(rankTotalScore);
+                            totalScannedRankTextView.setText(rankTotalScanned);
+                            hiscoreRankTextView.setText(rankHiscore);
+
+                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("qrCodes");
 
                             // get each QRCode id
                             for (String codeStr : qrCodesArray) {
 
-                                codeRef.document(codeStr).get()
+                                qrCodeRef.document(codeStr).get()
                                         .addOnCompleteListener(taskQRCodes -> {
                                             if (taskQRCodes.isSuccessful()) {
                                                 DocumentSnapshot document = taskQRCodes.getResult();

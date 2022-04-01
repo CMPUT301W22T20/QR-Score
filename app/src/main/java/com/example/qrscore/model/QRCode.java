@@ -34,7 +34,7 @@ public class QRCode {
     public QRCode(String hash) {
         this.hash = hash;
         Log.i(TAG, "new QRCode() with hash: " + this.hash);
-        this.qrscore = this.calculateQRScore(this.hash);
+        this.qrscore = this.calculateQRScore(this.hash).toString();
         this.id = this.qrscore.toString();
         this.hasScanned = new ArrayList<>();
     }
@@ -67,11 +67,13 @@ public class QRCode {
         String hash4 = hash5.replace("0000", "");
         String hash3 = hash4.replace("000", "");
         String hash2 = hash3.replace("00", "");
+        String hash1 = hash2.replace("0", "");
         Integer count5 = (hash.length() - hash5.length())/5;
-        Integer count4 = (hash.length() - hash4.length())/4;
-        Integer count3 = (hash.length() - hash3.length())/3;
-        Integer count2 = (hash.length() - hash2.length())/2;
-        Integer score = count2*20 + count3*400 + count4*8000 + count5*160000;
+        Integer count4 = (hash5.length() - hash4.length())/4;
+        Integer count3 = (hash4.length() - hash3.length())/3;
+        Integer count2 = (hash3.length() - hash2.length())/2;
+        Integer count1 = (hash2.length() - hash1.length());
+        Integer score = count1*1 + count2*20 + count3*400 + count4*8000 + count5*160000;
 
         return score.toString();
     }
@@ -90,7 +92,7 @@ public class QRCode {
      * @param playerUsername
      *      the player to add.
      */
-    public void addScanned(String playerUsername) {
+    public void addToHasScanned(String playerUsername) {
         hasScanned.add(playerUsername);
     }
 
@@ -108,7 +110,7 @@ public class QRCode {
         return id;
     }
 
-    public List<String> getScanned() {
+    public List<String> getHasScanned() {
         return hasScanned;
     }
 }

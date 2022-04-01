@@ -6,14 +6,13 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qrscore.R;
+import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.ProfileController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -85,7 +84,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 if (currentUser == null) {
                     loginTextView.setVisibility(View.VISIBLE);
                     profileProgressBar.setVisibility(View.VISIBLE);
-                    createUser();
+                    createNewUser();
                 }
                 else {
                     Toast.makeText(this, "User already created. Please select RETURNING!", Toast.LENGTH_LONG).show();
@@ -97,7 +96,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     private void signInWithEmail() {
         loginTextView.setVisibility(View.VISIBLE);
         profileProgressBar.setVisibility(View.VISIBLE);
-
+        email = currentUser.getEmail();
         firebaseAuth.signInWithEmailAndPassword(email, userUID)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -117,14 +116,17 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     /**
      * Purpose: Creates a new user on firebase auth and initializes a new document on the firestore "Profile" collection.
      */
-    private void createUser() {
+    private void createNewUser() {
         firebaseAuth.signInAnonymously()
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         currentUser = firebaseAuth.getCurrentUser();
-                        // create user on firestore db.
+                        // create profile on firestore db.
                         ProfileController profileController = new ProfileController(getApplicationContext());
-                        profileController.createNewUser(currentUser.getUid());
+                        profileController.createNewProfile(currentUser.getUid());
+                        // create account on firestore db.
+                        AccountController accountController = new AccountController(getApplicationContext());
+                        accountController.createNewAccount(currentUser.getUid());
                         goToMainActivity();
                     }
                     // Failed to create user

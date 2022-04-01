@@ -63,11 +63,11 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     @Override
     public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
         Account account = accounts.get(position);
-        holder.rank.setText("NIL");
-        holder.score.setText(account.getScore().toString());
-        Log.d("Account score", account.getScore().toString());
-        holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
+        holder.rank.setText(account.getRankTotalScore());
+        holder.score.setText(account.getTotalScore());
+        Log.d("Account score", account.getTotalScore());
+        holder.name.setText(account.getUserUID());
+        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserUID()));
     }
 
     /**

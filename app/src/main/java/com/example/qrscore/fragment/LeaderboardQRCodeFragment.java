@@ -44,8 +44,8 @@ import java.util.List;
  *
  * @author William Liu
  */
-public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
-    String TAG = "LeaderboardPlayerFragment";
+public class LeaderboardQRCodeFragment extends Fragment implements TextWatcher {
+    String TAG = "LeaderboardQRCodeFragment";
     private ArrayList<Account> accounts;
     private RecyclerView playerRecyclerView;
     private LeaderboardPlayerRecyclerAdapter leaderboardRA;
@@ -53,7 +53,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
     private TextInputEditText leaderboardSearchPlayerET;
     private ListenerRegistration accountListener;
 
-    public LeaderboardPlayerFragment() {
+    public LeaderboardQRCodeFragment() {
         // Required empty public constructor
     }
 
@@ -61,6 +61,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         populatePlayerArrayList();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference accountCollectionRef = db.collection("Account");
 
@@ -124,23 +125,23 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
 
         accountListener = accountCollectionRef
                 .addSnapshotListener((value, error) -> {
-                   accounts.clear();
-                   for (QueryDocumentSnapshot accountDocument: value)  {
-                       String userUID = accountDocument.getString("userUID");
-                       String totalScore = accountDocument.getString("totalScore");
-                       String totalScanned = accountDocument.getString("totalScanned");
-                       String hiscore = accountDocument.getString("hiscore");
-                       String totalScoreRank = accountDocument.getString("rankTotalScore");
-                       String totalScannedRank = accountDocument.getString("rankTotalScanned");
-                       String hiscoreRank = accountDocument.getString("rankHiscore");
-                       Log.i(TAG, "userUID: " + userUID);
-                       Log.i(TAG, "totalScore: " + totalScore);
-                       Log.i(TAG, "totalScanned: " + totalScanned);
-                       Log.i(TAG, "hiscore: " + hiscore);
+                    accounts.clear();
+                    for (QueryDocumentSnapshot accountDocument: value)  {
+                        String userUID = accountDocument.getString("userUID");
+                        String totalScore = accountDocument.getString("totalScore");
+                        String totalScanned = accountDocument.getString("totalScanned");
+                        String hiscore = accountDocument.getString("hiscore");
+                        String totalScoreRank = accountDocument.getString("rankTotalScore");
+                        String totalScannedRank = accountDocument.getString("rankTotalScanned");
+                        String hiscoreRank = accountDocument.getString("rankHiscore");
+                        Log.i(TAG, "userUID: " + userUID);
+                        Log.i(TAG, "totalScore: " + totalScore);
+                        Log.i(TAG, "totalScanned: " + totalScanned);
+                        Log.i(TAG, "hiscore: " + hiscore);
 
-                       accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
-                       leaderboardRA.updateList(accounts);
-                   }
+                        accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
+                        leaderboardRA.updateList(accounts);
+                    }
                 });
     }
 
@@ -161,22 +162,21 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      */
     private void populatePlayerArrayList() {
         accounts = new ArrayList<Account>();
-        accounts.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference accountRef = db.collection("Account");
         accountRef.get().addOnCompleteListener(task -> {
-           if (task.isSuccessful()) {
-               for (QueryDocumentSnapshot accountDocument : task.getResult()) {
-                   String userUID = accountDocument.getString("userUID");
-                   String totalScore = accountDocument.getString("totalScore");
-                   String totalScanned = accountDocument.getString("totalScanned");
-                   String hiscore = accountDocument.getString("hiscore");
-                   String totalScoreRank = accountDocument.getString("rankTotalScore");
-                   String totalScannedRank = accountDocument.getString("rankTotalScanned");
-                   String hiscoreRank = accountDocument.getString("rankHiscore");
-                   accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
-               }
-           }
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot accountDocument : task.getResult()) {
+                    String userUID = accountDocument.getString("userUID");
+                    String totalScore = accountDocument.getString("totalScore");
+                    String totalScanned = accountDocument.getString("totalScanned");
+                    String hiscore = accountDocument.getString("hiscore");
+                    String totalScoreRank = accountDocument.getString("rankTotalScore");
+                    String totalScannedRank = accountDocument.getString("rankTotalScanned");
+                    String hiscoreRank = accountDocument.getString("rankHiscore");
+                    accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
+                }
+            }
         });
     }
 

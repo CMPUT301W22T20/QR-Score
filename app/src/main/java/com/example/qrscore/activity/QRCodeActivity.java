@@ -221,7 +221,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
                             if (document.exists()) {
                                 playerDataList.clear();
                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                ArrayList<String> userIDs = (ArrayList<String>) document.getData().get("scanned");
+                                ArrayList<String> userIDs = (ArrayList<String>) document.getData().get("hasScanned");
 
                                 // Add each player from hasScanned to playerDataList
                                 playerDataList.addAll(userIDs);
