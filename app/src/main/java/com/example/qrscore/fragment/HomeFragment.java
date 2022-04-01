@@ -78,11 +78,22 @@ public class HomeFragment extends Fragment {
 
     private Account myAccount;
     private String userUID;
-    private int totalScore;
-    private int totalScanned;
     private ArrayList<QRCode> qrCodes;
     private QRCodeAdapter qrCodesAdapter;
     private ListView qrCodesList;
+
+    private TextView myHiscoreTextView;
+    private TextView myScannedCodesTextView;
+    private TextView myQRScoreTextView;
+    private TextView myHiscoreRankTextView;
+    private TextView myTotalScannedRankTextView;
+    private TextView myTotalScoreRankTextView;
+    private String totalScore;
+    private String totalScanned;
+    private String hiscore;
+    private String rankTotalScore;
+    private String rankTotalScanned;
+    private String rankHiscore;
 
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
 
@@ -160,23 +171,13 @@ public class HomeFragment extends Fragment {
                         if (accountDocument.exists()) {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
 
-                            // Instantiate Textview classes to fill layout parameters
-                            TextView myHiscoreTextView = (TextView) view.findViewById(R.id.hiscore_text_view);
-                            TextView myScannedCodesTextView = (TextView) view.findViewById(R.id.scanned_text_view);
-                            TextView myQRScoreTextView = (TextView) view.findViewById(R.id.score_text_view);
-                            TextView myHiscoreRankTextView = (TextView) view.findViewById(R.id.hiscore_rank_text_view);
-                            TextView myTotalScannedRankTextView = (TextView) view.findViewById(R.id.scanned_rank_text_view);
-                            TextView myTotalScoreRankTextView = (TextView) view.findViewById(R.id.total_score_rank_text_view);
-                            QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
-
-                            String totalScore = accountDocument.get("totalScore").toString();
-                            String totalScanned = accountDocument.get("totalScanned").toString();
-                            String hiscore = accountDocument.get("hiscore").toString();
-                            String rankTotalScore = accountDocument.get("rankTotalScore").toString();
-                            String rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
-                            String rankHiscore = accountDocument.get("rankHiscore").toString();
-//                           scannedTextView.setText(totalScanned);
-//                           scoreTextView.setText(totalScore);
+                            // Get displayed data from firebase
+                            totalScore = accountDocument.get("totalScore").toString();
+                            totalScanned = accountDocument.get("totalScanned").toString();
+                            hiscore = accountDocument.get("hiscore").toString();
+                            rankTotalScore = accountDocument.get("rankTotalScore").toString();
+                            rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
+                            rankHiscore = accountDocument.get("rankHiscore").toString();
 
                             // Set the text of all TextViews
                             myQRScoreTextView.setText(totalScore);
@@ -188,9 +189,6 @@ public class HomeFragment extends Fragment {
 
                             ArrayList<String> qrCodeHashes = (ArrayList<String>) accountDocument.getData().get("qrCodes");
                             ArrayList<QRCode> qrCodesArray = new ArrayList<>();
-
-
-                            //TODO: Fix QR code not removing from list after deletion
 
                             for (String qrCodeHash: qrCodeHashes) {
                                 System.out.println(qrCodeHash);
@@ -242,6 +240,15 @@ public class HomeFragment extends Fragment {
         profileQRButton = view.findViewById(R.id.home_fragment_actionbar_qr_code);
         profileQRButton.setOnClickListener(new profileGeneratorButtonListener(userUID));
         actionBarNameTextView = view.findViewById(R.id.home_fragment_actionbar_textview);
+
+        // Instantiate Textview classes to fill layout parameters
+        myHiscoreTextView = (TextView) view.findViewById(R.id.hiscore_text_view);
+        myScannedCodesTextView = (TextView) view.findViewById(R.id.scanned_text_view);
+        myQRScoreTextView = (TextView) view.findViewById(R.id.score_text_view);
+        myHiscoreRankTextView = (TextView) view.findViewById(R.id.hiscore_rank_text_view);
+        myTotalScannedRankTextView = (TextView) view.findViewById(R.id.scanned_rank_text_view);
+        myTotalScoreRankTextView = (TextView) view.findViewById(R.id.total_score_rank_text_view);
+        QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
         populateData(view);
 
