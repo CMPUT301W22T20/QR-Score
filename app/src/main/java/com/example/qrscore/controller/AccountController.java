@@ -93,7 +93,26 @@ public class AccountController {
     }
 
     /**
-     * Purpose: Add a profileListener for firestore data.
+     * Purpose: Updates the current player's total score on firestore db and locally.
+     *
+     * @param updatedTotalScore An instance of their updated total score.
+     * @param updatedTotalScanned An instance of their updated scans.
+     * @param updatedHiscore An instance of their updated hiscore.
+     * @param updatedRankTotalScore An instance of their updated total score rank.
+     * @param updatedRankTotalScanned An instance of their updated score rank.
+     * @param updatedRankHiscore An instance of their updated score rank.
+     */
+    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore,
+                              String updatedRankTotalScore, String updatedRankTotalScanned, String updatedRankHiscore) {
+        Log.i(TAG, "Updating Account");
+        accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
+        accountDocumentRef.update("totalScore", updatedTotalScore);
+        accountDocumentRef.update("totalScanned", updatedTotalScanned);
+        accountDocumentRef.update("hiscore", updatedHiscore);
+    }
+
+    /**
+     * Purpose: Add an accountListener for firestore data.
      */
     public void addAccountListener() {
         userUID = currentUser.getUid();
@@ -162,30 +181,9 @@ public class AccountController {
         return account;
     }
 
-    /**
-     * Purpose: Updates the current player's total score on firestore db and locally.
-     *
-     * @param updatedTotalScore An instance of their updated total score.
-     * @param updatedTotalScanned An instance of their updated scans.
-     * @param updatedHiscore An instance of their updated hiscore.
-     * @param updatedRankTotalScore An instance of their updated total score rank.
-     * @param updatedRankTotalScanned An instance of their updated score rank.
-     * @param updatedRankHiscore An instance of their updated score rank.
-     */
-    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore,
-                              String updatedRankTotalScore, String updatedRankTotalScanned, String updatedRankHiscore) {
-        Log.i(TAG, "Updating Account");
-        accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
-        accountDocumentRef.update("totalScore", updatedTotalScore);
-        accountDocumentRef.update("totalScanned", updatedTotalScanned);
-        accountDocumentRef.update("hiscore", updatedHiscore);
-        this.refreshRanks();
-    }
-
     public void refreshRanks() {
         Log.i(TAG, "Refreshing Account ranks");
 
-        //TOP 5 SCORES
         Query accountSortByTotalScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING);
         accountSortByTotalScore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -208,7 +206,7 @@ public class AccountController {
             }
         });
 
-        Query accountSortByTotalScanned = accountCollectionRef.orderBy("totalScanned", Query.Direction.DESCENDING).limit(5);
+        Query accountSortByTotalScanned = accountCollectionRef.orderBy("totalScanned", Query.Direction.DESCENDING);
         accountSortByTotalScanned.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -231,7 +229,7 @@ public class AccountController {
             }
         });
 
-        Query accountSortByHiscore = accountCollectionRef.orderBy("hiscore", Query.Direction.DESCENDING).limit(5);
+        Query accountSortByHiscore = accountCollectionRef.orderBy("hiscore", Query.Direction.DESCENDING);
         accountSortByHiscore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
