@@ -93,42 +93,6 @@ public class AccountController {
     }
 
     /**
-     * Purpose: Add a profileListener for firestore data.
-     */
-    public void addAccountListener() {
-        userUID = currentUser.getUid();
-        accountDocumentRef = db.collection("Account").document(userUID);
-        accountListener = accountDocumentRef.addSnapshotListener((accountDocument, error) -> {
-            if (error != null) {
-                return;
-            }
-            if (accountDocument != null && accountDocument.exists()) {
-                Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
-                Account savedAccount = accountDocument.toObject(Account.class);
-                Log.i(TAG, "savedAccount UID: " + savedAccount.getUserUID());
-                Log.i(TAG, "savedAccount Total Score: " + savedAccount.getTotalScore());
-                Log.i(TAG, "savedAccount Total Scanned: " + savedAccount.getTotalScanned());
-                Log.i(TAG, "savedAccount Hiscore: " + savedAccount.getHiscore());
-                Log.i(TAG, "savedAccount Total Score Rank: " + savedAccount.getRankTotalScore());
-                Log.i(TAG, "savedAccount Total Scanned Rank: " + savedAccount.getRankTotalScanned());
-                Log.i(TAG, "savedAccount Hiscore Rank: " + savedAccount.getRankHiscore());
-
-                setAccount(savedAccount);    // Update account locally
-                Log.d(TAG, savedAccount.getUserUID() + " account snapshot exists!");
-            } else {
-                Log.d(TAG, "Current data: null");
-            }
-        });
-    }
-
-    /**
-     * Purpose: Remove accountListener when player leaves AccountFragment.
-     */
-    public void removeAccountListener() {
-        accountListener.remove();
-    }
-
-    /**
      * Purpose: Set/Update account info in SharedPrefs.
      *
      * @param newAccount Account to be set/updated with locally.
