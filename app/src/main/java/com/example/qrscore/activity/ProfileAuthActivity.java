@@ -304,6 +304,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     permissionsToRequest.toArray(new String[0]),
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
+    }
 
     /**
      * Purpose: sets Owner status to True for a specific user
