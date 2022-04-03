@@ -1,8 +1,8 @@
 package com.example.qrscore;
 
+import static org.junit.Assert.assertTrue;
+
 import android.app.Activity;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -10,17 +10,11 @@ import androidx.test.rule.ActivityTestRule;
 import com.example.qrscore.activity.MainActivity;
 import com.robotium.solo.Solo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ScanFragmentTest {
+public class MapFragmentTest {
     private Solo solo;
 
     @Rule
@@ -38,24 +32,21 @@ public class ScanFragmentTest {
     }
 
     @Test
-    public void gotoScanFragmentSearchButton(){
+    public void gotoMapFragment() {
         solo.assertCurrentActivity("Wrong activity", MainActivity.class);
 
-        solo.clickOnView(solo.getView(R.id.scan_fragment_item));
+        solo.clickOnView(solo.getView(R.id.map_fragment_item));
 
-        solo.clickOnView(solo.getView(R.id.scan_fragment_view_profile_fab));
-
-        assertTrue(solo.searchButton("Scan"));
+        assertTrue(solo.searchButton("Search"));
     }
 
     @Test
-    public void gotoScanFragmentAddButton(){
+    public void searchGeolocation() {
         solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+        solo.clickOnView(solo.getView(R.id.map_fragment_item));
 
-        solo.clickOnView(solo.getView(R.id.scan_fragment_item));
-
-        solo.clickOnView(solo.getView(R.id.scan_fragment_add_qr_fab));
-
-        assertTrue(solo.searchButton("Scan"));
+        solo.enterText(0, "12");
+        solo.enterText(1, "12");
+        solo.clickOnButton("Search");
     }
 }
