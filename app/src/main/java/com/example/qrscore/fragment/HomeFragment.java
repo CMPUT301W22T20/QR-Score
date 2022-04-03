@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
         accountController = new AccountController(getContext());
         qrCodeController = new QRCodeController();
 
-        accountController.addAccountListener();
+        //accountController.addAccountListener();
 
         db = FirebaseFirestore.getInstance();
         userUID = profileController.getProfile().getUserUID();
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        accountController.removeAccountListener();
+        //accountController.removeAccountListener();
     }
 
     private void populateData(View view) {
