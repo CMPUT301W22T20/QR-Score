@@ -122,7 +122,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                         new OwnerLoginFragment().show(getSupportFragmentManager(), "OWNER LOGIN");
                     }
                 }
-
+                break;
         }
     }
 
