@@ -26,12 +26,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Purpose:
+ *
+ * Outstanding issues:
+ * TODO: Delete Comment
+ *
+ */
 public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<LeaderboardQRCodeRecyclerAdapter.MyViewHolder> {
 
     private ArrayList<QRCode> qrCodes;
     private FirebaseFirestore db;
     private boolean isOwner;
-//    private FirebaseFunctions mFunctions;
     private FirebaseAuth firebaseAuth;
 
     public LeaderboardQRCodeRecyclerAdapter(ArrayList<QRCode> qrCodes) {
@@ -132,12 +138,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
 
                         // check if user is owner
                         if (userIsOwner()) {
-                            try {
-                                deleteCode(hash);
-                            } catch (FirebaseAuthException e) {
-                                e.printStackTrace();
-                            }
-
+                            deleteCode(hash);
                             // display message, cannot delete
                         } else {
                             Toast.makeText(view.getContext(), "Only owners can delete QR Codes.",
@@ -159,13 +160,12 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
      * @param hash
      *      The hash of the code to delete
      */
-    public void deleteCode(String hash) throws FirebaseAuthException {
+    public void deleteCode(String hash){
         firebaseAuth = FirebaseAuth.getInstance();
 
         // delete qrcode
         db.collection("QRCode").document(hash).delete();
-
-        // query qrcode documents that user has scanned
+        // query users that have scanned the code
         db.collection("Account").whereArrayContains("QRCodes", hash).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -177,6 +177,22 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                             // remove the player from QRCode scanned array
                             if (accountDocument.exists()) {
                                 accountDocument.getReference().update("scanned", FieldValue.arrayRemove(hash));
+                            }
+                        }
+                    }
+                });
+        // Remove comments of QRCode
+        db.collection("Comment").whereEqualTo("qrID", hash).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+
+                        // get each individual Comment document
+                        for (DocumentSnapshot commentDocument : querySnapshot.getDocuments()) {
+
+                            // remove the comment
+                            if (commentDocument.exists()) {
+                                commentDocument.getReference().delete();
                             }
                         }
                     }
@@ -202,8 +218,8 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                         DocumentSnapshot accountDocument = taskAccount.getResult();
 
                         if (accountDocument.exists()) {
-                            if (accountDocument.getBoolean("isOwner") != null) {
-                                isOwner = accountDocument.getBoolean("isOwner");
+                            if (accountDocument.getString("isOwner") != null) {
+                                isOwner = Boolean.valueOf(accountDocument.getString("isOwner"));
                             }
                         }
                     }

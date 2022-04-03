@@ -69,6 +69,7 @@ public class ProfileController {
      */
     public void createNewProfile(String userUID) {
         newProfile = new Profile(userUID);
+        this.userUID = userUID;
         // https://firebase.google.com/docs/firestore/manage-data/add-data
         profileRef = db.collection("Profile").document(userUID);
         profileRef

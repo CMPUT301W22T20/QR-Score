@@ -49,7 +49,7 @@ public class GeolocationTest {
 
         assertEquals(geoPoint, geolocation.getGeoPoint());
 
-        assertEquals(qrId, geolocation.getQrIDs());
+        assertEquals(qrId, geolocation.getQrIDs().get(0));
 
         assertEquals(uuidsList, geolocation.getUUIDs());
 

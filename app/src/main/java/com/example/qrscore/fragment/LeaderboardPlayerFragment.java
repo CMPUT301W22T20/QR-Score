@@ -153,6 +153,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         leaderboardSearchPlayerET = view.findViewById(R.id.leaderboard_username_edit_text);
         leaderboardSearchPlayerET.addTextChangedListener(this);
         setAdapter();
+
         return view;
     }
 

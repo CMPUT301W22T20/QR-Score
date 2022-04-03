@@ -54,10 +54,10 @@ public class QRGeneratorDialog extends DialogFragment {
     private void generateQR() {
         MultiFormatWriter writer = new MultiFormatWriter();
         if (login) {
-            account = email + "\n" + userUID;
+            account = email + "," + userUID;
         }
         else {
-            account = userUID;
+            account = userUID + ",";
         }
 
         try {

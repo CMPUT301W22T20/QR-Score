@@ -57,7 +57,6 @@ public class AccountController {
         db = FirebaseFirestore.getInstance();
         accountSP = context.getSharedPreferences(ACCOUNT_PREFS, Context.MODE_PRIVATE);
         accountSPEditor = accountSP.edit();
-
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
     }
@@ -69,7 +68,6 @@ public class AccountController {
         Log.i(TAG, "Creating new account for uid " + userUID);
         newAccount = new Account(userUID);
         accountDocumentRef = accountCollectionRef.document(userUID);
-
         HashMap<String, Object> account = new HashMap<>();
         account.put("userUID", newAccount.getUserUID());
         account.put("qrCodes", newAccount.getQRCodesList());
@@ -79,6 +77,7 @@ public class AccountController {
         account.put("rankTotalScore", newAccount.getRankTotalScore());
         account.put("rankTotalScanned", newAccount.getRankTotalScanned());
         account.put("rankHiscore", newAccount.getRankHiscore());
+        account.put("isOwner", "false");
         accountDocumentRef.set(account)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
@@ -93,7 +92,22 @@ public class AccountController {
     }
 
     /**
-     * Purpose: Add a profileListener for firestore data.
+     * Purpose: Updates the current player's total score on firestore db and locally.
+     *
+     * @param updatedTotalScore An instance of their updated total score.
+     * @param updatedTotalScanned An instance of their updated scans.
+     * @param updatedHiscore An instance of their updated hiscore.
+     */
+    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore) {
+        Log.i(TAG, "Updating Account");
+        accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
+        accountDocumentRef.update("totalScore", updatedTotalScore);
+        accountDocumentRef.update("totalScanned", updatedTotalScanned);
+        accountDocumentRef.update("hiscore", updatedHiscore);
+    }
+
+    /**
+     * Purpose: Add an accountListener for firestore data.
      */
     public void addAccountListener() {
         userUID = currentUser.getUid();
@@ -162,92 +176,95 @@ public class AccountController {
         return account;
     }
 
-    /**
-     * Purpose: Updates the current player's total score on firestore db and locally.
-     *
-     * @param updatedTotalScore An instance of their updated total score.
-     * @param updatedTotalScanned An instance of their updated scans.
-     * @param updatedHiscore An instance of their updated hiscore.
-     * @param updatedRankTotalScore An instance of their updated total score rank.
-     * @param updatedRankTotalScanned An instance of their updated score rank.
-     * @param updatedRankHiscore An instance of their updated score rank.
-     */
-    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore,
-                              String updatedRankTotalScore, String updatedRankTotalScanned, String updatedRankHiscore) {
-        Log.i(TAG, "Updating Account");
-        accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
-        accountDocumentRef.update("totalScore", updatedTotalScore);
-        accountDocumentRef.update("totalScanned", updatedTotalScanned);
-        accountDocumentRef.update("hiscore", updatedHiscore);
-        this.refreshRanks();
-    }
-
     public void refreshRanks() {
         Log.i(TAG, "Refreshing Account ranks");
 
-        //TOP 5 SCORES
         Query accountSortByTotalScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING);
         accountSortByTotalScore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    Integer updatedTotalScoreRank = 1;
+                    Integer newTotalScoreRank = 1;
                     for (DocumentSnapshot accountDocument: accountDocuments) {
                         //Update user's total score rank
                         accountDocumentRef = accountCollectionRef.document(accountDocument.getData().get("userUID").toString());
+
+                        Integer numZeroesToPrefix = 8 - newTotalScoreRank.toString().length();
+                        String updatedTotalScoreRank = "";
+                        for (int i = 0; i < numZeroesToPrefix; i++) {
+                            updatedTotalScoreRank += "0";
+                        }
+                        updatedTotalScoreRank += newTotalScoreRank.toString();
+
                         accountDocumentRef.update("rankTotalScore", updatedTotalScoreRank.toString());
 
                         String topTotalScore = (String) accountDocument.getData().get("totalScore");
                         String topUID = (String) accountDocument.getData().get("userUID");
-                        Log.i(TAG, "Score Rank " + updatedTotalScoreRank + ": " + topUID + "(" + topTotalScore + ")");
+                        Log.i(TAG, "Total Score Rank " + updatedTotalScoreRank + ": " + topUID + "(" + topTotalScore + ")");
                         //TODO:  Checking if the accountDocument contains the unique qrID
-                        updatedTotalScoreRank++;
+                        newTotalScoreRank++;
                     }
                 }
             }
         });
 
-        Query accountSortByTotalScanned = accountCollectionRef.orderBy("totalScanned", Query.Direction.DESCENDING).limit(5);
+        Query accountSortByTotalScanned = accountCollectionRef.orderBy("totalScanned", Query.Direction.DESCENDING);
         accountSortByTotalScanned.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    Integer updatedTotalScannedRank = 1;
+                    Integer newTotalScannedRank = 1;
                     for (DocumentSnapshot accountDocument: accountDocuments) {
                         //Update user's total scanned rank
                         accountDocumentRef = accountCollectionRef.document(accountDocument.getData().get("userUID").toString());
+
+                        Integer numZeroesToPrefix = 8 - newTotalScannedRank.toString().length();
+                        String updatedTotalScannedRank = "";
+                        for (int i = 0; i < numZeroesToPrefix; i++) {
+                            updatedTotalScannedRank += "0";
+                        }
+                        updatedTotalScannedRank += newTotalScannedRank.toString();
+
                         accountDocumentRef.update("rankTotalScanned", updatedTotalScannedRank.toString());
 
                         String topTotalScanned = (String) accountDocument.getData().get("totalScanned");
                         String topUID = (String) accountDocument.getData().get("userUID");
-                        Log.i(TAG, "Scanned Rank " + updatedTotalScannedRank + ": " + topUID + "(" + topTotalScanned + ")");
+                        Log.i(TAG, "Total Scanned Rank " + updatedTotalScannedRank + ": " + topUID + "(" + topTotalScanned + ")");
 
                         //TODO: Checking if the accountDocument contains the unique qrID
-                        updatedTotalScannedRank++;
+                        newTotalScannedRank++;
                     }
                 }
             }
         });
 
-        Query accountSortByHiscore = accountCollectionRef.orderBy("hiscore", Query.Direction.DESCENDING).limit(5);
+        Query accountSortByHiscore = accountCollectionRef.orderBy("hiscore", Query.Direction.DESCENDING);
         accountSortByHiscore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    Integer updatedHiscoreRank = 1;
+                    Integer newHiscoreRank = 1;
                     for (DocumentSnapshot accountDocument: accountDocuments) {
                         //Update user's hiscore rank
                         accountDocumentRef = accountCollectionRef.document(accountDocument.getData().get("userUID").toString());
+
+                        Integer numZeroesToPrefix = 8 - newHiscoreRank.toString().length();
+                        String updatedHiscoreRank = "";
+                        for (int i = 0; i < numZeroesToPrefix; i++) {
+                            updatedHiscoreRank += "0";
+                        }
+                        updatedHiscoreRank += newHiscoreRank.toString();
+
                         accountDocumentRef.update("rankHiscore", updatedHiscoreRank.toString());
 
                         String top5hiscore = (String) accountDocument.getData().get("hiscore");
                         String top5uid = (String) accountDocument.getData().get("userUID");
                         Log.i(TAG, "Hiscore Rank " + updatedHiscoreRank + ": " + top5uid + "(" + top5hiscore + ")");
                         //TODO:  Checking if the accountDocument contains the unique qrID
-                        updatedHiscoreRank++;
+                        newHiscoreRank++;
                     }
                 }
             }

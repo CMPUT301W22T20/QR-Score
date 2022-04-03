@@ -18,6 +18,7 @@ public class Account {
     private String userUID;
     private Profile profile;
     private ArrayList<QRCode> qrCodes;
+    private boolean isOwner;
     private String totalScore;
     private String totalScanned;
     private String hiscore;
@@ -257,6 +258,28 @@ public class Account {
             }
         }
     }
+
+    /**
+     * Returns if the account is an owner or not
+     *
+     * @return
+     *      true if account is an owner, false otherwise
+     */
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    /**
+     * Sets the owner status of the account to true
+     *
+     * @param owner
+     *      true
+     */
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+    }
+
+
 
 //    private void calculateTotalScore() {
 //        int sum = 0;

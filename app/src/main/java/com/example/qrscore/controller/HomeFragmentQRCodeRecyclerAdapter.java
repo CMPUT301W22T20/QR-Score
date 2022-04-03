@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.example.qrscore.model.Account;
