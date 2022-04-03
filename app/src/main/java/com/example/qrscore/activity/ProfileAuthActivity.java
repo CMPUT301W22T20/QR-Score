@@ -130,7 +130,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     private void signInWithEmail() {
         loginTextView.setVisibility(View.VISIBLE);
         profileProgressBar.setVisibility(View.VISIBLE);
-
+        email = currentUser.getEmail();
         firebaseAuth.signInWithEmailAndPassword(email, userUID)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override

@@ -11,7 +11,12 @@
           </Key>
         </deviceKey>
       </Target>
+<<<<<<< HEAD
     </runningDeviceTargetSelectedWithDropDown>
     <timeTargetWasSelectedWithDropDown value="2022-04-03T01:57:03.358444Z" />
+=======
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2022-04-01T05:38:31.529863Z" />
+>>>>>>> 2335f007e2f1ca1f8f23d6863bead76a9a2c09cf
   </component>
 </project>

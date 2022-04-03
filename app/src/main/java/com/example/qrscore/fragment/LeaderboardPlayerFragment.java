@@ -45,7 +45,7 @@ import java.util.List;
  * @author William Liu
  */
 public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
-    String TAG = "LeaderboardFragment";
+    String TAG = "LeaderboardPlayerFragment";
     private ArrayList<Account> accounts;
     private RecyclerView playerRecyclerView;
     private LeaderboardPlayerRecyclerAdapter leaderboardRA;
@@ -63,17 +63,16 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         populatePlayerArrayList();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference accountRef = db.collection("Account");
+        CollectionReference accountCollectionRef = db.collection("Account");
 
         //TOP 5 SCORES
-        Query accountSortByScore = accountRef.orderBy("totalScore", Query.Direction.DESCENDING).limit(5);
-//        Task<QuerySnapshot> accountSortByScoreSnapshot = accountSortByScore.get();
+        Query accountSortByScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).limit(5);
         accountSortByScore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    int i = 0;
+                    int i = 1;
                     for (DocumentSnapshot accountDocument: accountDocuments) {
 //                        System.out.println(accountDocument);
                         String top5score = (String) accountDocument.getData().get("totalScore");
@@ -86,32 +85,32 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
             }
         });
 
-        Query accountSortByScanned = accountRef.orderBy("totalScanned", Query.Direction.DESCENDING).limit(5);
+        Query accountSortByScanned = accountCollectionRef.orderBy("totalScanned", Query.Direction.DESCENDING).limit(5);
         accountSortByScanned.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    int i = 0;
+                    int i = 1;
                     for (DocumentSnapshot accountDocument: accountDocuments) {
 //                        System.out.println(accountDocument);
                         String top5scanned = (String) accountDocument.getData().get("totalScanned");
                         String top5uid = (String) accountDocument.getData().get("userUID");
                         Log.i(TAG, "Scanned Rank " + i + ": " + top5uid + "(" + top5scanned + ")");
-                        // Checking if the accountDocument contains the unique qrID
+                        //TODO: Checking if the accountDocument contains the unique qrID
                         i++;
                     }
                 }
             }
         });
 
-        Query accountSortByHiscore = accountRef.orderBy("hiscore", Query.Direction.DESCENDING).limit(5);
+        Query accountSortByHiscore = accountCollectionRef.orderBy("hiscore", Query.Direction.DESCENDING).limit(5);
         accountSortByHiscore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    int i = 0;
+                    int i = 1;
                     for (DocumentSnapshot accountDocument: accountDocuments) {
 //                        System.out.println(accountDocument);
                         String top5hiscore = (String) accountDocument.getData().get("hiscore");
@@ -124,7 +123,7 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
             }
         });
 
-        accountListener = accountRef
+        accountListener = accountCollectionRef
                 .addSnapshotListener((value, error) -> {
                    accounts.clear();
                    for (QueryDocumentSnapshot accountDocument: value)  {
