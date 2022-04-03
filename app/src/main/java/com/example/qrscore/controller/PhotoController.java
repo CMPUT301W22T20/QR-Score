@@ -1,14 +1,26 @@
 package com.example.qrscore.controller;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.example.qrscore.model.Photo;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Purpose: A controller to interact with the photos and firebase storage.
@@ -21,17 +33,19 @@ public class PhotoController {
     private CollectionReference photoRef;
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private Context context;
 
-    public PhotoController() {
+    public PhotoController(Context context) {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        this.context = context;
 
         db = FirebaseFirestore.getInstance();
         photoRef = db.collection("Photo");
     }
 
     /**
-     * Purpose: upload a Photo to storage.
+     * Purpose: Compresses and uploads a Photo to storage.
      *
      * @param photo
      *      A photo instance.
@@ -41,8 +55,36 @@ public class PhotoController {
     public void uploadPhoto(Photo photo, Uri imageUri) {
         StorageReference imageRef = storageReference.child(photo.getPhotoPath());
 
-        imageRef.putFile(imageUri);
-        photoRef.add(photo);
+        //StorageReference childRef2 = [your firebase storage path]
+        Bitmap bmp = null;
+        try {
+            bmp = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 15, baos);
+        byte[] data = baos.toByteArray();
+
+        //uploading the image
+        UploadTask uploadTask2 = imageRef.putBytes(data);
+
+        uploadTask2.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d("PhotoController", "Photo uploaded successfully");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("PhotoController", "Photo not uploaded successfully");
+            }
+        });
+
+
+
+        //imageRef.putFile(imageUri);
+        //photoRef.add(photo);
     }
 
     /**

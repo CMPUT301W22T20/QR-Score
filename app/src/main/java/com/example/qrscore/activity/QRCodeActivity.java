@@ -85,7 +85,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
-        photoController = new PhotoController();
+        photoController = new PhotoController(this);
         profileController = new ProfileController(this);
         String uuid = profileController.getProfile().getUserUID();
 

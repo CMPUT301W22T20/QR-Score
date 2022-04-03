@@ -10,10 +10,13 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +33,15 @@ import com.example.qrscore.controller.LocationController;
 import com.example.qrscore.controller.PhotoController;
 import com.example.qrscore.controller.ProfileController;
 import com.example.qrscore.controller.QRCodeController;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.hash.Hashing;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -66,7 +74,7 @@ public class ScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountController = new AccountController(getContext());
-        photoController = new PhotoController();
+        photoController = new PhotoController(getContext());
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
     }
@@ -120,6 +128,7 @@ public class ScanFragment extends Fragment {
                     if (imageUri != null) {
                         final String imageKey = UUID.randomUUID().toString();
                         Photo photo = new Photo("images/" + imageKey, qrHashed, userID);
+                        //compressImage(photo, imageUri);
                         photoController.uploadPhoto(photo, imageUri);
                         Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
                     }
@@ -148,12 +157,14 @@ public class ScanFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 8008 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 100, 100, false));
             imageView.setImageBitmap(imageBitmap);
         }
     }
