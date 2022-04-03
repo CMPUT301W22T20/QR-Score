@@ -72,5 +72,11 @@
         app:layout_constraintGuide_percent="0.88"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <FrameLayout
+        android:id="@+id/child_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -57,7 +57,6 @@ public class AccountController {
         db = FirebaseFirestore.getInstance();
         accountSP = context.getSharedPreferences(ACCOUNT_PREFS, Context.MODE_PRIVATE);
         accountSPEditor = accountSP.edit();
-
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
     }
@@ -69,7 +68,6 @@ public class AccountController {
         Log.i(TAG, "Creating new account for uid " + userUID);
         newAccount = new Account(userUID);
         accountDocumentRef = accountCollectionRef.document(userUID);
-
         HashMap<String, Object> account = new HashMap<>();
         account.put("userUID", newAccount.getUserUID());
         account.put("qrCodes", newAccount.getQRCodesList());
@@ -79,6 +77,7 @@ public class AccountController {
         account.put("rankTotalScore", newAccount.getRankTotalScore());
         account.put("rankTotalScanned", newAccount.getRankTotalScanned());
         account.put("rankHiscore", newAccount.getRankHiscore());
+        account.put("isOwner", "false");
         accountDocumentRef.set(account)
                 .addOnSuccessListener(unused -> {
                     Log.d(TAG, "Account created!");
