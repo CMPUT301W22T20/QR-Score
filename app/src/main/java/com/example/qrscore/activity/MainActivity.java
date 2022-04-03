@@ -27,6 +27,7 @@ import android.os.Bundle;
 
 import android.view.MenuItem;
 
+import com.example.qrscore.fragment.ScanFragmentPlayer;
 import com.example.qrscore.model.Account;
 import com.example.qrscore.R;
 import com.example.qrscore.fragment.HomeFragment;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment = new HomeFragment();
     MapFragment mapFragment = new MapFragment();
     ScanFragment scanFragment = new ScanFragment();
+    ScanFragmentPlayer scanFragmentSearchPlayer = new ScanFragmentPlayer();
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     FloatingActionButton scanFragmentAdd;
@@ -135,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     scanFragmentView.setOnClickListener(view -> {
                         closeScanFab();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragment).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_container, scanFragmentSearchPlayer).commit();
                     });
                     lastViewedFragment = "scanFragment";
                     return true;

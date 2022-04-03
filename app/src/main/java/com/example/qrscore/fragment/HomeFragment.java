@@ -98,9 +98,6 @@ public class HomeFragment extends Fragment {
     private String rankTotalScanned;
     private String rankHiscore;
 
-    private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-
-
     private HomeFragmentQRCodeRecyclerAdapter HomeFragQRCodeRA;
     private RecyclerView QRCodeRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -144,15 +141,6 @@ public class HomeFragment extends Fragment {
 
 //        Query highestRankingQRScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).limit(5);
 //        highestRankingQRScore.
-
-        requestPermissionsIfNecessary(new String[] {
-                // if you need to show the current location, uncomment the line below
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.CAMERA,
-                // WRITE_EXTERNAL_STORAGE is required in order to show the map
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        });
     }
 
     @Override
@@ -353,39 +341,6 @@ public class HomeFragment extends Fragment {
 
                 HFQRCodeRA.updateList(myAccount);
             }
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (int i = 0; i < grantResults.length; i++) {
-            permissionsToRequest.add(permissions[i]);
-        }
-        if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(
-                    getActivity(),
-                    permissionsToRequest.toArray(new String[0]),
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
-        }
-    }
-
-    private void requestPermissionsIfNecessary(String[] permissions) {
-        ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(getContext(), permission)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted
-                permissionsToRequest.add(permission);
-            }
-        }
-        if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(
-                    getActivity(),
-                    permissionsToRequest.toArray(new String[0]),
-                    REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
 

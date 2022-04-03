@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.qrscore.fragment.LeaderboardPlayerFragment;
-import com.example.qrscore.fragment.LeaderboardQRCodeFragment;
+import com.example.qrscore.fragment.LeaderboardQRcodeFragment;
 
 /**
  * Purpose: Represents a ViewPager2 Adapter for the TabLayout in the LeaderboardFragment.
@@ -37,7 +37,7 @@ public class LeaderboardVPAdapter extends FragmentStateAdapter {
 
         switch (position) {
             case 0:
-                fragment = new LeaderboardQRCodeFragment();
+                fragment = new LeaderboardQRcodeFragment();
                 break;
             case 1:
                 fragment = new LeaderboardPlayerFragment();

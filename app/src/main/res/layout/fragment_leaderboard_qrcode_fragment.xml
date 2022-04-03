@@ -1,20 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.LeaderboardQRCodeFragment">
+    tools:context=".fragment.LeaderboardQRcodeFragment">
 
     <TextView
+        android:id="@+id/top_qr_codes_textView"
+        android:layout_width="380dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/round_box_background"
         android:backgroundTint="@color/green"
-        android:layout_width="330dp"
-        android:layout_height="60dp"
+        android:gravity="center"
         android:text="@string/leaderboard_top_qr_codes"
         android:textSize="24dp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_gravity="center|top"
-        android:layout_marginTop="10dp" />
-</FrameLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/leaderboard_qr_code_recyclerview_box"
+        android:layout_width="380dp"
+        android:layout_height="470dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_box_background"
+        app:layout_constraintBottom_toTopOf="@+id/leaderboard_qr_code_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_qr_codes_textView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/leaderboard_qr_code_recyclerview"
+        android:layout_width="350dp"
+        android:layout_height="440dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/leaderboard_qr_code_recyclerview_box"
+        app:layout_constraintEnd_toEndOf="@+id/leaderboard_qr_code_recyclerview_box"
+        app:layout_constraintStart_toStartOf="@+id/leaderboard_qr_code_recyclerview_box"
+        app:layout_constraintTop_toTopOf="@id/leaderboard_qr_code_recyclerview_box" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leaderboard_qr_code_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.88"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/child_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
