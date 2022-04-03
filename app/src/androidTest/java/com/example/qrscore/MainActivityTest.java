@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import android.app.Activity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -12,6 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.qrscore.activity.MainActivity;
+import com.example.qrscore.activity.OtherPlayerAccountActivity;
 import com.example.qrscore.controller.ProfileController;
 import com.robotium.solo.Solo;
 
@@ -27,7 +30,7 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class, true, true);
 
     @Before
-    public void setUP() throws Exception {
+    public void setUp() throws Exception {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
     }
 
@@ -38,7 +41,48 @@ public class MainActivityTest {
 
     @Test
     public void testLogin() {
+        solo.clickOnView(solo.getView(R.id.auth_returning_user_button));
         solo.waitForText("Login Successful!", 1, 2000);
+    }
+
+    @Test
+    public void testHomeFragment() {
+        solo.clickOnView(solo.getView(R.id.home_fragment_item));
+    }
+
+    @Test
+    public void testMapFragment() {
+        solo.clickOnView(solo.getView(R.id.map_fragment_item));
+    }
+
+    @Test
+    public void testAddQRCodeFragment() {
+        solo.clickOnView(solo.getView(R.id.scan_fragment_item));
+        solo.clickOnView(solo.getView(R.id.scan_fragment_add_qr_fab));
+    }
+
+    @Test
+    public void testScanViewProfileFragment() {
+        solo.clickOnView(solo.getView(R.id.scan_fragment_item));
+        solo.clickOnView(solo.getView(R.id.scan_fragment_view_profile_fab));
+    }
+
+    // https://stackoverflow.com/a/33272002
+    @Test
+    public void testLeaderboardPlayerFragment() {
+        ProfileController profileController = new ProfileController(ApplicationProvider.getApplicationContext());
+
+        solo.clickOnView(solo.getView(R.id.leaderboard_fragment_item));
+
+        ViewGroup tabs = (ViewGroup) solo.getView(R.id.leaderboard_tabLayout, 0);
+        View leaderboardPlayerTab = ((ViewGroup) tabs.getChildAt(0)).getChildAt(1);
+        solo.clickOnView(leaderboardPlayerTab);
+
+        solo.enterText(0, profileController.getProfile().getUserUID());
+
+        solo.clickOnView(solo.getView(R.id.list_item_menu_button));
+        solo.clickOnMenuItem("View Player");
+        assertTrue(solo.waitForActivity(OtherPlayerAccountActivity.class, 2000));
     }
 
     @Test
