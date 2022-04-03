@@ -183,23 +183,6 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                     }
                 });
 
-        // query location that QRCode has
-        db.collection("Location").whereArrayContains("qrIDs", hash).get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-
-                        // get each individual Location document
-                        for (DocumentSnapshot locationDocument : querySnapshot.getDocuments()) {
-
-                            // remove the QRCode from Location qr codes
-                            if (locationDocument.exists()) {
-                                locationDocument.getReference().update("qrIDs", FieldValue.arrayRemove(hash));
-                            }
-                        }
-                    }
-                });
-
         // Remove comments of QRCode
         db.collection("Comment").whereEqualTo("qrID", hash).get()
                 .addOnCompleteListener(task -> {
