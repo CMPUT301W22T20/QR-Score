@@ -22,6 +22,7 @@ import com.example.qrscore.fragment.OwnerLoginFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +33,7 @@ import com.google.firebase.functions.FirebaseFunctions;
 import com.example.qrscore.model.Account;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,7 +51,6 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     private ArrayList<Account> accounts;
     private FirebaseFirestore db;
     private boolean isOwner;
-    private FirebaseFunctions mFunctions;
     private FirebaseAuth firebaseAuth;
 
     public LeaderboardPlayerRecyclerAdapter(ArrayList<Account> accounts) {
@@ -86,10 +87,10 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
         Account account = accounts.get(position);
         holder.rank.setText("NIL");
-        holder.score.setText(account.getScore().toString());
-        Log.d("Account score", account.getScore().toString());
-        holder.name.setText(account.getUserID());
-        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserID()));
+        holder.score.setText(account.getTotalScore().toString());
+        Log.d("Account score", account.getTotalScore().toString());
+        holder.name.setText(account.getUserUID());
+        holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserUID()));
     }
 
     /**
@@ -185,7 +186,6 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     public void deletePlayer(String userUID) throws FirebaseAuthException {
         firebaseAuth = FirebaseAuth.getInstance();
-        mFunctions = FirebaseFunctions.getInstance();
 
         // delete profile and account
         db.collection("Profile").document(userUID).delete();
@@ -208,7 +208,28 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
                         }
                     });
 
-        // delete user from firebase so they cant login to same account again
+        // query location that player has
+        db.collection("Location").whereArrayContains("uuids", userUID).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+
+                        // get each individual Location document
+                        for (DocumentSnapshot locationDocument : querySnapshot.getDocuments()) {
+
+                            // remove the QRCode from Location qr codes
+                            if (locationDocument.exists()) {
+                                locationDocument.getReference().update("uuids", FieldValue.arrayRemove(userUID));
+                            }
+                        }
+                    }
+                });
+
+        // block user
+        DocumentReference blockedUserRef = db.collection("BlockedUsers").document(userUID);
+        HashMap<String, Object> blockedUser = new HashMap<>();
+        blockedUser.put("userUID", userUID);
+        blockedUserRef.set(blockedUser);
     }
 
     /**
@@ -229,8 +250,8 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
                         DocumentSnapshot accountDocument = taskAccount.getResult();
 
                         if (accountDocument.exists()) {
-                            if (accountDocument.getBoolean("isOwner") != null) {
-                                isOwner = accountDocument.getBoolean("isOwner");
+                            if (accountDocument.getString("isOwner") != null) {
+                                isOwner = Boolean.valueOf(accountDocument.getString("isOwner"));
                             }
                         }
                     }

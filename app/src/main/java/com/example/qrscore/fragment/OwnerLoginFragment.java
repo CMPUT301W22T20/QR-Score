@@ -105,24 +105,6 @@ public class OwnerLoginFragment extends DialogFragment {
                         } else {Toast.makeText(mContext, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                         }
-                        /*mAuth.signInWithEmailAndPassword(email_edit_text.getText().toString(), password_edit_text.getText().toString())
-                                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                                        if (task.isSuccessful()) {
-                                            // Sign in success
-                                            Log.d("TAG", "signInWithEmail:success");
-                                            confirmOwnerListener.onOwnerConfirmed();
-
-                                        } else {
-                                            // If sign in fails, display a message to the user.
-                                            Log.w("TAG", "signInWithEmail:failure", task.getException());
-                                            Toast.makeText(mContext, "Authentication failed.",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });*/
                     }
                 }).create(); }
 }

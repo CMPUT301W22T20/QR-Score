@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qrscore.R;
+import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.ProfileController;
 import com.example.qrscore.fragment.OwnerLoginFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
@@ -43,6 +45,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     private TextView loginTextView;
     private String email;
     private String userUID;
+    private boolean blocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         newUserButton.setOnClickListener(this);
         ownerButton = findViewById(R.id.auth_owner_button);
         ownerButton.setOnClickListener(this);
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -72,6 +76,9 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 // https://firebase.google.com/docs/auth/android/anonymous-auth
                 if (currentUser == null) {
                     Toast.makeText(this, "Cannot locate user, Please sign up as a NEW USER!", Toast.LENGTH_LONG).show();
+                }
+                else if (userIsBlocked(currentUser.getUid())) {
+                    Toast.makeText(this, "Cannot login, you have been banned", Toast.LENGTH_LONG).show();
                 }
                 else {
                     loginTextView.setVisibility(View.VISIBLE);
@@ -88,7 +95,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 if (currentUser == null) {
                     loginTextView.setVisibility(View.VISIBLE);
                     profileProgressBar.setVisibility(View.VISIBLE);
-                    createUser();
+                    createNewUser();
                     goToMainActivity();
                 }
                 else {
@@ -99,18 +106,24 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
             case R.id.auth_owner_button:
                 currentUser = firebaseAuth.getCurrentUser();
 
-                // Create user if they dont have account
+                // Create user if they don't have account
                 if (currentUser == null) {
                     loginTextView.setVisibility(View.VISIBLE);
                     profileProgressBar.setVisibility(View.VISIBLE);
-                    createUser();
+                    createNewUser();
+                    // Show owner login fragment
+                    new OwnerLoginFragment().show(getSupportFragmentManager(), "OWNER LOGIN");
+
                 } else {
                     userUID = currentUser.getUid();
-
+                    if (userIsBlocked(currentUser.getUid())) {
+                        Toast.makeText(this, "Cannot login, you have been banned", Toast.LENGTH_LONG).show();
+                    } else {
+                        // Show owner login fragment
+                        new OwnerLoginFragment().show(getSupportFragmentManager(), "OWNER LOGIN");
+                    }
                 }
 
-                // Show owner login fragment
-                new OwnerLoginFragment().show(getSupportFragmentManager(), "OWNER LOGIN");
         }
     }
 
@@ -137,14 +150,17 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     /**
      * Purpose: Creates a new user on firebase auth and initializes a new document on the firestore "Profile" collection.
      */
-    private void createUser() {
+    private void createNewUser() {
         firebaseAuth.signInAnonymously()
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         currentUser = firebaseAuth.getCurrentUser();
-                        // create user on firestore db.
+                        // create profile on firestore db.
                         ProfileController profileController = new ProfileController(getApplicationContext());
-                        profileController.createNewUser(currentUser.getUid());
+                        profileController.createNewProfile(currentUser.getUid());
+                        // create account on firestore db.
+                        AccountController accountController = new AccountController(getApplicationContext());
+                        accountController.createNewAccount(currentUser.getUid());
                         goToMainActivity();
                     }
                     // Failed to create user
@@ -153,6 +169,36 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                         Toast.makeText(ProfileAuthActivity.this, "Failed to sign in. Please close the app and try again!", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    /**
+     * Returns true if user is blocked
+     *
+     * @param userUID
+     *      userUID of user to check
+     * @return boolean
+     *      true if user is blocked, false otherwise
+     */
+    public boolean userIsBlocked(String userUID) {
+
+        blocked = false;
+
+         DocumentReference docRef = db.collection("BlockedUsers").document(userUID);
+
+         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (!document.exists()) {
+                        blocked = true;
+                    }
+                } else {
+                    Log.d("ProfileAuthActivity", "get failed with ", task.getException());
+                }
+            }
+        });
+         return blocked;
     }
 
     /**
@@ -170,9 +216,8 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onOwnerConfirmed() {
 
-        db = FirebaseFirestore.getInstance();
         userUID = currentUser.getUid();
-        db.collection("Account").document(userUID).update("isOwner", true);   // update owner status
+        db.collection("Account").document(userUID).update("isOwner", "true");   // update owner status
         goToMainActivity();
     }
 

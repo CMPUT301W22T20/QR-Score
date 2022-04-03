@@ -45,7 +45,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
         this.qrCodes = qrCodes;
     }
 
-    /**
+    /** qr
      * Purpose: ViewHolder of items inside the Adapter.
      */
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -139,11 +139,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
 
                         // check if user is owner
                         if (userIsOwner()) {
-                            try {
-                                deleteCode(hash);
-                            } catch (FirebaseAuthException e) {
-                                e.printStackTrace();
-                            }
+                            deleteCode(hash);
 
                             // display message, cannot delete
                         } else {
@@ -166,13 +162,13 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
      * @param hash
      *      The hash of the code to delete
      */
-    public void deleteCode(String hash) throws FirebaseAuthException {
+    public void deleteCode(String hash){
         firebaseAuth = FirebaseAuth.getInstance();
 
         // delete qrcode
         db.collection("QRCode").document(hash).delete();
 
-        // query qrcode documents that user has scanned
+        // query users that have scanned the code
         db.collection("Account").whereArrayContains("QRCodes", hash).get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -205,6 +201,25 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                         }
                     }
                 });
+
+        // Remove comments of QRCode
+        db.collection("Comment").whereEqualTo("qrID", hash).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+
+                        // get each individual Comment document
+                        for (DocumentSnapshot commentDocument : querySnapshot.getDocuments()) {
+
+                            // remove the comment
+                            if (commentDocument.exists()) {
+                                commentDocument.getReference().delete();
+                            }
+                        }
+                    }
+                });
+
+
         notifyDataSetChanged();
     }
 
@@ -226,8 +241,8 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                         DocumentSnapshot accountDocument = taskAccount.getResult();
 
                         if (accountDocument.exists()) {
-                            if (accountDocument.getBoolean("isOwner") != null) {
-                                isOwner = accountDocument.getBoolean("isOwner");
+                            if (accountDocument.getString("isOwner") != null) {
+                                isOwner = Boolean.valueOf(accountDocument.getString("isOwner"));
                             }
                         }
                     }
