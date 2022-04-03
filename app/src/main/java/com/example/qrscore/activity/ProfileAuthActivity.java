@@ -96,7 +96,6 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     loginTextView.setVisibility(View.VISIBLE);
                     profileProgressBar.setVisibility(View.VISIBLE);
                     createNewUser();
-                    goToMainActivity();
                 }
                 else {
                     Toast.makeText(this, "User already created. Please select RETURNING!", Toast.LENGTH_LONG).show();

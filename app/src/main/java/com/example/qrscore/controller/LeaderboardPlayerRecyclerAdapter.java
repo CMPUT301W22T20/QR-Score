@@ -29,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
-import com.google.firebase.functions.FirebaseFunctions;
 import com.example.qrscore.model.Account;
 
 import java.util.ArrayList;
