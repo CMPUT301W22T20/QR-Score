@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
 
                         if (accountDocument.exists()) {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
-
+                            accountController.refreshRanks();
                             // Get displayed data from firebase
                             totalScore = accountDocument.get("totalScore").toString();
                             totalScanned = accountDocument.get("totalScanned").toString();
