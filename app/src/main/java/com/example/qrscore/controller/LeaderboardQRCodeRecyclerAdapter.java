@@ -43,6 +43,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
      */
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView rank;
+        private TextView rankScore;
         private TextView score;
         private TextView name;
         private TextView qrCodeTitle;
@@ -50,7 +51,12 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
 
         public MyViewHolder(final View itemView) {
             super(itemView);
-            rank = itemView.findViewById(R.id.list_item_rank);
+
+            rank = itemView.findViewById(R.id.list_item_rank_textView);
+            rank.setVisibility(View.GONE);
+            rankScore = itemView.findViewById(R.id.list_item_rank);
+            rankScore.setVisibility(View.GONE);
+
             score = itemView.findViewById(R.id.list_item_score);
             name = itemView.findViewById(R.id.list_item_name);
             qrCodeTitle = itemView.findViewById(R.id.list_item_player_textView);
@@ -69,8 +75,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
     @Override
     public void onBindViewHolder(@NonNull LeaderboardQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
         QRCode qrCode = qrCodes.get(position);
-        holder.rank.setText("NIL");
-        holder.score.setText("NIL");
+        holder.score.setText(qrCode.getQRScore());
         holder.name.setText(qrCode.getHash());
         holder.playerMenuButton.setOnClickListener(new LeaderboardQRCodeRecyclerAdapter.MenuButtonOnClickListener(qrCode.getHash()));
         holder.qrCodeTitle.setText("QR Code");

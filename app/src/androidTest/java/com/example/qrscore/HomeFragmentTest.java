@@ -1,16 +1,15 @@
 package com.example.qrscore;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.example.qrscore.activity.MainActivity;
+import com.example.qrscore.activity.QRCodeActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -35,28 +34,24 @@ public class HomeFragmentTest {
     }
 
     @Test
-    public void scanFragmentAndConfirmUpdatedHome() {
-        View view = solo.getView(R.id.scan_fragment_item);
+    public void gotoHomeFragment(){
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
+
+        solo.clickOnView(solo.getView(R.id.home_fragment_item));
+
+        assertTrue(solo.searchText("Home"));
+    }
+
+    @Test
+    public void viewOtherQRCode() throws InterruptedException {
+        View view = solo.getView(R.id.home_fragment_item);
+
         solo.clickOnView(view);
-        assertTrue(solo.searchButton("Scan"));
-        solo.clickOnButton("Scan");
-        solo.waitForText("Confirm");
-        solo.clickOnButton("Confirm");
-        view = solo.getView(R.id.home_fragment_item);
-        solo.clickOnView(view);
-        solo.sleep(2000);
-        assertTrue(solo.getCurrentActivity() instanceof MainActivity);
-        TextView myScanned = solo.getView(TextView.class, 2);
-        TextView myQRScore = solo.getView(TextView.class, 4);
-        TextView myRank = solo.getView(TextView.class, 6);
-        String myScannedString = (String) myScanned.getText();
-        String myQRScoreString = (String) myQRScore.getText();
-        String myRankString = (String) myRank.getText();
-        assertEquals(myScanned.getHint(), "(# scanned)");
-        assertEquals(myQRScore.getHint(), "(score #)");
-        assertEquals(myRank.getHint(), "(rank #)");
-        assertEquals(myScannedString, "1");
-        assertEquals(myQRScoreString, "0");
-        assertEquals(myRankString, "NIL");
+        assertTrue(solo.searchText("Home"));
+        solo.clickOnImageButton(0);
+        solo.waitForText("View QR Code");
+        solo.clickOnText("View QR Code");
+        assertTrue(solo.getCurrentActivity() instanceof QRCodeActivity);
+
     }
 }
