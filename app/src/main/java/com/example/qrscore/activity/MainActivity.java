@@ -1,20 +1,22 @@
 package com.example.qrscore.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
-import com.example.qrscore.fragment.ScanFragmentPlayer;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.qrscore.R;
 import com.example.qrscore.fragment.HomeFragment;
 import com.example.qrscore.fragment.LeaderboardFragment;
 import com.example.qrscore.fragment.MapFragment;
 import com.example.qrscore.fragment.ProfileFragment;
 import com.example.qrscore.fragment.ScanFragment;
+import com.example.qrscore.fragment.ScanFragmentPlayer;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Purpose: Animate function to hide scan FABs when clicked outside FABs.
      */
-    public void hideFab(View view){
+    private void hideFab(View view){
         if (isfabOpen) {
             closeScanFab();
         }

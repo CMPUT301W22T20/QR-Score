@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.qrscore.model.Account;
-import com.example.qrscore.model.QRCode;
-import com.example.qrscore.controller.QRCodeAdapter;
+
 import com.example.qrscore.R;
+import com.example.qrscore.controller.QRCodeAdapter;
+import com.example.qrscore.model.QRCode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 /**
@@ -32,14 +34,12 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     private ListView qrCodesList;
     final String TAG = "OTHER_PLAYER_ACTIVITY";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private Account account;
     private DocumentReference accountRef;
     private CollectionReference qrCodeRef;
     private QRCodeAdapter qrCodesAdapter;
     private ArrayList<QRCode> qrCodes;
     private TextView usernameTextView;
     private TextView qrCodeTitleTextView;
-    private TextView rankTextView;
     private TextView hiscoreTextView;
     private TextView scannedCodesTextView;
     private TextView qrScoreTextView;
@@ -65,7 +65,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         // Attach adapter for qr_codes_list_view
         qrCodes = new ArrayList<QRCode>();
         qrCodesAdapter = new QRCodeAdapter(this, com.example.qrscore.R.layout.list_items, qrCodes);
-        account = new Account(userUID);
         qrCodesList = findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);
 
@@ -96,58 +95,58 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
      */
     public void loadQRCodes() {
         accountRef.get()    // get account document
-                .addOnCompleteListener(taskAccount -> {
-                    qrCodesAdapter.clear();
-                    if (taskAccount.isSuccessful()) {
-                        DocumentSnapshot accountDocument = taskAccount.getResult();
+            .addOnCompleteListener(taskAccount -> {
+                qrCodesAdapter.clear();
+                if (taskAccount.isSuccessful()) {
+                    DocumentSnapshot accountDocument = taskAccount.getResult();
 
 
-                        if (accountDocument.exists()) {
-                            Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
+                    if (accountDocument.exists()) {
+                        Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
 
-                            // Get displayed data from firebase
-                            totalScore = accountDocument.get("totalScore").toString();
-                            totalScanned = accountDocument.get("totalScanned").toString();
-                            hiscore = accountDocument.get("hiscore").toString();
-                            rankTotalScore = accountDocument.get("rankTotalScore").toString();
-                            rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
-                            rankHiscore = accountDocument.get("rankHiscore").toString();
+                        // Get displayed data from firebase
+                        totalScore = accountDocument.get("totalScore").toString();
+                        totalScanned = accountDocument.get("totalScanned").toString();
+                        hiscore = accountDocument.get("hiscore").toString();
+                        rankTotalScore = accountDocument.get("rankTotalScore").toString();
+                        rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
+                        rankHiscore = accountDocument.get("rankHiscore").toString();
 
-                            // Set the text of all TextViews
-                            qrScoreTextView.setText(totalScore);
-                            scannedCodesTextView.setText(totalScanned);
-                            hiscoreTextView.setText(hiscore);
-                            totalScoreRankTextView.setText(rankTotalScore);
-                            totalScannedRankTextView.setText(rankTotalScanned);
-                            hiscoreRankTextView.setText(rankHiscore);
+                        // Set the text of all TextViews
+                        qrScoreTextView.setText(totalScore);
+                        scannedCodesTextView.setText(totalScanned);
+                        hiscoreTextView.setText(hiscore);
+                        totalScoreRankTextView.setText(rankTotalScore);
+                        totalScannedRankTextView.setText(rankTotalScanned);
+                        hiscoreRankTextView.setText(rankHiscore);
 
-                            ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("qrCodes");
+                        ArrayList<String> qrCodesArray = (ArrayList<String>) accountDocument.getData().get("qrCodes");
 
-                            // get each QRCode id
-                            for (String codeStr : qrCodesArray) {
+                        // get each QRCode id
+                        for (String codeStr : qrCodesArray) {
 
-                                qrCodeRef.document(codeStr).get()
-                                        .addOnCompleteListener(taskQRCodes -> {
-                                            if (taskQRCodes.isSuccessful()) {
-                                                DocumentSnapshot document = taskQRCodes.getResult();
+                            qrCodeRef.document(codeStr).get()
+                                .addOnCompleteListener(taskQRCodes -> {
+                                    if (taskQRCodes.isSuccessful()) {
+                                        DocumentSnapshot document = taskQRCodes.getResult();
 
-                                                // Get QRCode object and add to adapter
-                                                if (document.exists()) {
-                                                    Log.d(TAG, "QRCode DocumentSnapshot data: " + document.getData());
-                                                    QRCode code = document.toObject(QRCode.class);
-                                                    qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
-                                                    qrCodesAdapter.notifyDataSetChanged();
+                                        // Get QRCode object and add to adapter
+                                        if (document.exists()) {
+                                            Log.d(TAG, "QRCode DocumentSnapshot data: " + document.getData());
+                                            QRCode code = document.toObject(QRCode.class);
+                                            qrCodesAdapter.insert(code, qrCodesAdapter.getCount());
+                                            qrCodesAdapter.notifyDataSetChanged();
 
-                                                } else {
-                                                    Log.d(TAG, "No such qr code document");
-                                                }
-                                            } else {
-                                                Log.d(TAG, "get failed with ", taskQRCodes.getException());
-                                            }
-                                        });
-                            }
+                                        } else {
+                                            Log.d(TAG, "No such qr code document");
+                                        }
+                                    } else {
+                                        Log.d(TAG, "get failed with ", taskQRCodes.getException());
+                                    }
+                                });
                         }
                     }
-                });
+                }
+            });
     }
 }

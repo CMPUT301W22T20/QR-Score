@@ -16,11 +16,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qrscore.controller.QRCodeAdapter;
-import com.example.qrscore.model.Account;
-import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
-import com.example.qrscore.model.QRCode;
-
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
@@ -35,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -123,23 +119,12 @@ public class HomeFragment extends Fragment {
         myAccount = new Account(userUID);
         myAccount.setProfile(profileController.getProfile());
 
-//        // Attach adapter for qr_codes_list_view
-//        qrCodes = new ArrayList<QRCode>();
-//        qrCodesAdapter = new QRCodeAdapter(getContext(), com.example.qrscore.R.layout.list_items, qrCodes);
-//        // My QR Code list adapter
-//        //        qrCodesList = view.findViewById(R.id.qr_codes_list_view);
-//        qrCodesList = getView().findViewById(R.id.qr_codes_list_view);
-//        qrCodesList.setAdapter(qrCodesAdapter);
-
         qrCodeRef = db.collection("QRCode");
         accountCollectionRef = db.collection("Account");
         profileCollectionRef = db.collection("Profile");
 
         accountRef = accountCollectionRef.document(userUID);
         profileRef = profileCollectionRef.document(userUID);
-
-//        Query highestRankingQRScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).limit(5);
-//        highestRankingQRScore.
     }
 
     @Override
@@ -194,6 +179,11 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+    /**
+     * Purpose: Update the player's stats with data from firebase
+     * @param accountDocument
+     *      an instance of the account document
+     */
     public void setStats(DocumentSnapshot accountDocument) {
         // Get displayed data from firebase
         totalScore = accountDocument.get("totalScore").toString();

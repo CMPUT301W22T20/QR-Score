@@ -30,17 +30,10 @@ public class AccountController {
     private FirebaseUser currentUser;
     private FirebaseFirestore db;
     private CollectionReference accountCollectionRef;
-    private CollectionReference QRDataListCollectionRef;
-    private CollectionReference profileCollectionRef;
     private DocumentReference accountDocumentRef;
-    private DocumentReference QRDataListRef;
     private DocumentReference profileRef;
-    private DocumentSnapshot accountSnapshot;
-    private DocumentSnapshot QRDataListSnapshot;
-    private DocumentSnapshot profileSnapshot;
     private String userUID;
     private Account newAccount;
-    private Account savedAccount;
     private SharedPreferences accountSP;
     private SharedPreferences.Editor accountSPEditor;
     private ListenerRegistration accountListener;
@@ -54,7 +47,6 @@ public class AccountController {
         accountSP = context.getSharedPreferences(ACCOUNT_PREFS, Context.MODE_PRIVATE);
         accountSPEditor = accountSP.edit();
         accountCollectionRef = db.collection("Account");
-        profileCollectionRef = db.collection("Profile");
     }
 
     /**
