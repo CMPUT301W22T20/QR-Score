@@ -1,7 +1,7 @@
 package com.example.qrscore;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import com.example.qrscore.model.Profile;
 
@@ -11,20 +11,20 @@ public class ProfileTest {
     @Test
     public void testCreateEmptyProfile() {
         Profile profile = new Profile();
-        assertEquals(null, profile.getFirstName());
-        assertEquals(null, profile.getLastName());
-        assertEquals(null, profile.getEmail());
-        assertEquals(null, profile.getPhoneNumber());
-        assertEquals(null, profile.getUserUID());
+        assertNull(profile.getFirstName());
+        assertNull(profile.getLastName());
+        assertNull(profile.getEmail());
+        assertNull(profile.getPhoneNumber());
+        assertNull(profile.getUserUID());
     }
 
     @Test
     public void testCreateUserUIDProfile() {
         Profile profile = new Profile("cmput301w22t20");
-        assertEquals(null, profile.getFirstName());
-        assertEquals(null, profile.getLastName());
-        assertEquals(null, profile.getEmail());
-        assertEquals(null, profile.getPhoneNumber());
+        assertNull(profile.getFirstName());
+        assertNull(profile.getLastName());
+        assertNull(profile.getEmail());
+        assertNull(profile.getPhoneNumber());
         assertEquals("cmput301w22t20", profile.getUserUID());
     }
 
