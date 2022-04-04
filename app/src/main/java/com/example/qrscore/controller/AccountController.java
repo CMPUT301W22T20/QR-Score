@@ -3,9 +3,7 @@ package com.example.qrscore.controller;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.qrscore.model.Account;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +23,6 @@ import java.util.List;
  * Purpose: Controller for accounts.
  *
  * Outstanding issues:
- *
  */
 public class AccountController {
     private final String TAG = "ACCOUNT_CONTROLLER";
@@ -94,7 +90,8 @@ public class AccountController {
     /**
      * Purpose: Set/Update account info in SharedPrefs.
      *
-     * @param newAccount Account to be set/updated with locally.
+     * @param newAccount
+     *      Account to be set/updated with locally.
      */
     public void setAccount(Account newAccount) {
         accountSPEditor.putString("userUID", newAccount.getUserUID());
@@ -125,6 +122,9 @@ public class AccountController {
         return account;
     }
 
+    /**
+     * Purpose: Refresh the ranks.
+     */
     public void refreshRanks() {
         Log.i(TAG, "Refreshing Account ranks");
 
@@ -223,7 +223,8 @@ public class AccountController {
     /**
      * Purpose: Updates the current player's total scanned QR codes on firestore db and locally.
      *
-     * @param updatedTotal An instance of their updated total scanned QR codes.
+     * @param updatedTotal
+     *      An instance of their updated total scanned QR codes.
      */
     public void updateTotalScanned(String updatedTotal) {
         accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
@@ -232,7 +233,8 @@ public class AccountController {
     /**
      * Purpose: Updates the current player's high score on firestore db and locally.
      *
-     * @param updatedHiscore An instance of their updated high score.
+     * @param updatedHiscore
+     *      An instance of their updated high score.
      */
     public void updateHiscore(String updatedHiscore) {
         accountDocumentRef = accountCollectionRef.document(currentUser.getUid());

@@ -1,11 +1,3 @@
-/* Purpose: This class represents the QR Code Details Activity.
-Shows the location of the QRCode and players that have scanned it.
-Shows players that have commented on the QRCode and allows user to click on the players to see their comments.
-Allow user to click add comment from this screen.
-
-Outstanding issues:
-*/
-
 package com.example.qrscore.activity;
 
 import androidx.annotation.NonNull;
@@ -47,14 +39,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// Comments collection
-// Geolocation collection
-// QRCode collection
-// Photos storage
-// Photo collection
-
 /**
- * Purpose: This class is the QR Code activity
+ * Purpose:
+ * - This class represents the QR Code Details Activity.
+ * - Shows the location of the QRCode and players that have scanned it.
+ * - Shows players that have commented on the QRCode and allows user to click on the players to see their comments.
+ * - Allow user to click add comment from this screen.
  *
  * Outstanding issues:
  * TODO: Finish Purpose
@@ -207,7 +197,8 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     }
 
     /**
-     * Loads who has scanned a QRCode from firebase and outputs to screen
+     * Purpose: Loads who has scanned a QRCode from firebase and outputs to screen.
+     *
      * @param codeID
      *          firebase document ID of the QRCode
      */
@@ -237,9 +228,10 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     }
 
     /**
-     * This adds a new comment to the list and also adds it to our db
+     * Purpose: This adds a new comment to the list and also adds it to our db.
+     *
      * @param newComment
-     *      Comment to add
+     *      Comment to add.
      */
     @Override
     public void onOkPressed(Comment newComment) {

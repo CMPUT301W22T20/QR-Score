@@ -1,16 +1,16 @@
 package com.example.qrscore.model;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Purpose: This class represents a comment on a QR Code and contains the info of comments.
- * Stores the comment posted
- * Stores the user who posted the comment
- * Stores a timestamp of when the comment was posted
- * Stores the ID of the QR Code commented on
+ * Purpose:
+ * - This class represents a comment on a QR Code and contains the info of comments.
+ * - Stores the comment posted
+ * - Stores the user who posted the comment
+ * - Stores a timestamp of when the comment was posted
+ * - Stores the ID of the QR Code commented on
  *
  * Outstanding issues:
  * TODO: As a player, I want to add new QR codes to my account.
@@ -27,7 +27,8 @@ public class Comment {
     private final String qrID; // ID for each of the qrCodes in DB
 
     /**
-     * Constructor for the class when someone creates a new comment
+     * Purpose: Constructor for the class when someone creates a new comment
+     *
      * @param commenter
      *      Name of the commenter
      * @param comment
@@ -45,7 +46,8 @@ public class Comment {
     }
 
     /**
-     * Constructor for the class when fetching data from the DB
+     * Purpose: Constructor for the class when fetching data from the DB
+     *
      * @param commenter
      *      Name of the commenter
      * @param comment
@@ -63,32 +65,40 @@ public class Comment {
     }
 
     /**
-     * Returns the name of the commenter
+     * Purpose: Returns the name of the commenter
+     *
      * @return
+     *      Name of the commenter
      */
     public String getCommenter() {
         return commenter;
     }
 
     /**
-     * Returns the comment
+     * Purpose: Returns the comment
+     *
      * @return
+     *      String of the comment
      */
     public String getComment() {
         return comment;
     }
 
     /**
-     * Returns the date of when the comment was created
+     * Purpose: Returns the date of when the comment was created
+     *
      * @return
+     *      Date the comment was created
      */
     public String getDate() {
         return date;
     }
 
     /**
-     * Returns the qr code ID the comment belongs to
+     * Purpose: Returns the qr code ID the comment belongs to
+     *
      * @return
+     *      ID for which qr code the comment belongs to
      */
     public String getID() {
         return qrID;

@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
-import com.example.qrscore.ConvertAccountCallback;
 import com.example.qrscore.model.Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,9 +16,9 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +62,9 @@ public class ProfileController {
     }
 
     /**
-     * Purpose: To create a new profile locally and on firestore db.
-     * To create a new account on firestore db.
+     * Purpose:
+     * - To create a new profile locally and on firestore db.
+     * - To create a new account on firestore db.
      */
     public void createNewProfile(String userUID) {
         newProfile = new Profile(userUID);
@@ -114,16 +112,19 @@ public class ProfileController {
      * Purpose: Remove profileListener when player leaves ProfileFragment.
      */
     public void removeProfileListener() {
-        profileListener.remove();
+        if (profileListener != null) {
+            profileListener.remove();
+        }
     }
 
     /**
      * Purpose: Updates the current player's profile on firestore db and locally.
      *
-     * @param updatedProfile An instance of their updated profile.
-     * @param context        ProfileFragment activity to display toast message.
+     * @param updatedProfile
+     *      An instance of their updated profile.
+     * @param context
+     *      ProfileFragment activity to display toast message.
      */
-
     // Profile Callback
     public void updateProfile(Profile updatedProfile, Context context) {
         // https://firebase.google.com/docs/firestore/manage-data/add-data
@@ -161,7 +162,8 @@ public class ProfileController {
     /**
      * Purpose: Set/Update profile info in SharedPrefs.
      *
-     * @param newProfile Profile to be set/updated with locally.
+     * @param newProfile
+     *      Profile to be set/updated with locally.
      */
     public void setProfile(Profile newProfile) {
         profileSPEditor.putString("firstName", newProfile.getFirstName());
@@ -189,7 +191,15 @@ public class ProfileController {
         return profile;
     }
 
-    public void convertAccount(Context context, ConvertAccountCallback convertAccountCallback) {
+    /**
+     * Purpose: Convert an account to a email and password to sign in with QR Code.
+     *
+     * @param context
+     *      Context that is calling this method.
+     * @param convertAccountCallback
+     *      An instance of a AccountCallback to be able to generate the QR Code.
+     */
+    public void convertAccount(Context context, AccountCallback convertAccountCallback) {
         Profile profile = getProfile();
         AuthCredential credential = EmailAuthProvider.getCredential(profile.getEmail(), profile.getUserUID());
         firebaseAuth.getCurrentUser().linkWithCredential(credential)
@@ -206,6 +216,35 @@ public class ProfileController {
                             Log.w(TAG, "linkWithCredential:failure", task.getException());
                             convertAccountCallback.onCallback(false);
                         }
+                    }
+                });
+    }
+
+    /**
+     * Purpose: Update the profile locally when user signs in with QR Code.
+     *
+     * @param context
+     *      Context that is calling this method.
+     * @param accountCallback
+     *      An instance of a AccountCallback to be able to generate the QR Code.
+     */
+    public void updateQRLoginProfile(Context context, AccountCallback accountCallback) {
+        userUID = currentUser.getUid();
+        profileRef = db.collection("Profile").document(userUID);
+        profileRef
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        if (doc.exists()) {
+                            Profile profile = doc.toObject(Profile.class);
+                            updateProfile(profile, context);
+                            accountCallback.onCallback(true);
+                            Log.d(TAG, "updated with QR login profile");
+                        }
+                    } else {
+                        Log.d(TAG, "Did not update with QR login profile");
+                        accountCallback.onCallback(false);
                     }
                 });
     }

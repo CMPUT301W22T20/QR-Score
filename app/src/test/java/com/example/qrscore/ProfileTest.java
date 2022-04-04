@@ -36,5 +36,6 @@ public class ProfileTest {
         assertEquals("player@qrscore.io", profile.getEmail());
         assertEquals("7803012022", profile.getPhoneNumber());
         assertEquals("cmput301w22t20", profile.getUserUID());
+        assertFalse(profile.getPermanent());
     }
 }

@@ -7,20 +7,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.Photo;
 import com.example.qrscore.model.QRCode;
@@ -33,7 +30,6 @@ import com.example.qrscore.controller.QRCodeController;
 import com.google.common.hash.Hashing;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -176,6 +172,9 @@ public class ScanFragment extends Fragment {
         }
     }
 
+    /**
+     * Purpose: Request Location Permissions in the Scan Fragment.
+     */
     private void requestLocationPermissions() {
         // Requesting location permissions
         ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -200,6 +199,9 @@ public class ScanFragment extends Fragment {
             });
     }
 
+    /**
+     * Purpose: Request Camera Permissions in the Scan Fragment.
+     */
     private void requestCameraPermissions() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, 1001);

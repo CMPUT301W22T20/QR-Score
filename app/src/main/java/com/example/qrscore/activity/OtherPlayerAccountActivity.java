@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.example.qrscore.controller.QRCodeAdapter;
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 
 /**
@@ -94,7 +91,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         loadQRCodes();
     }
 
-
     /**
      * Purpose: Populates the listview with the QRCodes of a specific user
      */
@@ -154,5 +150,4 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }

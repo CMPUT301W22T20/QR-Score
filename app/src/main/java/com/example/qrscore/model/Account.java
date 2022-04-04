@@ -85,8 +85,7 @@ public class Account {
     /**
      * Returns the Account's user ID.
      *
-     * @return
-     *      user ID as a string.
+     * @return user ID as a string.
      */
     public String getUserUID() {
         return userUID;
@@ -94,8 +93,8 @@ public class Account {
 
     /**
      * Purpose: Return the profile in the account.
-     * @return
-     *      A profile instance.
+     *
+     * @return A profile instance.
      */
     public Profile getProfile() {
         return profile;
@@ -103,8 +102,8 @@ public class Account {
 
     /**
      * Purpose: Sets a profile of a user in the account.
-     * @param profile
-     *      A profile instance.
+     *
+     * @param profile A profile instance.
      */
     public void setProfile(Profile profile) {
         this.profile = profile;
@@ -113,8 +112,7 @@ public class Account {
     /**
      * Purpose: Return the running total score.
      *
-     * @return
-     *      Integer representing the total score
+     * @return Integer representing the total score
      */
     public String getTotalScore() {
         return totalScore;
@@ -227,8 +225,7 @@ public class Account {
     /**
      * Returns the list of QRCodes
      *
-     * @return
-     *      a List of QR codes.
+     * @return a List of QR codes.
      */
     public List<QRCode> getQRCodesList() {
         return qrCodes;
@@ -251,11 +248,10 @@ public class Account {
     /**
      * Removes a QR code from the list if it exists.
      *
-     * @param hash
-     *      the hash of the QR code to remove.
+     * @param hash the hash of the QR code to remove.
      */
     public void removeQR(String hash) {
-        for (QRCode qrCode: qrCodes) {
+        for (QRCode qrCode : qrCodes) {
             if (qrCode.getHash() == hash) {
                 qrCodes.remove(qrCode);
                 return;
