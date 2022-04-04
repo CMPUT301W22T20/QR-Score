@@ -46,6 +46,7 @@ public class PhotoController {
 
     /**
      * Purpose: Compresses and uploads a Photo to storage.
+     * How to compress: https://stackoverflow.com/questions/41611294/how-to-reduce-the-size-of-image-before-uploading-it-to-firebase-storage
      *
      * @param photo
      *      A photo instance.
