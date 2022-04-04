@@ -1,6 +1,5 @@
 package com.example.qrscore.model;
 
-import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class QRCode {
      */
     public QRCode(String hash) {
         this.hash = hash;
-        this.qrscore = this.calculateQRScore(this.hash).toString();
+        this.qrscore = appendZeroes(this.calculateQRScore(this.hash).toString());
         this.id = this.qrscore;
         this.hasScanned = new ArrayList<>();
     }
@@ -44,6 +43,23 @@ public class QRCode {
     public QRCode(String hash, String qrscore) {
         this.hash = hash;
         this.qrscore = qrscore;
+    }
+
+    /**
+     * Purpose: Formatting strings to sort properly
+     * @param value
+     *     String to be formatted
+     * @return appendedValue
+     *     Formatted string
+     */
+    public String appendZeroes(String value) {
+        Integer numZeroesToPrefix = 8 - value.length();
+        String appendedValue = "";
+        for (int i = 0; i < numZeroesToPrefix; i++) {
+            appendedValue += "0";
+        }
+        appendedValue += value;
+        return appendedValue;
     }
 
     /**
