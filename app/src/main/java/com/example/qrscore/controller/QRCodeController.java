@@ -247,7 +247,6 @@ public class QRCodeController {
                             break;
                         }
                         //Update user's hiscore rank
-//                                        accountDocumentRef = qrCodeRef.document(qrCodeDocument.getData().get("userUID").toString());
 
                         String thisQRScore = qrCodeDocument.getData().get("qrscore").toString();
 //                                        String thisUsersUID = qrCodeDocument.getData().get("hasScanned").toString();
@@ -259,7 +258,6 @@ public class QRCodeController {
                             if (thisUsersUID.equals(account.getUserUID())) {
                                 Log.i(TAG, thisUsersUID + "'s new Top Hiscore: " + thisQRScore);
                                 String updatedHiscore = appendZeroes(thisQRScore);
-                                updatedHiscore = "";
                                 account.setHiscore(updatedHiscore);
                                 Log.i(TAG, "account.getHiscore(): " + account.getHiscore());
                                 accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
