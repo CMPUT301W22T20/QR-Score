@@ -128,7 +128,6 @@ public class ScanFragment extends Fragment {
                     if (imageUri != null) {
                         final String imageKey = UUID.randomUUID().toString();
                         Photo photo = new Photo("images/" + imageKey, qrHashed, userID);
-                        //compressImage(photo, imageUri);
                         photoController.uploadPhoto(photo, imageUri);
                         Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
                     }
