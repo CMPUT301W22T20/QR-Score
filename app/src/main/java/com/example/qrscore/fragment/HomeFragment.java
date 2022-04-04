@@ -1,8 +1,6 @@
 package com.example.qrscore.fragment;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,26 +11,24 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.qrscore.QRGeneratorDialog;
-import com.example.qrscore.controller.QRCodeAdapter;
-import com.example.qrscore.model.Account;
-import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
-import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
+import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
 import com.example.qrscore.controller.ProfileController;
+import com.example.qrscore.controller.QRCodeAdapter;
 import com.example.qrscore.controller.QRCodeController;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.model.QRCode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
@@ -147,6 +143,7 @@ public class HomeFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         accountListener.remove();
+        accountController.removeAccountListener();
     }
 
     private void populateData(View view) {
@@ -250,7 +247,7 @@ public class HomeFragment extends Fragment {
         QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
         populateData(view);
-
+        accountController.addAccountListener();
         accountListener = accountRef.addSnapshotListener((accountDocument, error) -> {
             if (error != null) {
                 return;

@@ -207,30 +207,45 @@ public class AccountController {
             }
         });
     }
-<<<<<<< HEAD
-=======
 
     /**
-     * Purpose: Updates the current player's total scanned QR codes on firestore db and locally.
+     * Purpose: Updates the current player's stats on firestore db and locally.
      *
-     * @param updatedTotal An instance of their updated total scanned QR codes.
-     */
-    public void updateTotalScanned(String updatedTotal) {
-        accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
-    }
-
-    /**
-     * Purpose: Updates the current player's high score on firestore db and locally.
-     *
+     * @param updatedTotalScore An instance of their updated high score.
+     * @param updatedTotalScanned An instance of their updated high score.
      * @param updatedHiscore An instance of their updated high score.
      */
-    public void updateHiscore(String updatedHiscore) {
+    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore) {
         accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
+        accountDocumentRef.update("totalScore", updatedTotalScore);
+        accountDocumentRef.update("totalScanned", updatedTotalScanned);
+        accountDocumentRef.update("hiscore", updatedHiscore);
     }
 
-    public void updateAccount(String score, String scanned, String hi) {
-
+    /**
+     * Purpose: Add an accountListener for firestore data.
+     */
+    public void addAccountListener() {
+        userUID = currentUser.getUid();
+        profileRef = db.collection("Profile").document(userUID);
+        accountListener = profileRef.addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                Account savedAccount = snapshot.toObject(Account.class);
+                setAccount(savedAccount);    // Update profile locally
+                Log.d(TAG, savedAccount.getUserUID() + " account snapshot exists!");
+            } else {
+                Log.d(TAG, "Current data: null");
+            }
+        });
     }
 
->>>>>>> main
+    /**
+     * Purpose: Remove accountListener when player leaves HomeFragment.
+     */
+    public void removeAccountListener() {
+        accountListener.remove();
+    }
 }

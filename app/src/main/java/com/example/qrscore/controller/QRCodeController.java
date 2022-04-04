@@ -119,21 +119,28 @@ public class QRCodeController {
                     }
                     else {
                         Account account = accountController.getAccount();
+                        Log.i(TAG, "account.getTotalScore(): " + account.getTotalScore());
+                        Log.i(TAG, "account.getTotalScanned(): " + account.getTotalScanned());
+                        Log.i(TAG, "account.getHiscore(): " + account.getHiscore());
 
                         String updatedTotalScore;
                         String updatedTotalScanned;
                         String updatedHiscore;
 
+                        Log.i(TAG, "accountDocument.get(\"totalScore\").toString(): " + accountDocument.get("totalScore").toString());
+
                         //Update total score
-                        Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
+                        Integer updatedTotalScoreInt = Integer.parseInt(accountDocument.get("totalScore").toString()) + Integer.parseInt(qrCode.getQRScore());
                         updatedTotalScore = appendZeroes(updatedTotalScoreInt.toString());
+                        account.setTotalScore(updatedTotalScore);
 
                         //Update total scanned QR codes
-                        Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned())+1;
+                        Integer updatedTotalScannedInt = Integer.parseInt(accountDocument.get("totalScanned").toString())+1;
                         updatedTotalScanned = appendZeroes(updatedTotalScannedInt.toString());
+                        account.setTotalScanned(updatedTotalScanned);
 
                         //Update high score if new code is higher
-                        Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                        Integer currentHiscore = Integer.parseInt(accountDocument.get("hiscore").toString());
                         Integer newQRCodeScore = Integer.parseInt(qrCode.getQRScore());
                         if (newQRCodeScore > currentHiscore) {
                             updatedHiscore = appendZeroes(newQRCodeScore.toString());
@@ -141,12 +148,15 @@ public class QRCodeController {
                         else {
                             updatedHiscore = appendZeroes(currentHiscore.toString());
                         }
+                        account.setHiscore(updatedHiscore);
 
                         //Upload updated Account data to firebase
                         accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
 
                         //Upload updated Rank data to firebase
                         accountController.refreshRanks();
+
+                        accountController.setAccount(account);
                     }
                 }
             }
@@ -177,16 +187,16 @@ public class QRCodeController {
                     String updatedHiscore;
 
                     //Update total score
-                    Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) - Integer.parseInt(qrCode.getQRScore());
+                    Integer updatedTotalScoreInt = Integer.parseInt(accountDocument.get("totalScore").toString()) - Integer.parseInt(qrCode.getQRScore());
                     updatedTotalScore = appendZeroes(updatedTotalScoreInt.toString());
 
                     //Update total scanned QR codes
-                    Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned()) - 1;
+                    Integer updatedTotalScannedInt = Integer.parseInt(accountDocument.get("totalScanned").toString()) - 1;
                     updatedTotalScanned = appendZeroes(updatedTotalScannedInt.toString());
 
                     //Update high score if deleted code is current high score
                     //Update high score if new code is higher
-                    Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                    Integer currentHiscore = Integer.parseInt(accountDocument.get("hiscore").toString());
                     Integer deletedQRCodeScore = Integer.parseInt(qrCode.getQRScore());
                     if (deletedQRCodeScore == currentHiscore) {
                         getNextHighestScore(qrCodeRef, accountController, updatedTotalScore, updatedTotalScanned);
