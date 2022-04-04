@@ -5,10 +5,8 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-
 import com.example.qrscore.model.Geolocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -24,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 
 /**
@@ -89,15 +86,21 @@ public class LocationController {
     }
 
     /**
-     * Purpose: Get the location of the user.
+     * Purpose: Get the latitude of the user.
      *
      * @return
-     *      A location instance of the user.
+     *      An instance of latitude double.
      */
     public double getLatitude() {
         return lat;
     }
 
+    /**
+     * Purpose: Get the longitude of the user.
+     *
+     * @return
+     *      An instance of longitude double.
+     */
     public double getLongitude() {
         return lon;
     }

@@ -7,20 +7,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.Photo;
 import com.example.qrscore.model.QRCode;
@@ -33,7 +30,6 @@ import com.example.qrscore.controller.QRCodeController;
 import com.google.common.hash.Hashing;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -55,8 +51,6 @@ public class ScanFragment extends Fragment {
     private static Boolean fineLocationGranted;
     private static Boolean coarseLocationGranted;
     private Uri imageUri;
-    private String longitude;
-    private String latitude;
 
     public ScanFragment() {
         // Required empty public constructor
@@ -66,7 +60,7 @@ public class ScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountController = new AccountController(getContext());
-        photoController = new PhotoController();
+        photoController = new PhotoController(getContext());
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
     }
@@ -148,6 +142,7 @@ public class ScanFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 8008 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
@@ -176,6 +171,9 @@ public class ScanFragment extends Fragment {
         }
     }
 
+    /**
+     * Purpose: Request Location Permissions in the Scan Fragment.
+     */
     private void requestLocationPermissions() {
         // Requesting location permissions
         ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -200,6 +198,9 @@ public class ScanFragment extends Fragment {
             });
     }
 
+    /**
+     * Purpose: Request Camera Permissions in the Scan Fragment.
+     */
     private void requestCameraPermissions() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, 1001);

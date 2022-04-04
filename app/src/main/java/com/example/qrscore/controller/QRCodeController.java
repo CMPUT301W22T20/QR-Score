@@ -1,9 +1,7 @@
 package com.example.qrscore.controller;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,12 +13,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Purpose: Represents a QRCodeController
+ * Purpose:
+ * - Represents a QRCodeController
  * - Add QR Codes to firebase and accounts.
  *
  * Outstanding issues:
@@ -74,6 +72,7 @@ public class QRCodeController {
 
     /**
      * Purpose: To add a QR Code to firestore db.
+     *
      * @param hash
      *      The hash of the QR Code.
      * @param accountController

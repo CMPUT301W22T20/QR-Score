@@ -10,13 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
-
 import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.example.qrscore.model.QRCode;
-
 import java.util.ArrayList;
 
 /**

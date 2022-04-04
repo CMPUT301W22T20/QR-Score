@@ -16,7 +16,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qrscore.QRGeneratorDialog;
+import com.example.qrscore.controller.QRCodeAdapter;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
+import com.example.qrscore.model.QRCode;
+
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
@@ -31,7 +35,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -146,6 +149,12 @@ public class HomeFragment extends Fragment {
         accountController.removeAccountListener();
     }
 
+    /**
+     * Purpose: Populate the data on the homeFragment.
+     *
+     * @param view
+     *      The view to populate on.
+     */
     private void populateData(View view) {
         accountRef.get()
                 .addOnCompleteListener(taskAccount -> {
@@ -341,6 +350,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * Purpose: To generate the player's QR Code to allow other to view their game status.
+     */
     private class profileGeneratorButtonListener implements View.OnClickListener {
         String userUID;
 

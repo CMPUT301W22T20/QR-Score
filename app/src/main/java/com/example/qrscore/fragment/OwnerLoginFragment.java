@@ -7,27 +7,21 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.example.qrscore.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Purpose: Prompts user for a password to confirm that the user is an owner.
- * Has OK and Cancel buttons. When OK is pressed and password is correct, userUID is added
+ * Purpose:
+ * - Prompts user for a password to confirm that the user is an owner.
+ * - Has OK and Cancel buttons. When OK is pressed and password is correct, userUID is added
  * as an owner and can delete players and QRCodes.
  *
  * Outstanding Issues:
@@ -105,6 +99,24 @@ public class OwnerLoginFragment extends DialogFragment {
                         } else {Toast.makeText(mContext, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                         }
+                        /*mAuth.signInWithEmailAndPassword(email_edit_text.getText().toString(), password_edit_text.getText().toString())
+                                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                                        if (task.isSuccessful()) {
+                                            // Sign in success
+                                            Log.d("TAG", "signInWithEmail:success");
+                                            confirmOwnerListener.onOwnerConfirmed();
+
+                                        } else {
+                                            // If sign in fails, display a message to the user.
+                                            Log.w("TAG", "signInWithEmail:failure", task.getException());
+                                            Toast.makeText(mContext, "Authentication failed.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });*/
                     }
                 }).create(); }
 }
