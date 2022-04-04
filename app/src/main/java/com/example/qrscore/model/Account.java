@@ -51,12 +51,12 @@ public class Account {
         this.userUID = userUID;
         this.profile = new Profile(userUID);
         this.qrCodes = new ArrayList<>();
-        this.totalScore = "00000000";
-        this.hiscore = "00000000";
-        this.totalScanned = "00000000";
-        this.rankTotalScore = "00000000";
-        this.rankTotalScanned = "00000000";
-        this.rankHiscore = "00000000";
+        this.totalScore = "0000";
+        this.hiscore = "0000";
+        this.totalScanned = "0000";
+        this.rankTotalScore = "0000";
+        this.rankTotalScanned = "0000";
+        this.rankHiscore = "0000";
     }
 
     /**
