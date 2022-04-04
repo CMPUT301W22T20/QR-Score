@@ -1,42 +1,22 @@
 package com.example.qrscore.fragment;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
-import com.example.qrscore.model.Account;
-import com.example.qrscore.model.Photo;
-import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
-import com.example.qrscore.controller.AccountController;
-import com.example.qrscore.controller.LocationController;
-import com.example.qrscore.controller.PhotoController;
-import com.example.qrscore.controller.ProfileController;
-import com.example.qrscore.controller.QRCodeController;
-import com.google.common.hash.Hashing;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
 
 /**
  * Purpose: To scan QR Codes and add a photo to the QR Codes.
@@ -46,18 +26,6 @@ import java.util.UUID;
  */
 // TODO: Replace tempUUID with actual UUID
 public class ScanFragmentPlayer extends Fragment {
-    private Account myAccount;
-    private AccountController accountController;
-    private ImageView imageView;
-    private LocationController locationController;
-    private PhotoController photoController;
-    private QRCodeController qrCodeController;
-    private ProfileController profileController;
-    private static Boolean fineLocationGranted;
-    private static Boolean coarseLocationGranted;
-    private Uri imageUri;
-    private String longitude;
-    private String latitude;
 
     public ScanFragmentPlayer() {
         // Required empty public constructor
@@ -66,10 +34,6 @@ public class ScanFragmentPlayer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountController = new AccountController(getContext());
-        photoController = new PhotoController();
-        qrCodeController = new QRCodeController();
-        profileController = new ProfileController(getContext());
     }
 
     @Override
@@ -92,7 +56,7 @@ public class ScanFragmentPlayer extends Fragment {
                 String contents = result.getContents();
 
                 // Check if its one of our qr codes
-                if (contents.contains(",")) {
+                if (contents.contains(",") && contents.split("[,]", 0).length == 1) {
                     // Split the string from the comma separator
                     String[] res = contents.split("[,]", 0);
 
