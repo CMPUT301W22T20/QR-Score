@@ -76,8 +76,8 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
     public void onBindViewHolder(@NonNull LeaderboardPlayerRecyclerAdapter.MyViewHolder holder, int position) {
         Account account = accounts.get(position);
         holder.rank.setText(account.getRankTotalScore());
+        Log.d("userUID", account.getUserUID());
         holder.score.setText(account.getTotalScore());
-        Log.d("Account score", account.getTotalScore());
         holder.name.setText(account.getUserUID());
         holder.playerMenuButton.setOnClickListener(new MenuButtonOnClickListener(account.getUserUID()));
     }
@@ -228,7 +228,6 @@ public class LeaderboardPlayerRecyclerAdapter extends RecyclerView.Adapter<Leade
      *      True if user is owner, false otherwise.
      */
     public boolean userIsOwner() {
-
         firebaseAuth = FirebaseAuth.getInstance();
         String userUID = firebaseAuth.getCurrentUser().getUid();
 
