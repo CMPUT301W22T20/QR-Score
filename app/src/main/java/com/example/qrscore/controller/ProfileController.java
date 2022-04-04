@@ -18,6 +18,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -113,7 +114,9 @@ public class ProfileController {
      * Purpose: Remove profileListener when player leaves ProfileFragment.
      */
     public void removeProfileListener() {
-        profileListener.remove();
+        if (profileListener != null) {
+            profileListener.remove();
+        }
     }
 
     /**
@@ -188,7 +191,7 @@ public class ProfileController {
         return profile;
     }
 
-    public void convertAccount(Context context, ConvertAccountCallback convertAccountCallback) {
+    public void convertAccount(Context context, AccountCallback convertAccountCallback) {
         Profile profile = getProfile();
         AuthCredential credential = EmailAuthProvider.getCredential(profile.getEmail(), profile.getUserUID());
         firebaseAuth.getCurrentUser().linkWithCredential(credential)
@@ -205,6 +208,27 @@ public class ProfileController {
                             Log.w(TAG, "linkWithCredential:failure", task.getException());
                             convertAccountCallback.onCallback(false);
                         }
+                    }
+                });
+    }
+
+    public void updateQRLoginProfile(Context context, AccountCallback accountCallback) {
+        userUID = currentUser.getUid();
+        profileRef = db.collection("Profile").document(userUID);
+        profileRef
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        if (doc.exists()) {
+                            Profile profile = doc.toObject(Profile.class);
+                            updateProfile(profile, context);
+                            accountCallback.onCallback(true);
+                            Log.d(TAG, "updated with QR login profile");
+                        }
+                    } else {
+                        Log.d(TAG, "Did not update with QR login profile");
+                        accountCallback.onCallback(false);
                     }
                 });
     }

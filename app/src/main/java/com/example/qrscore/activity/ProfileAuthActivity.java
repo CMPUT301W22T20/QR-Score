@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qrscore.R;
+import com.example.qrscore.controller.AccountCallback;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.ProfileController;
 import com.example.qrscore.fragment.ScanFragmentPlayer;
@@ -116,15 +117,15 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     goToMainActivity();
                 }
                 break;
+
             case R.id.auth_login_by_qr_user_button:
                 currentUser = firebaseAuth.getCurrentUser();
                 ScanOptions options = new ScanOptions();
                 options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
                 options.setPrompt("Scan a QR Code");
                 barcodeLauncher.launch(options);
-
-                //signInWithEmail();
                 break;
+
             case R.id.auth_new_user_button:
                 currentUser = firebaseAuth.getCurrentUser();
                 if (currentUser == null) {
@@ -136,10 +137,10 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(this, "User already created. Please select RETURNING!", Toast.LENGTH_LONG).show();
                 }
                 break;
+
             // if user is an owner
             case R.id.auth_owner_button:
                 currentUser = firebaseAuth.getCurrentUser();
-
                 // Create user if they don't have account
                 if (currentUser == null) {
                     loginTextView.setVisibility(View.VISIBLE);
@@ -177,7 +178,6 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     if (res.length == 2) {
                         String email = res[0];
                         String userUID = res[1];
-
                         signInWithEmail(email, userUID);
                     }
                 }
@@ -200,7 +200,15 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         currentUser = firebaseAuth.getCurrentUser();
-                        return;
+                        ProfileController profileController = new ProfileController(getApplicationContext());
+                        profileController.updateQRLoginProfile(getApplicationContext(), success -> {
+                            if (success) {
+                                goToMainActivity();
+                            }
+                            else {
+                                Toast.makeText(ProfileAuthActivity.this, "Cannot retrieve user. Please close the app and try again!", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                     else {
                         profileProgressBar.setVisibility(View.GONE);

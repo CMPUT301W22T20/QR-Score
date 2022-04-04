@@ -233,8 +233,8 @@ public class ProfileFragment extends Fragment {
                 openQRDialog();
             }
             else if((profile.getEmail() != null) && !(profile.getPermanent())) {
-                profileController.convertAccount(getContext(), converted -> {
-                    if (converted) {
+                profileController.convertAccount(getContext(), success -> {
+                    if (success) {
                         Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
                         profile.setPermanent(true);
                         openQRDialog();
