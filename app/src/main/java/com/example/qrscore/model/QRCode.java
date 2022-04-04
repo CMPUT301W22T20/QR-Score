@@ -52,7 +52,7 @@ public class QRCode {
      * @param hash
      *      a String identifier for the QR code.
      */
-    public String calculateQRScore(String hash) {
+    public Integer calculateQRScore(String hash) {
         String hash5 = hash.replace("00000", "");
         String hash4 = hash5.replace("0000", "");
         String hash3 = hash4.replace("000", "");
