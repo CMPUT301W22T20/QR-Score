@@ -1,14 +1,12 @@
 package com.example.qrscore.model;
 
 import com.google.firebase.firestore.GeoPoint;
-
 import java.util.ArrayList;
 
 /**
  * Purpose: Represents a Geolocation.
  *
  * Outstanding issues:
- *
  */
 
 public class Geolocation {
@@ -55,6 +53,7 @@ public class Geolocation {
 
     /**
      * Purpose: Return UserUIDS of geolocation
+     *
      * @return
      *      An Arraylist of UserUID Strings.
      */

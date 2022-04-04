@@ -1,7 +1,6 @@
 package com.example.qrscore.controller;
 
 import android.net.Uri;
-
 import com.example.qrscore.model.Photo;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -14,7 +13,6 @@ import com.google.firebase.storage.StorageReference;
  * Purpose: A controller to interact with the photos and firebase storage.
  *
  * Outstanding Issues:
- *
  */
 public class PhotoController {
     private FirebaseFirestore db;
