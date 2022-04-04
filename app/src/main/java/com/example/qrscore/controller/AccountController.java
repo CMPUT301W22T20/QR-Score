@@ -88,60 +88,6 @@ public class AccountController {
     }
 
     /**
-     * Purpose: Updates the current player's total score on firestore db and locally.
-     *
-     * @param updatedTotalScore
-     *      An instance of their updated total score.
-     * @param updatedTotalScanned
-     *      An instance of their updated scans.
-     * @param updatedHiscore
-     *      An instance of their updated hiscore.
-     */
-    public void updateAccount(String updatedTotalScore, String updatedTotalScanned, String updatedHiscore) {
-        Log.i(TAG, "Updating Account");
-        accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
-        accountDocumentRef.update("totalScore", updatedTotalScore);
-        accountDocumentRef.update("totalScanned", updatedTotalScanned);
-        accountDocumentRef.update("hiscore", updatedHiscore);
-    }
-
-    /**
-     * Purpose: Add an accountListener for firestore data.
-     */
-    public void addAccountListener() {
-        userUID = currentUser.getUid();
-        accountDocumentRef = db.collection("Account").document(userUID);
-        accountListener = accountDocumentRef.addSnapshotListener((accountDocument, error) -> {
-            if (error != null) {
-                return;
-            }
-            if (accountDocument != null && accountDocument.exists()) {
-                Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
-                Account savedAccount = accountDocument.toObject(Account.class);
-                Log.i(TAG, "savedAccount UID: " + savedAccount.getUserUID());
-                Log.i(TAG, "savedAccount Total Score: " + savedAccount.getTotalScore());
-                Log.i(TAG, "savedAccount Total Scanned: " + savedAccount.getTotalScanned());
-                Log.i(TAG, "savedAccount Hiscore: " + savedAccount.getHiscore());
-                Log.i(TAG, "savedAccount Total Score Rank: " + savedAccount.getRankTotalScore());
-                Log.i(TAG, "savedAccount Total Scanned Rank: " + savedAccount.getRankTotalScanned());
-                Log.i(TAG, "savedAccount Hiscore Rank: " + savedAccount.getRankHiscore());
-
-                setAccount(savedAccount);    // Update account locally
-                Log.d(TAG, savedAccount.getUserUID() + " account snapshot exists!");
-            } else {
-                Log.d(TAG, "Current data: null");
-            }
-        });
-    }
-
-    /**
-     * Purpose: Remove accountListener when player leaves AccountFragment.
-     */
-    public void removeAccountListener() {
-        accountListener.remove();
-    }
-
-    /**
      * Purpose: Set/Update account info in SharedPrefs.
      *
      * @param newAccount
@@ -294,62 +240,8 @@ public class AccountController {
         accountDocumentRef = accountCollectionRef.document(currentUser.getUid());
     }
 
-}
-//    public void getNewAccount() {
-//        collectionReference = db.collection("Account");
-//
-//        // Checks if the userID exists in the db.
-//        // From: https://firebase.google.com/docs/firestore/query-data/get-data#get_a_document
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot doc = task.getResult();
-//                    if (doc.exists()) {
-//                        // If it does, retrieve data from the account doc in
-//                        // the db to build the account object.
-//                        Map<String, Object> data = doc.getData();
-//                        totalScore[0] = Integer.parseInt(data.get("totalScore"));
-//                        scanned[0] = Integer.parseInt(data.get("totalScanned"));
-//                        System.out.println("In docref: "+totalScore[0]+" "+scanned[0]);
-//                    } else {
-//                        System.out.println("Doc does not exist, creating new.");
-//                        // Else, initialize everything with default(?) values
-//                        // and then create a new account doc in the db.
-//                        HashMap<String, Object> data = new HashMap<>();
-//
-//                        // From stackoverflow
-//                        // https://stackoverflow.com/questions/51292378/how-do-you-insert-a-reference-value-into-firestore
-//                        // https://stackoverflow.com/users/3095195/trojek
-//                        data.put("Profile", db.collection("Profile").document(userID));
-//
-//                        data.put("totalScore", "0");
-//                        data.put("totalScanned", "0");
-//                        collectionReference.document(userID)
-//                                .set(data)
-//                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                    @Override
-//                                    public void onSuccess(Void unused) {
-//                                        Log.d(TAG, "Data added successfully.");
-//                                    }
-//                                })
-//                                .addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        Log.d(TAG, "Data could not be added. " + e);
-//                                    }
-//                                });
-//                    }
-//                } else {
-//                    Log.d(TAG,"Get failed with ", task.getException());
-//                }
-//            }
-//        });
-//        System.out.println("Outside docref: "+totalScore[0]+" "+scanned[0]);
-//    }
+    public void updateAccount(String score, String scanned, String hi) {
 
-//    public Account createNewAccount() {
-//        System.out.println("In create: "+totalScore[0]+" "+scanned[0]);
-//        return new Account(userID);
-//    }
-//}
+    }
+
+}
