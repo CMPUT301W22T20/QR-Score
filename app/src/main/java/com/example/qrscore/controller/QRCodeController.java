@@ -1,9 +1,7 @@
 package com.example.qrscore.controller;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,12 +13,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Purpose: Represents a QRCodeController
+ * Purpose:
+ * - Represents a QRCodeController
  * - Add QR Codes to firebase and accounts.
  *
  * Outstanding issues:
@@ -57,6 +55,7 @@ public class QRCodeController {
 
     /**
      * Purpose: To add a QR Code to firestore db.
+     *
      * @param hash
      *      The hash of the QR Code.
      * @param accountController
@@ -182,6 +181,20 @@ public class QRCodeController {
         });
     }
 
+    /**
+     * Purpose: To remove a QR Code in firestore db.
+     *
+     * To add a QR Code to firestore db.
+     *
+     * @param hash
+     *      The hash of the QR Code.
+     * @param qrCode
+     *      Instance of the QR Code.
+     * @param uuid
+     *      User UID of user that added it.
+     * @param accountController
+     *      Instance of the AccountController
+     */
     public void remove(String hash, QRCode qrCode, String uuid, AccountController accountController) {
         if (qrCode == null) {
             throw new IllegalArgumentException("No valid QRCode was passed into this function.");
@@ -267,6 +280,18 @@ public class QRCodeController {
         });
     }
 
+    /**
+     * Purpose: Get the next highest score for account.
+     *
+     * @param qrCodeRef
+     *      A Document reference to the QR Code on firestore.
+     * @param accountController
+     *      A instance of the accountController.
+     * @param updatedTotalScore
+     *      The updated total score of account.
+     * @param updatedTotalScanned
+     *      The updated total scanned of account
+     */
     public void getNextHighestScore(DocumentReference qrCodeRef, AccountController accountController, String updatedTotalScore, String updatedTotalScanned) {
         Account account = accountController.getAccount();
         Log.i(TAG, "account.getUserUID(): " + account.getUserUID());

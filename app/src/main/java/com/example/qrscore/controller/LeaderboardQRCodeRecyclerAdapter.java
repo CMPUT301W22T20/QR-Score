@@ -9,29 +9,23 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
 import com.example.qrscore.model.QRCode;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-//import com.google.firebase.functions.FirebaseFunctions;
-
 import java.util.ArrayList;
 
 /**
- * Purpose:
+ * Purpose: RecyclerAdapter for QRCode leaderboard.
  *
  * Outstanding issues:
  * TODO: Delete Comment
- *
  */
 public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<LeaderboardQRCodeRecyclerAdapter.MyViewHolder> {
 

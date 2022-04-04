@@ -1,20 +1,17 @@
 package com.example.qrscore.fragment;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.controller.LeaderboardPlayerRecyclerAdapter;
 import com.example.qrscore.R;
@@ -28,19 +25,18 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
-
-// https://www.youtube.com/watch?v=__OMnFR-wZU
-// https://www.youtube.com/watch?v=OWwOSLfWboY
 
 /**
  * Purpose: Represents a LeaderboardPlayerFragment.
  *
+ * Resources:
+ * - https://www.youtube.com/watch?v=__OMnFR-wZU
+ * - https://www.youtube.com/watch?v=OWwOSLfWboY
+ *
  * Outstanding Issues:
  *  TODO: Implement ranking for US-07.01.01
- *  TODO: UI Testing
  *
  * @author William Liu
  */
@@ -211,12 +207,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         filter(editable.toString());
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        accountListener.remove();
-    }
-
     /**
      * Purpose: Filter the ArrayList of players based on their usernames.
      *
@@ -239,5 +229,11 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
             leaderboardRA.updateList(accountsFiltered);
         }
         leaderboardRA.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accountListener.remove();
     }
 }

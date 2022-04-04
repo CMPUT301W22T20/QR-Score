@@ -8,20 +8,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.example.qrscore.model.Comment;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.ProfileController;
 
 /**
- * Purpose: This class creates a dialog fragment for the user to input a string into
- * Displays EditText for user to write a comment
- * Has "OK" and "Cancel" button
- * Posts comment when OK pressed
+ * Purpose:
+ * - This class creates a dialog fragment for the user to input a string into
+ * - Displays EditText for user to write a comment
+ * - Has "OK" and "Cancel" button
+ * - Posts comment when OK pressed
  *
  * Outstanding issues:
  * TODO: Connect to firebase

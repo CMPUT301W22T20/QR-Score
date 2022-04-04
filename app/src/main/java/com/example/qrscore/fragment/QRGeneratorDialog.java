@@ -9,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.example.qrscore.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -21,6 +19,11 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+/**
+ * Purpose: Dialog to display the QR Code generated.
+ *
+ * Outstanding Issues:
+ */
 public class QRGeneratorDialog extends DialogFragment {
 
     ImageView qrCode;
@@ -50,6 +53,9 @@ public class QRGeneratorDialog extends DialogFragment {
         return view;
     }
 
+    /**
+     * Purpose: Generate the QR Code and add it to the Dialog View.
+     */
     // https://www.youtube.com/watch?v=n8HdrLYL9DA
     private void generateQR() {
         MultiFormatWriter writer = new MultiFormatWriter();
