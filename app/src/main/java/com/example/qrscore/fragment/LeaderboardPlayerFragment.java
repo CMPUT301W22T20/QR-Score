@@ -176,8 +176,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                    accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
                }
            }
-            sortAccounts();
             leaderboardRA.notifyDataSetChanged();
+            sortAccounts();
+            leaderboardRA.updateList(accounts);
             Log.d(TAG, "bro");
         });
     }
