@@ -16,11 +16,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.qrscore.controller.QRCodeAdapter;
-import com.example.qrscore.model.Account;
-import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
-import com.example.qrscore.model.QRCode;
-
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
@@ -35,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

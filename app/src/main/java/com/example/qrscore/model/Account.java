@@ -51,12 +51,12 @@ public class Account {
         this.userUID = userUID;
         this.profile = new Profile(userUID);
         this.qrCodes = new ArrayList<>();
-        this.totalScore = "0";
-        this.hiscore = "0";
-        this.totalScanned = "0";
-        this.rankTotalScore = "0";
-        this.rankTotalScanned = "0";
-        this.rankHiscore = "0";
+        this.totalScore = "00000000";
+        this.hiscore = "00000000";
+        this.totalScanned = "00000000";
+        this.rankTotalScore = "00000000";
+        this.rankTotalScanned = "00000000";
+        this.rankHiscore = "00000000";
     }
 
     /**
@@ -97,7 +97,7 @@ public class Account {
      *      The player's unique user ID.
      * @param totalScore
      *      The player's running total score.
-     * @param rankTotalScanned
+     * @param rankTotalScore
      *      The player's rank for totalScanned QRs.
      */
     public Account(String userUID, String totalScore, String rankTotalScore) {
