@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_container, homeFragment).commit();
     }
 
-    // Bottom Nav selector.
-    // https://www.youtube.com/watch?v=OV25x3a55pk
-
     /**
      * Purpose: Listener for the bottomNavigationView.
+     *
+     * Resources:
+     * - https://www.youtube.com/watch?v=OV25x3a55pk
      *
      * Outstanding issues:
      */
@@ -107,17 +107,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_container, profileFragment).commit();
                     return true;
-
             }
             return false;
         }
-
     }
 
     /**
      * Purpose: Function to animate the scan FABs.
      *
-     * Learned animations from: https://www.youtube.com/watch?v=HGQ-8pjI7HM
+     * Resources: https://www.youtube.com/watch?v=HGQ-8pjI7HM
      */
     private void animationScanFab() {
         if (isfabOpen) {

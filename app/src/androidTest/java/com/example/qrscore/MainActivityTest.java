@@ -20,6 +20,7 @@ import com.example.qrscore.fragment.QRGeneratorDialog;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -68,15 +69,19 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testAddQRCodeFragment() {
+    public void testGoToScanFragmentSearchButton(){
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.scan_fragment_item));
-        solo.clickOnView(solo.getView(R.id.scan_fragment_add_qr_fab));
+        solo.clickOnView(solo.getView(R.id.scan_fragment_view_profile_fab));
+        Assert.assertTrue(solo.searchButton("Scan"));
     }
 
     @Test
-    public void testScanViewProfileFragment() {
+    public void testGoToScanFragmentAddButton(){
+        solo.assertCurrentActivity("Wrong activity", MainActivity.class);
         solo.clickOnView(solo.getView(R.id.scan_fragment_item));
-        solo.clickOnView(solo.getView(R.id.scan_fragment_view_profile_fab));
+        solo.clickOnView(solo.getView(R.id.scan_fragment_add_qr_fab));
+        Assert.assertTrue(solo.searchButton("Scan"));
     }
 
     // https://stackoverflow.com/a/33272002

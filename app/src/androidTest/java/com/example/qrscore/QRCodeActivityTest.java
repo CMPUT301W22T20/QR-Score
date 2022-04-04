@@ -125,7 +125,6 @@ public class QRCodeActivityTest {
 //        assertTrue(solo.waitForText("newuser2", 1, 2000));
 //    }
 
-
     @After
     public void teardown() throws Exception {
         solo.finishOpenedActivities();
