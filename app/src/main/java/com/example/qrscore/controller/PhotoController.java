@@ -54,7 +54,7 @@ public class PhotoController {
      */
     public void uploadPhoto(Photo photo, Uri imageUri) {
         StorageReference imageRef = storageReference.child(photo.getPhotoPath());
-        //StorageReference childRef2 = [your firebase storage path]
+
         Bitmap bmp = null;
         try {
             bmp = MediaStore.Images.Media.getBitmap(context.getContentResolver(), imageUri);
@@ -62,7 +62,7 @@ public class PhotoController {
             e.printStackTrace();
         }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 15, baos);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 8, baos);
         byte[] data = baos.toByteArray();
 
         //uploading the image
@@ -79,10 +79,6 @@ public class PhotoController {
                 Log.e("PhotoController", "Photo not uploaded successfully");
             }
         });
-
-
-        //imageRef.putFile(imageUri);
-        //photoRef.add(photo);
     }
 
     /**
