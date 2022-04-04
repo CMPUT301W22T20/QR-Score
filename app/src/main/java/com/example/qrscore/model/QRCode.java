@@ -53,7 +53,7 @@ public class QRCode {
      *     Formatted string
      */
     public String appendZeroes(String value) {
-        Integer numZeroesToPrefix = 8 - value.length();
+        Integer numZeroesToPrefix = 4 - value.length();
         String appendedValue = "";
         for (int i = 0; i < numZeroesToPrefix; i++) {
             appendedValue += "0";
