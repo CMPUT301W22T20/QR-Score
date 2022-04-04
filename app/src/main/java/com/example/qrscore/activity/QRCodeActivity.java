@@ -47,12 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// Comments collection
-// Geolocation collection
-// QRCode collection
-// Photos storage
-// Photo collection
-
 /**
  * Purpose: This class is the QR Code activity
  *
