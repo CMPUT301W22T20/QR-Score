@@ -30,6 +30,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 // https://www.youtube.com/watch?v=__OMnFR-wZU
@@ -178,6 +180,9 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
                    accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
                }
            }
+            sortAccounts();
+            leaderboardRA.notifyDataSetChanged();
+            Log.d(TAG, "bro");
         });
     }
 
@@ -190,6 +195,15 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         playerRecyclerView.setLayoutManager(layoutManager);
         playerRecyclerView.setItemAnimator(new DefaultItemAnimator());
         playerRecyclerView.setAdapter(leaderboardRA);
+    }
+
+    private void sortAccounts() {
+        Collections.sort(accounts, new Comparator<Account>() {
+            @Override
+            public int compare(Account account, Account t1) {
+                return -(Integer.parseInt(account.getTotalScore()) - Integer.parseInt(t1.getTotalScore()));
+            }
+        });
     }
 
     @Override
