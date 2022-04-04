@@ -53,12 +53,14 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"/>
+
         <ListView
             android:id="@+id/scanned_by_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_rectangle_bordered">
         </ListView>
+
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"

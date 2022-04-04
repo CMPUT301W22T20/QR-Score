@@ -1,30 +1,20 @@
 package com.example.qrscore.fragment;
 
-import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.qrscore.QRGeneratorDialog;
 import com.example.qrscore.model.Profile;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.ProfileController;
@@ -193,6 +183,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Purpose: Text watcher for email EditText.
+     */
     private class EmailTextWatcher implements TextWatcher {
 
         @Override
@@ -215,6 +208,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    /**
+     * Purpose: Focus listener for email EditText as it can only be editted once.
+     */
     private class EmailFocusChangedListener implements View.OnFocusChangeListener {
 
         @Override
@@ -225,11 +221,25 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    //https://stackoverflow.com/a/15808057
+    /**
+     * Purpose: Check if email is valid.
+     *
+     * Obtained code from:
+     * - user1737884 on StackOverflow.
+     * https://stackoverflow.com/a/15808057
+     *
+     * @param email
+     *      The email that was entered into the email EditText.
+     * @return
+     *      Boolean representing if the email is valid.
+     */
     private static boolean isValidEmail(CharSequence email) {
         return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
 
+    /**
+     * Purpose: Listener to generate QR Code that allows user to scan into another device.
+     */
     private class QRCodeButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -240,8 +250,8 @@ public class ProfileFragment extends Fragment {
                 openQRDialog();
             }
             else if((profile.getEmail() != null) && !(profile.getPermanent())) {
-                profileController.convertAccount(getContext(), converted -> {
-                    if (converted) {
+                profileController.convertAccount(getContext(), success -> {
+                    if (success) {
                         Toast.makeText(getContext(), "QR Generating", Toast.LENGTH_SHORT).show();
                         profile.setPermanent(true);
                         openQRDialog();
@@ -257,6 +267,9 @@ public class ProfileFragment extends Fragment {
             }
         }
 
+        /**
+         * Purpose: Launch the QR Code populated with the users sign in details
+         */
         private void openQRDialog() {
             // https://stackoverflow.com/a/15459259
             Bundle args = new Bundle();

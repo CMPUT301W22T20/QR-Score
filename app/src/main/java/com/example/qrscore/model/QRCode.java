@@ -1,22 +1,13 @@
 package com.example.qrscore.model;
 
 import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Purpose: This class represents a QR code.
  * Stores a representation of the QR code, as well
- * as the score, location, players that have scanned it,
- * and comments.
  *
- * Outstanding issues:
- * TODO: Unit tests
  */
 public class QRCode {
     String TAG = "QRCode";
@@ -26,26 +17,25 @@ public class QRCode {
     private List<String> hasScanned;
 
     /**
-     * Constructor for the QR code.
+     * Purpose: Constructor for the QR code.
      *
      * @param hash
      *      a String identifier for the QR code.
      */
     public QRCode(String hash) {
         this.hash = hash;
-        Log.i(TAG, "new QRCode() with hash: " + this.hash);
         this.qrscore = this.calculateQRScore(this.hash).toString();
-        this.id = this.qrscore.toString();
+        this.id = this.qrscore;
         this.hasScanned = new ArrayList<>();
     }
 
     /**
-     * Empty constructor for firebase
+     * Purpose: Empty constructor for firebase
      */
     public QRCode() {}
 
     /**
-     * Constructor required to display qr codes a player owns
+     * Purpose: Constructor required to display qr codes a player owns
      * @param hash
      *      The QRCode hash
      * @param qrscore
@@ -57,7 +47,7 @@ public class QRCode {
     }
 
     /**
-     * Calculates QR Score from hash
+     * Purpose: Calculates QR Score from hash
      *
      * @param hash
      *      a String identifier for the QR code.
@@ -68,18 +58,17 @@ public class QRCode {
         String hash3 = hash4.replace("000", "");
         String hash2 = hash3.replace("00", "");
         String hash1 = hash2.replace("0", "");
-        Integer count5 = (hash.length() - hash5.length())/5;
-        Integer count4 = (hash5.length() - hash4.length())/4;
-        Integer count3 = (hash4.length() - hash3.length())/3;
-        Integer count2 = (hash3.length() - hash2.length())/2;
-        Integer count1 = (hash2.length() - hash1.length());
-        Integer score = count1*1 + count2*20 + count3*400 + count4*8000 + count5*160000;
+        int count5 = (hash.length() - hash5.length())/5;
+        int count4 = (hash5.length() - hash4.length())/4;
+        int count3 = (hash4.length() - hash3.length())/3;
+        int count2 = (hash3.length() - hash2.length())/2;
+        int count1 = (hash2.length() - hash1.length());
 
-        return score;
+        return count1 + (count2 * 20) + (count3 * 400) + (count4 * 8000) + (count5 * 160000);
     }
 
     /**
-     * Get QR Score from member
+     * Purpose: Get QR Score from member
      *
      */
     public String getQRScore() {
@@ -87,7 +76,7 @@ public class QRCode {
     }
 
     /**
-     * Adds a player to the list.
+     * Purpose: Adds a player to the list.
      *
      * @param playerUsername
      *      the player to add.
@@ -101,7 +90,7 @@ public class QRCode {
     }
 
     /**
-     *  Gets the id of the QR Code
+     * Purpose: Gets the id of the QR Code
      *
      * @return
      *      The id of the qr code
@@ -110,6 +99,12 @@ public class QRCode {
         return id;
     }
 
+    /**
+     * Purpose: Get the list of userUIDs that have scanned this QR Code.
+     *
+     * @return
+     *      ArrayList of userUIDs.
+     */
     public List<String> getHasScanned() {
         return hasScanned;
     }

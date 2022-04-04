@@ -1,46 +1,37 @@
 package com.example.qrscore.fragment;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.controller.LeaderboardPlayerRecyclerAdapter;
 import com.example.qrscore.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-import java.util.List;
-
-// https://www.youtube.com/watch?v=__OMnFR-wZU
-// https://www.youtube.com/watch?v=OWwOSLfWboY
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Purpose: Represents a LeaderboardPlayerFragment.
  *
+ * Resources:
+ * - https://www.youtube.com/watch?v=__OMnFR-wZU
+ * - https://www.youtube.com/watch?v=OWwOSLfWboY
+ *
  * Outstanding Issues:
  *  TODO: Implement ranking for US-07.01.01
- *  TODO: UI Testing
  *
  * @author William Liu
  */
@@ -61,88 +52,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         populatePlayerArrayList();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference accountCollectionRef = db.collection("Account");
-
-        //TOP 5 SCORES
-        Query accountSortByScore = accountCollectionRef.orderBy("totalScore", Query.Direction.DESCENDING).limit(5);
-        accountSortByScore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    int i = 1;
-                    for (DocumentSnapshot accountDocument: accountDocuments) {
-//                        System.out.println(accountDocument);
-                        String top5score = (String) accountDocument.getData().get("totalScore");
-                        String top5uid = (String) accountDocument.getData().get("userUID");
-                        Log.i(TAG, "Score Rank " + i + ": " + top5uid + "(" + top5score + ")");
-                        // Checking if the accountDocument contains the unique qrID
-                        i++;
-                    }
-                }
-            }
-        });
-
-        Query accountSortByScanned = accountCollectionRef.orderBy("totalScanned", Query.Direction.DESCENDING).limit(5);
-        accountSortByScanned.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    int i = 1;
-                    for (DocumentSnapshot accountDocument: accountDocuments) {
-//                        System.out.println(accountDocument);
-                        String top5scanned = (String) accountDocument.getData().get("totalScanned");
-                        String top5uid = (String) accountDocument.getData().get("userUID");
-                        Log.i(TAG, "Scanned Rank " + i + ": " + top5uid + "(" + top5scanned + ")");
-                        //TODO: Checking if the accountDocument contains the unique qrID
-                        i++;
-                    }
-                }
-            }
-        });
-
-        Query accountSortByHiscore = accountCollectionRef.orderBy("hiscore", Query.Direction.DESCENDING).limit(5);
-        accountSortByHiscore.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<DocumentSnapshot> accountDocuments = task.getResult().getDocuments();
-                    int i = 1;
-                    for (DocumentSnapshot accountDocument: accountDocuments) {
-//                        System.out.println(accountDocument);
-                        String top5hiscore = (String) accountDocument.getData().get("hiscore");
-                        String top5uid = (String) accountDocument.getData().get("userUID");
-                        Log.i(TAG, "Hiscore Rank " + i + ": " + top5uid + "(" + top5hiscore + ")");
-                        // Checking if the accountDocument contains the unique qrID
-                        i++;
-                    }
-                }
-            }
-        });
-
-        accountListener = accountCollectionRef
-                .addSnapshotListener((value, error) -> {
-                   accounts.clear();
-                   for (QueryDocumentSnapshot accountDocument: value)  {
-                       String userUID = accountDocument.getString("userUID");
-                       String totalScore = accountDocument.getString("totalScore");
-                       String totalScanned = accountDocument.getString("totalScanned");
-                       String hiscore = accountDocument.getString("hiscore");
-                       String totalScoreRank = accountDocument.getString("rankTotalScore");
-                       String totalScannedRank = accountDocument.getString("rankTotalScanned");
-                       String hiscoreRank = accountDocument.getString("rankHiscore");
-                       Log.i(TAG, "userUID: " + userUID);
-                       Log.i(TAG, "totalScore: " + totalScore);
-                       Log.i(TAG, "totalScanned: " + totalScanned);
-                       Log.i(TAG, "hiscore: " + hiscore);
-
-                       accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
-                       leaderboardRA.updateList(accounts);
-                   }
-                });
     }
 
     @Override
@@ -154,7 +63,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         leaderboardSearchPlayerET = view.findViewById(R.id.leaderboard_username_edit_text);
         leaderboardSearchPlayerET.addTextChangedListener(this);
         setAdapter();
-
         return view;
     }
 
@@ -163,22 +71,21 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
      */
     private void populatePlayerArrayList() {
         accounts = new ArrayList<Account>();
+        accounts.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference accountRef = db.collection("Account");
-        accountRef.get().addOnCompleteListener(task -> {
-           if (task.isSuccessful()) {
-               for (QueryDocumentSnapshot accountDocument : task.getResult()) {
-                   String userUID = accountDocument.getString("userUID");
-                   String totalScore = accountDocument.getString("totalScore");
-                   String totalScanned = accountDocument.getString("totalScanned");
-                   String hiscore = accountDocument.getString("hiscore");
-                   String totalScoreRank = accountDocument.getString("rankTotalScore");
-                   String totalScannedRank = accountDocument.getString("rankTotalScanned");
-                   String hiscoreRank = accountDocument.getString("rankHiscore");
-                   accounts.add(new Account(userUID, totalScore, totalScanned, hiscore, totalScoreRank, totalScannedRank, hiscoreRank));
-               }
-           }
-        });
+        accountListener = accountRef
+                .addSnapshotListener((value, error) -> {
+                    accounts.clear();
+                    for (QueryDocumentSnapshot documentSnapshot: value)  {
+                        String userUID = documentSnapshot.getString("userUID");
+                        String score = documentSnapshot.getString("totalScore");
+                        String rankTotalScanned = documentSnapshot.getString("rankTotalScore");
+                        accounts.add(new Account(userUID, score, rankTotalScanned));
+                        sortAccounts();
+                        leaderboardRA.updateList(accounts);
+                    }
+                });
     }
 
     /**
@@ -190,6 +97,18 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
         playerRecyclerView.setLayoutManager(layoutManager);
         playerRecyclerView.setItemAnimator(new DefaultItemAnimator());
         playerRecyclerView.setAdapter(leaderboardRA);
+    }
+
+    /**
+     * Purpose: To sort the accounts based on total score from highest to lowest.
+     */
+    private void sortAccounts() {
+        Collections.sort(accounts, new Comparator<Account>() {
+            @Override
+            public int compare(Account account, Account t1) {
+                return -(Integer.parseInt(account.getTotalScore()) - Integer.parseInt(t1.getTotalScore()));
+            }
+        });
     }
 
     @Override
@@ -209,12 +128,6 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         filter(editable.toString());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        accountListener.remove();
     }
 
     /**
@@ -239,5 +152,11 @@ public class LeaderboardPlayerFragment extends Fragment implements TextWatcher {
             leaderboardRA.updateList(accountsFiltered);
         }
         leaderboardRA.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        accountListener.remove();
     }
 }

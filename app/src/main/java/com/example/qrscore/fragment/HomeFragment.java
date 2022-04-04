@@ -1,8 +1,6 @@
 package com.example.qrscore.fragment;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +10,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.qrscore.QRGeneratorDialog;
 import com.example.qrscore.controller.QRCodeAdapter;
 import com.example.qrscore.model.Account;
 import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
@@ -32,9 +26,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -72,6 +65,7 @@ public class HomeFragment extends Fragment {
     private DocumentReference qrRef;
     private DocumentReference accountRef;
     private DocumentReference profileRef;
+    private ListenerRegistration accountListener;
 
     private DocumentSnapshot accountSnapshot;
     private DocumentSnapshot profileSnapshot;
@@ -88,6 +82,7 @@ public class HomeFragment extends Fragment {
     private TextView myHiscoreRankTextView;
     private TextView myTotalScannedRankTextView;
     private TextView myTotalScoreRankTextView;
+    private Button sortByButton;
     private String totalScore;
     private String totalScanned;
     private String hiscore;
@@ -114,8 +109,6 @@ public class HomeFragment extends Fragment {
         profileController = new ProfileController(getContext());
         accountController = new AccountController(getContext());
         qrCodeController = new QRCodeController();
-
-        //accountController.addAccountListener();
 
         db = FirebaseFirestore.getInstance();
         userUID = profileController.getProfile().getUserUID();
@@ -145,11 +138,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //accountController.removeAccountListener();
+        accountListener.remove();
     }
 
+    /**
+     * Purpose: Populate the data on the homeFragment.
+     *
+     * @param view
+     *      The view to populate on.
+     */
     private void populateData(View view) {
-
         accountRef.get()
                 .addOnCompleteListener(taskAccount -> {
                     qrCodesAdapter.clear();
@@ -158,22 +156,8 @@ public class HomeFragment extends Fragment {
 
                         if (accountDocument.exists()) {
                             Log.d(TAG, "Account DocumentSnapshot data: " + accountDocument.getData());
-                            accountController.refreshRanks();
-                            // Get displayed data from firebase
-                            totalScore = accountDocument.get("totalScore").toString();
-                            totalScanned = accountDocument.get("totalScanned").toString();
-                            hiscore = accountDocument.get("hiscore").toString();
-                            rankTotalScore = accountDocument.get("rankTotalScore").toString();
-                            rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
-                            rankHiscore = accountDocument.get("rankHiscore").toString();
 
-                            // Set the text of all TextViews
-                            myQRScoreTextView.setText(totalScore);
-                            myScannedCodesTextView.setText(totalScanned);
-                            myHiscoreTextView.setText(hiscore);
-                            myTotalScoreRankTextView.setText(rankTotalScore);
-                            myTotalScannedRankTextView.setText(rankTotalScanned);
-                            myHiscoreRankTextView.setText(rankHiscore);
+                            setStats(accountDocument);
 
                             ArrayList<String> qrCodeHashes = (ArrayList<String>) accountDocument.getData().get("qrCodes");
                             ArrayList<QRCode> qrCodesArray = new ArrayList<>();
@@ -187,9 +171,38 @@ public class HomeFragment extends Fragment {
                             setAdapter();
                         }
                     }
+                    qrCodes = (ArrayList<QRCode>) myAccount.getQRCodesList();
+                    if (qrCodes.size() > 1) {
+                        Collections.sort(qrCodes, new Comparator<QRCode>() {
+                            @Override
+                            public int compare(QRCode qrCode, QRCode t1) {
+                                return -(Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
+                            }
+                        });
+
+                        HomeFragQRCodeRA.updateList(myAccount);
+                    }
+                    sortByButton.setOnClickListener(new sortByButtonOnClickListener(sortByButton, HomeFragQRCodeRA, myAccount));
                 });
     }
 
+    public void setStats(DocumentSnapshot accountDocument) {
+        // Get displayed data from firebase
+        totalScore = accountDocument.get("totalScore").toString();
+        totalScanned = accountDocument.get("totalScanned").toString();
+        hiscore = accountDocument.get("hiscore").toString();
+        rankTotalScore = accountDocument.get("rankTotalScore").toString();
+        rankTotalScanned = accountDocument.get("rankTotalScanned").toString();
+        rankHiscore = accountDocument.get("rankHiscore").toString();
+
+        // Set the text of all TextViews
+        myQRScoreTextView.setText(totalScore);
+        myScannedCodesTextView.setText(totalScanned);
+        myHiscoreTextView.setText(hiscore);
+        myTotalScoreRankTextView.setText(rankTotalScore);
+        myTotalScannedRankTextView.setText(rankTotalScanned);
+        myHiscoreRankTextView.setText(rankHiscore);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -207,17 +220,13 @@ public class HomeFragment extends Fragment {
         qrCodesAdapter = new QRCodeAdapter(cont, com.example.qrscore.R.layout.list_items, qrCodes);
         // My QR Code list adapter
         qrCodesList = view.findViewById(R.id.qr_codes_list_view);
-//        qrCodesList = getView().findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);
 
 
-        // Instantiate button
-        // TODO: Implement "Sort By" button
-        final Button sortByButton = view.findViewById(R.id.home_fragment_sort_by_button);
-        sortByButton.setOnClickListener(new sortByButtonOnClickListener(sortByButton, HomeFragQRCodeRA, myAccount));
+        // **This class is being constructed before the HFRA is initialized.
+        sortByButton = view.findViewById(R.id.home_fragment_sort_by_button);
 
         // Instantiate Textview classes to fill layout parameters
-//        TextView userName = (TextView) view.findViewById(R.id.home_fragment_username_text_view);
         TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
 
         String usernamesQRCodesString = (myAccount.getUserUID() + "'s QR Codes");
@@ -239,6 +248,15 @@ public class HomeFragment extends Fragment {
         QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
         populateData(view);
+
+        accountListener = accountRef.addSnapshotListener((accountDocument, error) -> {
+            if (error != null) {
+                return;
+            }
+            if (accountDocument != null && accountDocument.exists()) {
+                setStats(accountDocument);
+            }
+        });
 
         return view;
     }
@@ -275,11 +293,11 @@ public class HomeFragment extends Fragment {
         public void onClick(View view) {
             switch (sortByButton.getText().toString()) {
                 case "Highest":
-                    sortHighest();
+                    sortLowest();
                     sortByButton.setText("Lowest");
                     break;
                 case "Lowest":
-                    sortLowest();
+                    sortHighest();
                     sortByButton.setText("Highest");
                     break;
                 default:
@@ -287,26 +305,14 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        public void setAdapter(HomeFragmentQRCodeRecyclerAdapter adapter) {
+            this.HFQRCodeRA = adapter;
+        }
+
         /**
          * Purpose: Sort the QRCodes from lowest score to highest.
          */
         private void sortLowest() {
-            if (qrCodes.size() > 1) {
-                Collections.sort(qrCodesToSort, new Comparator<QRCode>() {
-                    @Override
-                    public int compare(QRCode qrCode, QRCode t1) {
-                        return -(Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
-                    }
-                });
-
-                HFQRCodeRA.updateList(myAccount);
-            }
-        }
-
-        /**
-         * Purpose: Sort the QRCodes from highest score to lowest.
-         */
-        private void sortHighest() {
             if (qrCodes.size() > 1) {
                 Collections.sort(qrCodes, new Comparator<QRCode>() {
                     @Override
@@ -318,8 +324,27 @@ public class HomeFragment extends Fragment {
                 HFQRCodeRA.updateList(myAccount);
             }
         }
+
+        /**
+         * Purpose: Sort the QRCodes from highest score to lowest.
+         */
+        private void sortHighest() {
+            if (qrCodes.size() > 1) { //Why size 0?
+                Collections.sort(qrCodes, new Comparator<QRCode>() {
+                    @Override
+                    public int compare(QRCode qrCode, QRCode t1) {
+                        return -(Integer.parseInt(qrCode.getQRScore()) - Integer.parseInt(t1.getQRScore()));
+                    }
+                });
+
+                HFQRCodeRA.updateList(myAccount);
+            }
+        }
     }
 
+    /**
+     * Purpose: To generate the player's QR Code to allow other to view their game status.
+     */
     private class profileGeneratorButtonListener implements View.OnClickListener {
         String userUID;
 

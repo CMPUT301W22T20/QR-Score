@@ -5,10 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.example.qrscore.model.Photo;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,7 +23,6 @@ import java.io.IOException;
  * Purpose: A controller to interact with the photos and firebase storage.
  *
  * Outstanding Issues:
- *
  */
 public class PhotoController {
     private FirebaseFirestore db;
