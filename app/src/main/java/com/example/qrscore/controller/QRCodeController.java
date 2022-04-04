@@ -55,6 +55,13 @@ public class QRCodeController {
         this.newHiscore = thisUsersTopHiscore;
     }
 
+    /**
+     * Purpose: Formatting strings to sort properly
+     * @param value
+     *     String to be formatted
+     * @return appendedValue
+     *     Formatted string
+     */
     public String appendZeroes(String value) {
         Integer numZeroesToPrefix = 8 - value.length();
         String appendedValue = "";
@@ -163,6 +170,17 @@ public class QRCodeController {
         });
     }
 
+    /**
+     * Purpose: To remove a QR Code to firestore db.
+     * @param hash
+     *      The hash of the QR Code.
+     * @param accountController
+     *      Instance of the AccountController
+     * @param qrCode
+     *      Instance of the QR Code.
+     * @param uuid
+     *      User UID of user that removed it.
+     */
     public void remove(String hash, QRCode qrCode, String uuid, AccountController accountController) {
         if (qrCode == null) {
             throw new IllegalArgumentException("No valid QRCode was passed into this function.");
@@ -209,27 +227,22 @@ public class QRCodeController {
                         //Upload updated Rank data to firebase
                         accountController.refreshRanks();
                     }
-
-
-
-
-//                    //TODO: Update ranks
-//                    //Update total score rank
-//                    Integer currentTotalScoreRankInt = Integer.parseInt(account.getRankTotalScore());
-//                    updatedTotalScoreRank = currentTotalScoreRankInt.toString();
-//
-//                    //Update total scanned QR codes rank
-//                    Integer currentTotalScannedRankInt = Integer.parseInt(account.getRankTotalScanned());
-//                    updatedTotalScannedRank = currentTotalScannedRankInt.toString();
-//
-//                    //Update high score if new code is higher
-//                    Integer currentHiscoreRankInt = Integer.parseInt(account.getRankHiscore());
-//                    updatedHiscoreRank = currentHiscoreRankInt.toString();
                 }
             }
         });
     }
 
+    /**
+     * Purpose: Calculate a player's next highest score when they delete their highest scoring QR code
+     * @param qrCodeRef
+     *        a reference to the QR Code data in firebase
+     * @param accountController
+     *        an instance of the account controller
+     * @param updatedTotalScore
+     *        the updated total score of the player removing the QR code
+     * @param updatedTotalScanned
+     *        the updated total scanned codes of the player removing the QR code
+     */
     public void getNextHighestScore(DocumentReference qrCodeRef, AccountController accountController, String updatedTotalScore, String updatedTotalScanned) {
         Account account = accountController.getAccount();
         Log.i(TAG, "account.getUserUID(): " + account.getUserUID());

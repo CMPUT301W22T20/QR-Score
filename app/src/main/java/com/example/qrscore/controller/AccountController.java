@@ -125,6 +125,13 @@ public class AccountController {
         return account;
     }
 
+    /**
+     * Purpose: Formatting strings to sort properly
+     * @param value
+     *     String to be formatted
+     * @return appendedValue
+     *     Formatted string
+     */
     public String appendZeroes(String value) {
         Integer numZeroesToPrefix = 8 - value.length();
         String appendedValue = "";
@@ -135,6 +142,9 @@ public class AccountController {
         return appendedValue;
     }
 
+    /**
+     * Purpose: Update everyone's ranks based on new stats
+     */
     public void refreshRanks() {
         Log.i(TAG, "Refreshing Account ranks");
 
