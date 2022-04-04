@@ -42,6 +42,7 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
      */
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView rank;
+        private TextView rankScore;
         private TextView score;
         private TextView name;
         private ImageButton menuButton;
@@ -49,7 +50,11 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
         public MyViewHolder(@NonNull View itemView) {
 
             super(itemView);
-            rank = itemView.findViewById(R.id.list_item_rank);
+            rank = itemView.findViewById(R.id.list_item_rank_textView);
+            rank.setVisibility(View.GONE);
+            rankScore = itemView.findViewById(R.id.list_item_rank);
+            rankScore.setVisibility(View.GONE);
+
             score = itemView.findViewById(R.id.list_item_score);
             name = itemView.findViewById(R.id.list_item_name);
             menuButton = itemView.findViewById(R.id.list_item_menu_button);
