@@ -232,21 +232,21 @@ public class ProfileController {
         userUID = currentUser.getUid();
         profileRef = db.collection("Profile").document(userUID);
         profileRef
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
-                        if (doc.exists()) {
-                            Profile profile = doc.toObject(Profile.class);
-                            updateProfile(profile, context);
-                            accountCallback.onCallback(true);
-                            Log.d(TAG, "updated with QR login profile");
-                        }
-                    } else {
-                        Log.d(TAG, "Did not update with QR login profile");
-                        accountCallback.onCallback(false);
+            .get()
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot doc = task.getResult();
+                    if (doc.exists()) {
+                        Profile profile = doc.toObject(Profile.class);
+                        updateProfile(profile, context);
+                        accountCallback.onCallback(true);
+                        Log.d(TAG, "updated with QR login profile");
                     }
-                });
+                } else {
+                    Log.d(TAG, "Did not update with QR login profile");
+                    accountCallback.onCallback(false);
+                }
+            });
     }
 }
 

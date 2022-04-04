@@ -30,7 +30,6 @@ public class HomeFragmentQRCodeRecyclerAdapter extends RecyclerView.Adapter<Home
     private final String TAG = "HF_QR_ADAPTER";
     private Account account;
     private ArrayList<QRCode> qrCodes;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public HomeFragmentQRCodeRecyclerAdapter(Account account) {
         this.account = account;
