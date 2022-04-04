@@ -1,25 +1,20 @@
 package com.example.qrscore.fragment;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.qrscore.controller.LeaderboardQRCodeRecyclerAdapter;
-
 import com.example.qrscore.R;
 import com.example.qrscore.model.QRCode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-
 import java.util.ArrayList;
 
 /**
@@ -102,7 +97,6 @@ public class LeaderboardQRcodeFragment extends Fragment {
         qrCodeRecyclerView.setItemAnimator(new DefaultItemAnimator());
         qrCodeRecyclerView.setAdapter(leaderboardRA);
     }
-
 
     @Override
     public void onDestroy() {

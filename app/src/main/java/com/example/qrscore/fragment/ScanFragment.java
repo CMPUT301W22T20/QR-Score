@@ -5,18 +5,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import com.example.qrscore.model.Account;
 import com.example.qrscore.model.Photo;
 import com.example.qrscore.model.QRCode;
 import com.example.qrscore.R;
@@ -28,7 +26,6 @@ import com.example.qrscore.controller.QRCodeController;
 import com.google.common.hash.Hashing;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
-
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -53,7 +50,7 @@ public class ScanFragment extends Fragment {
 
     private ImageView imageView;
     private Uri imageUri;
-
+  
     private String qrHashed;
 
     public ScanFragment() {
@@ -64,7 +61,7 @@ public class ScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountController = new AccountController(getContext());
-        photoController = new PhotoController();
+        photoController = new PhotoController(getContext());
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
         locationController = new LocationController(getActivity());
@@ -136,6 +133,7 @@ public class ScanFragment extends Fragment {
 
         return view;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

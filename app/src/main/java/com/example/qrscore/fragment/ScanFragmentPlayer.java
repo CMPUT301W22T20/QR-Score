@@ -2,17 +2,14 @@ package com.example.qrscore.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
 import com.example.qrscore.R;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -22,7 +19,6 @@ import com.journeyapps.barcodescanner.ScanOptions;
  * Purpose: To scan QR Codes and add a photo to the QR Codes.
  *
  * Outstanding Issues:
- *
  */
 // TODO: Replace tempUUID with actual UUID
 public class ScanFragmentPlayer extends Fragment {

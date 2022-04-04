@@ -1,9 +1,7 @@
 package com.example.qrscore.controller;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,12 +13,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Purpose: Represents a QRCodeController
+ * Purpose:
+ * - Represents a QRCodeController
  * - Add QR Codes to firebase and accounts.
  *
  * Outstanding issues:
@@ -56,7 +54,25 @@ public class QRCodeController {
     }
 
     /**
+     * Purpose: Formatting strings to sort properly
+     * @param value
+     *     String to be formatted
+     * @return appendedValue
+     *     Formatted string
+     */
+    public String appendZeroes(String value) {
+        Integer numZeroesToPrefix = 8 - value.length();
+        String appendedValue = "";
+        for (int i = 0; i < numZeroesToPrefix; i++) {
+            appendedValue += "0";
+        }
+        appendedValue += value;
+        return appendedValue;
+    }
+
+    /**
      * Purpose: To add a QR Code to firestore db.
+     *
      * @param hash
      *      The hash of the QR Code.
      * @param accountController
@@ -109,52 +125,36 @@ public class QRCodeController {
                     }
                     else {
                         Account account = accountController.getAccount();
+                        Log.i(TAG, "account.getTotalScore(): " + account.getTotalScore());
+                        Log.i(TAG, "account.getTotalScanned(): " + account.getTotalScanned());
+                        Log.i(TAG, "account.getHiscore(): " + account.getHiscore());
 
-                        String updatedTotalScore = "";
-                        String updatedTotalScanned = "";
-                        String updatedHiscore = "";
-                        String updatedTotalScoreRank;
-                        String updatedTotalScannedRank;
-                        String updatedHiscoreRank;
+                        String updatedTotalScore;
+                        String updatedTotalScanned;
+                        String updatedHiscore;
+
+                        Log.i(TAG, "accountDocument.get(\"totalScore\").toString(): " + accountDocument.get("totalScore").toString());
 
                         //Update total score
-                        Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
-                        Integer numZeroesToPrefix = 8 - updatedTotalScoreInt.toString().length();
-                        for (int i = 0; i < numZeroesToPrefix; i++) {
-                            updatedTotalScore += "0";
-                        }
-                        updatedTotalScore += updatedTotalScoreInt.toString();
+                        Integer updatedTotalScoreInt = Integer.parseInt(accountDocument.get("totalScore").toString()) + Integer.parseInt(qrCode.getQRScore());
+                        updatedTotalScore = appendZeroes(updatedTotalScoreInt.toString());
+                        account.setTotalScore(updatedTotalScore);
 
                         //Update total scanned QR codes
-                        Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned())+1;
-                        numZeroesToPrefix = 8 - updatedTotalScannedInt.toString().length();
-                        for (int i = 0; i < numZeroesToPrefix; i++) {
-                            updatedTotalScanned += "0";
-                        }
-                        updatedTotalScanned += updatedTotalScannedInt.toString();
+                        Integer updatedTotalScannedInt = Integer.parseInt(accountDocument.get("totalScanned").toString())+1;
+                        updatedTotalScanned = appendZeroes(updatedTotalScannedInt.toString());
+                        account.setTotalScanned(updatedTotalScanned);
 
                         //Update high score if new code is higher
-                        Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                        Integer currentHiscore = Integer.parseInt(accountDocument.get("hiscore").toString());
                         Integer newQRCodeScore = Integer.parseInt(qrCode.getQRScore());
                         if (newQRCodeScore > currentHiscore) {
-                            numZeroesToPrefix = 8 - newQRCodeScore.toString().length();
-                            for (int i = 0; i < numZeroesToPrefix; i++) {
-                                updatedHiscore += "0";
-                            }
-                            updatedHiscore += newQRCodeScore.toString();
+                            updatedHiscore = appendZeroes(newQRCodeScore.toString());
                         }
                         else {
-                            numZeroesToPrefix = 8 - currentHiscore.toString().length();
-                            for (int i = 0; i < numZeroesToPrefix; i++) {
-                                updatedHiscore += "0";
-                            }
-                            updatedHiscore += currentHiscore.toString();
+                            updatedHiscore = appendZeroes(currentHiscore.toString());
                         }
-//                        numZeroesToPrefix = 8 - updatedTotalScannedInt.toString().length();
-//                        for (int i = 0; i < numZeroesToPrefix; i++) {
-//                            updatedTotalScanned += "0";
-//                        }
-//                        updatedTotalScanned += updatedTotalScannedInt.toString();
+                        account.setHiscore(updatedHiscore);
 
                         //Upload updated Account data to firebase
                         accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
@@ -162,26 +162,24 @@ public class QRCodeController {
                         //Upload updated Rank data to firebase
                         accountController.refreshRanks();
 
-
-//                        //Update total score rank
-//                        Integer currentTotalScoreRankInt = Integer.parseInt(account.getRankTotalScore());
-//                        updatedTotalScoreRank = currentTotalScoreRankInt.toString();
-//
-//                        //Update total scanned QR codes rank
-//                        Integer currentTotalScannedRankInt = Integer.parseInt(account.getRankTotalScanned());
-//                        updatedTotalScannedRank = currentTotalScannedRankInt.toString();
-//
-//                        //Update high score if new code is higher
-//                        Integer currentHiscoreRankInt = Integer.parseInt(account.getRankHiscore());
-//                        updatedHiscoreRank = currentHiscoreRankInt.toString();
-
-
+                        accountController.setAccount(account);
                     }
                 }
             }
         });
     }
 
+    /**
+     * Purpose: To remove a QR Code to firestore db.
+     * @param hash
+     *      The hash of the QR Code.
+     * @param accountController
+     *      Instance of the AccountController
+     * @param qrCode
+     *      Instance of the QR Code.
+     * @param uuid
+     *      User UID of user that removed it.
+     */
     public void remove(String hash, QRCode qrCode, String uuid, AccountController accountController) {
         if (qrCode == null) {
             throw new IllegalArgumentException("No valid QRCode was passed into this function.");
@@ -201,72 +199,49 @@ public class QRCodeController {
                 if (task.isSuccessful()) {
                     DocumentSnapshot accountDocument = task.getResult();
                     Account account = accountController.getAccount();
-                    String updatedTotalScore = "";
-                    String updatedTotalScanned = "";
-                    String updatedHiscore = "";
-                    String updatedTotalScoreRank;
-                    String updatedTotalScannedRank;
-                    String updatedHiscoreRank;
+                    String updatedTotalScore;
+                    String updatedTotalScanned;
+                    String updatedHiscore;
 
                     //Update total score
-                    Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) - Integer.parseInt(qrCode.getQRScore());
-                    Integer numZeroesToPrefix = 8 - updatedTotalScoreInt.toString().length();
-                    for (int i = 0; i < numZeroesToPrefix; i++) {
-                        updatedTotalScore += "0";
-                    }
-                    updatedTotalScore += updatedTotalScoreInt.toString();
+                    Integer updatedTotalScoreInt = Integer.parseInt(accountDocument.get("totalScore").toString()) - Integer.parseInt(qrCode.getQRScore());
+                    updatedTotalScore = appendZeroes(updatedTotalScoreInt.toString());
 
                     //Update total scanned QR codes
-                    Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned()) - 1;
-                    numZeroesToPrefix = 8 - updatedTotalScannedInt.toString().length();
-                    for (int i = 0; i < numZeroesToPrefix; i++) {
-                        updatedTotalScanned += "0";
-                    }
-                    updatedTotalScanned += updatedTotalScannedInt.toString();
+                    Integer updatedTotalScannedInt = Integer.parseInt(accountDocument.get("totalScanned").toString()) - 1;
+                    updatedTotalScanned = appendZeroes(updatedTotalScannedInt.toString());
 
                     //Update high score if deleted code is current high score
                     //Update high score if new code is higher
-                    Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                    Integer currentHiscore = Integer.parseInt(accountDocument.get("hiscore").toString());
                     Integer deletedQRCodeScore = Integer.parseInt(qrCode.getQRScore());
                     if (deletedQRCodeScore == currentHiscore) {
                         getNextHighestScore(qrCodeRef, accountController, updatedTotalScore, updatedTotalScanned);
-
-
-
                     }
                     else {
-                        numZeroesToPrefix = 8 - currentHiscore.toString().length();
-                        for (int i = 0; i < numZeroesToPrefix; i++) {
-                            updatedHiscore += "0";
-                        }
-                        updatedHiscore += currentHiscore.toString();
+                        updatedHiscore = appendZeroes(currentHiscore.toString());
                         Log.i(TAG, "updatedHiscore: " + updatedHiscore);
                         //Upload updated Account data to firebase
                         accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
                         //Upload updated Rank data to firebase
                         accountController.refreshRanks();
                     }
-
-
-
-
-//                    //TODO: Update ranks
-//                    //Update total score rank
-//                    Integer currentTotalScoreRankInt = Integer.parseInt(account.getRankTotalScore());
-//                    updatedTotalScoreRank = currentTotalScoreRankInt.toString();
-//
-//                    //Update total scanned QR codes rank
-//                    Integer currentTotalScannedRankInt = Integer.parseInt(account.getRankTotalScanned());
-//                    updatedTotalScannedRank = currentTotalScannedRankInt.toString();
-//
-//                    //Update high score if new code is higher
-//                    Integer currentHiscoreRankInt = Integer.parseInt(account.getRankHiscore());
-//                    updatedHiscoreRank = currentHiscoreRankInt.toString();
                 }
             }
         });
     }
 
+    /**
+     * Purpose: Calculate a player's next highest score when they delete their highest scoring QR code
+     * @param qrCodeRef
+     *        a reference to the QR Code data in firebase
+     * @param accountController
+     *        an instance of the account controller
+     * @param updatedTotalScore
+     *        the updated total score of the player removing the QR code
+     * @param updatedTotalScanned
+     *        the updated total scanned codes of the player removing the QR code
+     */
     public void getNextHighestScore(DocumentReference qrCodeRef, AccountController accountController, String updatedTotalScore, String updatedTotalScanned) {
         Account account = accountController.getAccount();
         Log.i(TAG, "account.getUserUID(): " + account.getUserUID());
@@ -284,7 +259,6 @@ public class QRCodeController {
                             break;
                         }
                         //Update user's hiscore rank
-//                                        accountDocumentRef = qrCodeRef.document(qrCodeDocument.getData().get("userUID").toString());
 
                         String thisQRScore = qrCodeDocument.getData().get("qrscore").toString();
 //                                        String thisUsersUID = qrCodeDocument.getData().get("hasScanned").toString();
@@ -295,30 +269,11 @@ public class QRCodeController {
                             Log.i(TAG, "account.getUserUID(): " + account.getUserUID());
                             if (thisUsersUID.equals(account.getUserUID())) {
                                 Log.i(TAG, thisUsersUID + "'s new Top Hiscore: " + thisQRScore);
-                                String updatedHiscore = "";
-//                                return thisQRScore;
-//                                setNewHiscore(thisQRScore);
-                                account.setHiscore(thisQRScore);
+                                String updatedHiscore = appendZeroes(thisQRScore);
+                                account.setHiscore(updatedHiscore);
                                 Log.i(TAG, "account.getHiscore(): " + account.getHiscore());
-                                Integer numZeroesToPrefix = 8 - thisQRScore.length();
-                                for (int i = 0; i < numZeroesToPrefix; i++) {
-                                    updatedHiscore += "0";
-                                }
-                                updatedHiscore += thisQRScore;
                                 accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
-//                                return;
-                                //TODO: Recalculate next-highest hiscore
-//                                                Integer numZeroesToPrefix = 8 - thisQRScore.length();
-//                                                String updatedHiscore = "";
-//                                                for (int i = 0; i < numZeroesToPrefix; i++) {
-//                                                    updatedHiscore += "0";
-//                                                }
-//                                                updatedHiscore += thisQRScore;
-//
-//                                                //Upload updated Account data to firebase
-//                                                accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
-//                                                //Upload updated Rank data to firebase
-//                                                accountController.refreshRanks();
+                                accountController.refreshRanks();
 
                                 thisUsersHiscoreRank += 1;
                                 break;

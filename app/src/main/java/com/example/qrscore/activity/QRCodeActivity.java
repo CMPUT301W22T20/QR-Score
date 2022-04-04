@@ -1,17 +1,10 @@
-/* Purpose: This class represents the QR Code Details Activity.
-Shows the location of the QRCode and players that have scanned it.
-Shows players that have commented on the QRCode and allows user to click on the players to see their comments.
-Allow user to click add comment from this screen.
-
-Outstanding issues:
-*/
-
 package com.example.qrscore.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,7 +41,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Purpose: This class is the QR Code activity
+ * Purpose:
+ * - This class represents the QR Code Details Activity.
+ * - Shows the location of the QRCode and players that have scanned it.
+ * - Shows players that have commented on the QRCode and allows user to click on the players to see their comments.
+ * - Allow user to click add comment from this screen.
  *
  * Outstanding issues:
  * TODO: Finish Purpose
@@ -79,7 +76,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
 
-        photoController = new PhotoController();
+        photoController = new PhotoController(this);
         profileController = new ProfileController(this);
         String uuid = profileController.getProfile().getUserUID();
 
@@ -201,7 +198,8 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     }
 
     /**
-     * Loads who has scanned a QRCode from firebase and outputs to screen
+     * Purpose: Loads who has scanned a QRCode from firebase and outputs to screen.
+     *
      * @param codeID
      *          firebase document ID of the QRCode
      */
@@ -231,9 +229,10 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     }
 
     /**
-     * This adds a new comment to the list and also adds it to our db
+     * Purpose: This adds a new comment to the list and also adds it to our db.
+     *
      * @param newComment
-     *      Comment to add
+     *      Comment to add.
      */
     @Override
     public void onOkPressed(Comment newComment) {

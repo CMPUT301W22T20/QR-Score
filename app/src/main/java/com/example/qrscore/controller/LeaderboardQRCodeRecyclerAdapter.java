@@ -9,28 +9,23 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.qrscore.R;
-import com.example.qrscore.model.QRCode;
 import com.example.qrscore.activity.QRCodeActivity;
+import com.example.qrscore.model.QRCode;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 
 /**
- * Purpose:
+ * Purpose: RecyclerAdapter for QRCode leaderboard.
  *
  * Outstanding issues:
  * TODO: Delete Comment
- *
  */
 public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<LeaderboardQRCodeRecyclerAdapter.MyViewHolder> {
 
@@ -43,7 +38,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
         this.qrCodes = qrCodes;
     }
 
-    /** qr
+    /**
      * Purpose: ViewHolder of items inside the Adapter.
      */
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -138,7 +133,6 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                         // check if user is owner
                         if (userIsOwner()) {
                             deleteCode(hash);
-
                             // display message, cannot delete
                         } else {
                             Toast.makeText(view.getContext(), "Only owners can delete QR Codes.",
@@ -165,7 +159,6 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
 
         // delete qrcode
         db.collection("QRCode").document(hash).delete();
-
         // query users that have scanned the code
         db.collection("Account").whereArrayContains("QRCodes", hash).get()
                 .addOnCompleteListener(task -> {
@@ -182,7 +175,6 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                         }
                     }
                 });
-
         // Remove comments of QRCode
         db.collection("Comment").whereEqualTo("qrID", hash).get()
                 .addOnCompleteListener(task -> {
@@ -199,8 +191,6 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
                         }
                     }
                 });
-
-
         notifyDataSetChanged();
     }
 

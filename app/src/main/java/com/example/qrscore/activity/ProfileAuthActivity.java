@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,27 +15,21 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
 import com.example.qrscore.controller.ProfileController;
-import com.example.qrscore.fragment.ScanFragmentPlayer;
 import com.example.qrscore.fragment.OwnerLoginFragment;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import java.util.ArrayList;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 
 /**
  * Purpose: This class is used to authorize a user on firebase auth.
@@ -72,6 +64,7 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_profile_auth);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         profileProgressBar = findViewById(R.id.auth_progress_bar);
         loginTextView = findViewById(R.id.auth_login_text_view);
         returningButton = findViewById(R.id.auth_returning_user_button);
@@ -80,9 +73,11 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         loginByQRButton.setOnClickListener(this);
         newUserButton = findViewById(R.id.auth_new_user_button);
         newUserButton.setOnClickListener(this);
-
         barcodeLauncher = startActivityCamera();
+        ownerButton = findViewById(R.id.auth_owner_button);
+        ownerButton.setOnClickListener(this);
 
+        // Request permissions.
         requestPermissionsIfNecessary(new String[] {
                 // if you need to show the current location, uncomment the line below
                 Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -91,10 +86,6 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 // WRITE_EXTERNAL_STORAGE is required in order to show the map
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         });
-
-        ownerButton = findViewById(R.id.auth_owner_button);
-        ownerButton.setOnClickListener(this);
-        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -117,15 +108,15 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     goToMainActivity();
                 }
                 break;
+
             case R.id.auth_login_by_qr_user_button:
                 currentUser = firebaseAuth.getCurrentUser();
                 ScanOptions options = new ScanOptions();
                 options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
                 options.setPrompt("Scan a QR Code");
                 barcodeLauncher.launch(options);
-
-                //signInWithEmail();
                 break;
+
             case R.id.auth_new_user_button:
                 currentUser = firebaseAuth.getCurrentUser();
                 if (currentUser == null) {
@@ -137,10 +128,10 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     Toast.makeText(this, "User already created. Please select RETURNING!", Toast.LENGTH_LONG).show();
                 }
                 break;
+
             // if user is an owner
             case R.id.auth_owner_button:
                 currentUser = firebaseAuth.getCurrentUser();
-
                 // Create user if they don't have account
                 if (currentUser == null) {
                     loginTextView.setVisibility(View.VISIBLE);
@@ -162,6 +153,12 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * Purpose: Launch camera to scan QR Codes.
+     *
+     * @return
+     *      AcvitityResultLauncher of ScanOptions
+     */
     private ActivityResultLauncher<ScanOptions> startActivityCamera() {
         final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
             if (result.getContents() == null) {
@@ -178,7 +175,6 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                     if (res.length == 2) {
                         String email = res[0];
                         String userUID = res[1];
-
                         signInWithEmail(email, userUID);
                     }
                 }
@@ -191,6 +187,14 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         return barcodeLauncher;
     }
 
+    /**
+     * Purpose: To sign in user using QR code.
+     *
+     * @param email
+     *      Represents the users email.
+     * @param userUID
+     *      Represents the users userUID.
+     */
     private void signInWithEmail(String email, String userUID) {
         loginTextView.setVisibility(View.VISIBLE);
         profileProgressBar.setVisibility(View.VISIBLE);
@@ -201,7 +205,15 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         currentUser = firebaseAuth.getCurrentUser();
-                        return;
+                        ProfileController profileController = new ProfileController(getApplicationContext());
+                        profileController.updateQRLoginProfile(getApplicationContext(), success -> {
+                            if (success) {
+                                goToMainActivity();
+                            }
+                            else {
+                                Toast.makeText(ProfileAuthActivity.this, "Cannot retrieve user. Please close the app and try again!", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                     else {
                         profileProgressBar.setVisibility(View.GONE);
@@ -289,6 +301,12 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * Purpose: Requesting users permissions if necessary.
+     *
+     * @param permissions
+     *      An array of permissions.
+     */
     private void requestPermissionsIfNecessary(String[] permissions) {
         ArrayList<String> permissionsToRequest = new ArrayList<>();
         for (String permission : permissions) {
@@ -311,7 +329,6 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
      */
     @Override
     public void onOwnerConfirmed() {
-
         userUID = currentUser.getUid();
         db.collection("Account").document(userUID).update("isOwner", "true");   // update owner status
         goToMainActivity();
