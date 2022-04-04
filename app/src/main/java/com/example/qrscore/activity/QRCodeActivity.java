@@ -3,7 +3,6 @@ package com.example.qrscore.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.qrscore.model.Comment;
 import com.example.qrscore.model.CommentCustomList;
@@ -48,10 +46,6 @@ import java.util.List;
  * - Allow user to click add comment from this screen.
  *
  * Outstanding issues:
- * TODO: Finish Purpose
- * TODO: Player names
- * TODO: Change little icon placeholder
- * TODO: UI tests
  */
 public class QRCodeActivity extends AppCompatActivity implements AddCommentFragment.OnFragmentInteractionListener {
     private ListView commentList;
@@ -250,6 +244,7 @@ public class QRCodeActivity extends AppCompatActivity implements AddCommentFragm
     /**
      * Returns the commentList to use for our tests
      * @return
+     *      List view of the comments.
      */
     public ListView getCommentList() {
         return commentList;

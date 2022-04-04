@@ -49,10 +49,8 @@ public class ProfileAuthActivity extends AppCompatActivity implements View.OnCli
     private AppCompatButton ownerButton;
     private ProgressBar profileProgressBar;
     private TextView loginTextView;
-
     private ActivityResultLauncher<ScanOptions> barcodeLauncher;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;
-
     private String email;
     private String userUID;
     private boolean blocked;
