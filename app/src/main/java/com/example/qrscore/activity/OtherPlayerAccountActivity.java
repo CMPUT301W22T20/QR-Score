@@ -21,10 +21,6 @@ import java.util.ArrayList;
  * total score, and rank. Can click on a QR code to go to a different screen.
  *
  * Outstanding issues:
- * TODO: go to this activity when view profile is clicked on for player
- * TODO: Rank needs to be implemented
- * TODO: Show rank
- * TODO: UI testing
  */
 
 public class OtherPlayerAccountActivity extends AppCompatActivity {
@@ -76,7 +72,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         hiscoreRankTextView = findViewById(R.id.hiscore_rank_text_view);
         totalScannedRankTextView = findViewById(R.id.scanned_rank_text_view);
         totalScoreRankTextView = findViewById(R.id.total_score_rank_text_view);
-
         usernameTextView = findViewById(R.id.username_text_view);
         qrCodeTitleTextView = findViewById(R.id.qr_code_title_text_view);
 
@@ -95,7 +90,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
      * Purpose: Populates the listview with the QRCodes of a specific user
      */
     public void loadQRCodes() {
-        accountRef.get()    // get account document
+        accountRef.get()    // Get account document
                 .addOnCompleteListener(taskAccount -> {
                     qrCodesAdapter.clear();
                     if (taskAccount.isSuccessful()) {
