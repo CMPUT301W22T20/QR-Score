@@ -68,6 +68,14 @@ public class Account {
      *      The player's running total score.
      * @param totalScanned
      *      The player's total totalScanned QRs.
+     * @param hiscore
+     *      The player's highest QR Code score.
+     * @param rankTotalScore
+     *      The player's rank for total score.
+     * @param rankTotalScanned
+     *      The player's rank for total scanned.
+     * @param rankHiscore
+     *      The player's rank for unique high score.
      */
     public Account(String userUID, String totalScore, String totalScanned, String hiscore,
                    String rankTotalScore, String rankTotalScanned, String rankHiscore) {
@@ -80,6 +88,22 @@ public class Account {
         this.rankTotalScore = rankTotalScore;
         this.rankTotalScanned = rankTotalScanned;
         this.rankHiscore = rankHiscore;
+    }
+
+    /**
+     * Purpose: Constructor for an account instance.
+     *
+     * @param userUID
+     *      The player's unique user ID.
+     * @param totalScore
+     *      The player's running total score.
+     * @param rankTotalScanned
+     *      The player's rank for totalScanned QRs.
+     */
+    public Account(String userUID, String totalScore, String rankTotalScore) {
+        this.userUID = userUID;
+        this.totalScore = totalScore;
+        this.rankTotalScore = rankTotalScore;
     }
 
     /**
@@ -193,7 +217,6 @@ public class Account {
     public String getRankTotalScanned() {
         return this.rankTotalScanned;
     }
-//        return qrCodes.size();
 
     /**
      * Purpose: Set the player's rank of QR codes scanned.
