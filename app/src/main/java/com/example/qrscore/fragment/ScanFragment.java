@@ -1,16 +1,12 @@
 package com.example.qrscore.fragment;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,18 +37,21 @@ import java.util.UUID;
  */
 // TODO: Replace tempUUID with actual UUID
 public class ScanFragment extends Fragment {
-    private Account myAccount;
     private AccountController accountController;
-    private ImageView imageView;
     private LocationController locationController;
     private PhotoController photoController;
     private QRCodeController qrCodeController;
     private ProfileController profileController;
-    private static Boolean fineLocationGranted;
-    private static Boolean coarseLocationGranted;
+
+    private Button confirmButton;
+    private Button cameraButton;
+    private Button scanButton;
+    private SwitchCompat switchButton;
+
+    private ImageView imageView;
     private Uri imageUri;
-    private String longitude;
-    private String latitude;
+  
+    private String qrHashed;
 
     public ScanFragment() {
         // Required empty public constructor
@@ -62,9 +61,10 @@ public class ScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountController = new AccountController(getContext());
-        photoController = new PhotoController();
+        photoController = new PhotoController(getContext());
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
+        locationController = new LocationController(getActivity());
     }
 
     @Override
@@ -73,56 +73,47 @@ public class ScanFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan, container, false);
 
-        requestLocationPermissions();
-        requestCameraPermissions();
-
         imageView = view.findViewById(R.id.qr_image_view);
-        Button cameraButton = view.findViewById(R.id.button_take_photo);
-        Button scanButton = view.findViewById(R.id.button_scan);
-        Button confirmButton = view.findViewById(R.id.button_confirm);
-        SwitchCompat switchButton = view.findViewById(R.id.switch_button);
+        scanButton = view.findViewById(R.id.button_scan);
+        cameraButton = view.findViewById(R.id.button_take_photo);
+        confirmButton = view.findViewById(R.id.button_confirm);
+        switchButton = view.findViewById(R.id.switch_button);
 
-        // Start activity for scanning QR code
-        final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
-            if (result.getContents() == null) {
-                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
-                // Guava library hashing utilities
-                final String qrHashed = Hashing.sha256()
-                        .hashString(result.getContents(), StandardCharsets.UTF_8)
-                        .toString();
+        ActivityResultLauncher<ScanOptions> barcodeLauncher = startCameraActivity();
 
-                // Set camera button to visible to allow player to take pictures
-                cameraButton.setVisibility(View.VISIBLE);
-                confirmButton.setVisibility(View.VISIBLE);
+        // Confirm button is pressed
+        confirmButton.setOnClickListener(confirmClicked -> {
+            // Set buttons back to invisible so can't press it more than once
+            cameraButton.setVisibility(View.INVISIBLE);
+            confirmButton.setVisibility(View.INVISIBLE);
 
-                confirmButton.setOnClickListener(confirmClicked -> {
-                    // Set buttons back to invisible so can't press it more than once
-                    cameraButton.setVisibility(View.INVISIBLE);
-                    confirmButton.setVisibility(View.INVISIBLE);
+            // If they somehow were able to click confirm without scanning a code
+            if (qrHashed == null) {
+                return;
+            }
 
-                    // Try to get document from db, if cant get then create a new one
-                    // so we don't overwrite existing data
-                    String userID = profileController.getProfile().getUserUID();
-                    QRCode qrCode = new QRCode(qrHashed);
-                    qrCode.addToHasScanned(userID);
+            // Try to get document from db, if cant get then create a new one
+            // so we don't overwrite existing data
+            String userID = profileController.getProfile().getUserUID();
+            QRCode qrCode = new QRCode(qrHashed);
+            qrCode.addToHasScanned(userID);
 
-                    qrCodeController.add(qrHashed, qrCode, userID, accountController);
+            qrCodeController.add(qrHashed, qrCode, userID, accountController);
 
-                    if (switchButton.isChecked()) {
-                        locationController.saveLocation(qrHashed, userID);
-                    }
+            if (switchButton.isChecked()) {
+                locationController.saveLocation(qrHashed, userID);
+            }
 
-                    if (imageUri != null) {
-                        final String imageKey = UUID.randomUUID().toString();
-                        Photo photo = new Photo("images/" + imageKey, qrHashed, userID);
-                        photoController.uploadPhoto(photo, imageUri);
-                        Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
-                    }
-                });
+            // User decided to take a photo of object
+            if (imageUri != null) {
+                final String imageKey = UUID.randomUUID().toString();
+                Photo photo = new Photo("images/" + imageKey, qrHashed, userID);
+                photoController.uploadPhoto(photo, imageUri);
+                Toast.makeText(getActivity(), "Uploading Photo", Toast.LENGTH_LONG).show();
             }
         });
 
+        // Scan button is pressed
         scanButton.setOnClickListener(scanClicked -> {
             ScanOptions options = new ScanOptions();
             options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
@@ -132,7 +123,6 @@ public class ScanFragment extends Fragment {
         });
 
         cameraButton.setOnClickListener(cameraClicked -> {
-            requestCameraPermissions();
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
             try {
                 startActivityForResult(intent, 8008);
@@ -144,6 +134,7 @@ public class ScanFragment extends Fragment {
         return view;
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 8008 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
@@ -152,6 +143,26 @@ public class ScanFragment extends Fragment {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
         }
+    }
+
+    private ActivityResultLauncher<ScanOptions> startCameraActivity() {
+        // Start activity for scanning QR code
+        final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(), result -> {
+            if (result.getContents() == null) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                // Guava library hashing utilities
+                qrHashed = Hashing.sha256()
+                        .hashString(result.getContents(), StandardCharsets.UTF_8)
+                        .toString();
+
+                // Set camera button to visible to allow player to take pictures
+                cameraButton.setVisibility(View.VISIBLE);
+                confirmButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        return barcodeLauncher;
     }
 
     @Override
@@ -169,42 +180,6 @@ public class ScanFragment extends Fragment {
 
         if (locationController != null) {
             locationController.stopLocationUpdates();
-        }
-    }
-
-    /**
-     * Purpose: Request Location Permissions in the Scan Fragment.
-     */
-    private void requestLocationPermissions() {
-        // Requesting location permissions
-        ActivityResultLauncher<String[]> locationPermissionRequest =
-                registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-                    fineLocationGranted = result.get(Manifest.permission.ACCESS_FINE_LOCATION);
-                    coarseLocationGranted = result.get(Manifest.permission.ACCESS_COARSE_LOCATION);
-
-                    if (fineLocationGranted != null && fineLocationGranted) {
-                        // Precise location access granted.
-                        // Start getting location updates
-                        locationController = new LocationController(getActivity());
-                        Toast.makeText(getActivity(), "Recording location", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        // Location not granted
-                        Toast.makeText(getActivity(), "Not recording location", Toast.LENGTH_LONG).show();
-                    }
-                });
-            locationPermissionRequest.launch(new String[] {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            });
-    }
-
-    /**
-     * Purpose: Request Camera Permissions in the Scan Fragment.
-     */
-    private void requestCameraPermissions() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.CAMERA}, 1001);
         }
     }
 }

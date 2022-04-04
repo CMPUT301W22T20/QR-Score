@@ -1,7 +1,6 @@
 package com.example.qrscore.fragment;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.SwitchCompat;
@@ -10,16 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 import com.example.qrscore.activity.OtherPlayerAccountActivity;
-import com.example.qrscore.model.Account;
 import com.example.qrscore.R;
-import com.example.qrscore.controller.AccountController;
-import com.example.qrscore.controller.LocationController;
-import com.example.qrscore.controller.PhotoController;
-import com.example.qrscore.controller.ProfileController;
-import com.example.qrscore.controller.QRCodeController;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -30,18 +22,6 @@ import com.journeyapps.barcodescanner.ScanOptions;
  */
 // TODO: Replace tempUUID with actual UUID
 public class ScanFragmentPlayer extends Fragment {
-    private Account myAccount;
-    private AccountController accountController;
-    private ImageView imageView;
-    private LocationController locationController;
-    private PhotoController photoController;
-    private QRCodeController qrCodeController;
-    private ProfileController profileController;
-    private static Boolean fineLocationGranted;
-    private static Boolean coarseLocationGranted;
-    private Uri imageUri;
-    private String longitude;
-    private String latitude;
 
     public ScanFragmentPlayer() {
         // Required empty public constructor
@@ -50,10 +30,6 @@ public class ScanFragmentPlayer extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountController = new AccountController(getContext());
-        photoController = new PhotoController();
-        qrCodeController = new QRCodeController();
-        profileController = new ProfileController(getContext());
     }
 
     @Override
@@ -76,7 +52,7 @@ public class ScanFragmentPlayer extends Fragment {
                 String contents = result.getContents();
 
                 // Check if its one of our qr codes
-                if (contents.contains(",")) {
+                if (contents.contains(",") && contents.split("[,]", 0).length == 1) {
                     // Split the string from the comma separator
                     String[] res = contents.split("[,]", 0);
 

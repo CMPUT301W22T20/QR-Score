@@ -70,7 +70,7 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
     public void onBindViewHolder(@NonNull LeaderboardQRCodeRecyclerAdapter.MyViewHolder holder, int position) {
         QRCode qrCode = qrCodes.get(position);
         holder.rank.setText("NIL");
-        holder.score.setText("NIL");
+        holder.score.setText(qrCode.getQRScore());
         holder.name.setText(qrCode.getHash());
         holder.playerMenuButton.setOnClickListener(new LeaderboardQRCodeRecyclerAdapter.MenuButtonOnClickListener(qrCode.getHash()));
         holder.qrCodeTitle.setText("QR Code");

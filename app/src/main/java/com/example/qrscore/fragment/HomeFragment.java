@@ -10,24 +10,27 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.qrscore.controller.QRCodeAdapter;
-import com.example.qrscore.model.Account;
-import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
-import com.example.qrscore.model.QRCode;
+
 import com.example.qrscore.R;
 import com.example.qrscore.controller.AccountController;
+import com.example.qrscore.controller.HomeFragmentQRCodeRecyclerAdapter;
 import com.example.qrscore.controller.ProfileController;
+import com.example.qrscore.controller.QRCodeAdapter;
 import com.example.qrscore.controller.QRCodeController;
+import com.example.qrscore.model.Account;
+import com.example.qrscore.model.QRCode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -139,6 +142,7 @@ public class HomeFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         accountListener.remove();
+        accountController.removeAccountListener();
     }
 
     /**
@@ -248,7 +252,7 @@ public class HomeFragment extends Fragment {
         QRCodeRecyclerView = view.findViewById(R.id.home_fragment_qrCode_recycler_view);
 
         populateData(view);
-
+        accountController.addAccountListener();
         accountListener = accountRef.addSnapshotListener((accountDocument, error) -> {
             if (error != null) {
                 return;
