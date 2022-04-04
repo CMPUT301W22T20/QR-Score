@@ -4,4 +4,9 @@
         android:id="@+id/leaderboard_profile_item"
         android:title="@string/leaderboard_view_player">
     </item>
+
+    <item
+        android:id="@+id/delete_player_item"
+        android:title="Delete Player">
+    </item>
 </menu>

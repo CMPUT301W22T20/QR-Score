@@ -164,7 +164,6 @@ public class ScanFragment extends Fragment {
             imageUri = data.getData();
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //imageView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 100, 100, false));
             imageView.setImageBitmap(imageBitmap);
         }
     }
