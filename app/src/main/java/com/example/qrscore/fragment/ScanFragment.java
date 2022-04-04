@@ -51,8 +51,6 @@ public class ScanFragment extends Fragment {
     private static Boolean fineLocationGranted;
     private static Boolean coarseLocationGranted;
     private Uri imageUri;
-    private String longitude;
-    private String latitude;
 
     public ScanFragment() {
         // Required empty public constructor
@@ -62,7 +60,7 @@ public class ScanFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountController = new AccountController(getContext());
-        photoController = new PhotoController();
+        photoController = new PhotoController(getContext());
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
     }
@@ -143,6 +141,7 @@ public class ScanFragment extends Fragment {
 
         return view;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

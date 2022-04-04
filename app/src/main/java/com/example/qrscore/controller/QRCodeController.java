@@ -117,26 +117,26 @@ public class QRCodeController {
                         String updatedHiscoreRank;
 
                         //Update total score
-                        Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
-                        Integer numZeroesToPrefix = 8 - updatedTotalScoreInt.toString().length();
-                        for (int i = 0; i < numZeroesToPrefix; i++) {
-                            updatedTotalScore += "0";
-                        }
-                        updatedTotalScore += updatedTotalScoreInt.toString();
-
+                        //Integer updatedTotalScoreInt = Integer.parseInt(account.getTotalScore()) + Integer.parseInt(qrCode.getQRScore());
+                        //Integer numZeroesToPrefix = 8 - updatedTotalScoreInt.toString().length();
+                        //for (int i = 0; i < numZeroesToPrefix; i++) {
+                        //    updatedTotalScore += "0";
+                        //}
+                        //updatedTotalScore += updatedTotalScoreInt.toString();
+//
                         //Update total scanned QR codes
-                        Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned())+1;
-                        numZeroesToPrefix = 8 - updatedTotalScannedInt.toString().length();
-                        for (int i = 0; i < numZeroesToPrefix; i++) {
-                            updatedTotalScanned += "0";
-                        }
-                        updatedTotalScanned += updatedTotalScannedInt.toString();
+                        //Integer updatedTotalScannedInt = Integer.parseInt(account.getTotalScanned())+1;
+                        //numZeroesToPrefix = 8 - updatedTotalScannedInt.toString().length();
+                        //for (int i = 0; i < numZeroesToPrefix; i++) {
+                         //   updatedTotalScanned += "0";
+                        //}
+                        //updatedTotalScanned += updatedTotalScannedInt.toString();
 
                         //Update high score if new code is higher
-                        Integer currentHiscore = Integer.parseInt(account.getHiscore());
-                        Integer newQRCodeScore = Integer.parseInt(qrCode.getQRScore());
-                        if (newQRCodeScore > currentHiscore) {
-                            numZeroesToPrefix = 8 - newQRCodeScore.toString().length();
+                        //Integer currentHiscore = Integer.parseInt(account.getHiscore());
+                        //Integer newQRCodeScore = Integer.parseInt(qrCode.getQRScore());
+                        //if (newQRCodeScore > currentHiscore) {
+                         /*   numZeroesToPrefix = 8 - newQRCodeScore.toString().length();
                             for (int i = 0; i < numZeroesToPrefix; i++) {
                                 updatedHiscore += "0";
                             }
@@ -159,7 +159,7 @@ public class QRCodeController {
                         accountController.updateAccount(updatedTotalScore, updatedTotalScanned, updatedHiscore);
 
                         //Upload updated Rank data to firebase
-                        accountController.refreshRanks();
+                        accountController.refreshRanks();*/
 
 
 //                        //Update total score rank

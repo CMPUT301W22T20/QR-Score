@@ -51,7 +51,7 @@ public class ScanFragmentPlayer extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountController = new AccountController(getContext());
-        photoController = new PhotoController();
+        photoController = new PhotoController(getContext());
         qrCodeController = new QRCodeController();
         profileController = new ProfileController(getContext());
     }
