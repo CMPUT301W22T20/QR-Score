@@ -12,11 +12,8 @@ import java.util.Random;
 /**
  * Purpose: This class represents a QR code.
  * Stores a representation of the QR code, as well
- * as the score, location, players that have scanned it,
- * and comments.
+ * as the score and players that have scanned it.
  *
- * Outstanding issues:
- * TODO: Unit tests
  */
 public class QRCode {
     String TAG = "QRCode";
@@ -33,9 +30,8 @@ public class QRCode {
      */
     public QRCode(String hash) {
         this.hash = hash;
-        Log.i(TAG, "new QRCode() with hash: " + this.hash);
         this.qrscore = this.calculateQRScore(this.hash).toString();
-        this.id = this.qrscore.toString();
+        this.id = this.qrscore;
         this.hasScanned = new ArrayList<>();
     }
 
@@ -68,14 +64,13 @@ public class QRCode {
         String hash3 = hash4.replace("000", "");
         String hash2 = hash3.replace("00", "");
         String hash1 = hash2.replace("0", "");
-        Integer count5 = (hash.length() - hash5.length())/5;
-        Integer count4 = (hash5.length() - hash4.length())/4;
-        Integer count3 = (hash4.length() - hash3.length())/3;
-        Integer count2 = (hash3.length() - hash2.length())/2;
-        Integer count1 = (hash2.length() - hash1.length());
-        Integer score = count1*1 + count2*20 + count3*400 + count4*8000 + count5*160000;
+        int count5 = (hash.length() - hash5.length())/5;
+        int count4 = (hash5.length() - hash4.length())/4;
+        int count3 = (hash4.length() - hash3.length())/3;
+        int count2 = (hash3.length() - hash2.length())/2;
+        int count1 = (hash2.length() - hash1.length());
 
-        return score;
+        return count1 + (count2 * 20) + (count3 * 400) + (count4 * 8000) + (count5 * 160000);
     }
 
     /**

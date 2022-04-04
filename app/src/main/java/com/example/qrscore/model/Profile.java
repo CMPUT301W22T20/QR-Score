@@ -2,10 +2,8 @@ package com.example.qrscore.model;
 
 /**
  * Purpose: This class is used to store profile info. (name, email, phone, username,etc.)
- * It should also be able to display a QR code to transfer devices.
  *
  * Outstanding Issues:
- * TODO: Implement QR Code.
  *
  * @author William Liu/Matthew Braun
  */
