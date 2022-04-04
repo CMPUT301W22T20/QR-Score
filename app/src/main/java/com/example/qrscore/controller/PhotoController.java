@@ -80,6 +80,9 @@ public class PhotoController {
                 Log.e("PhotoController", "Photo not uploaded successfully");
             }
         });
+
+        photoRef.add(photo);
+
     }
 
     /**
