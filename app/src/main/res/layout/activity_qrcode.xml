@@ -90,7 +90,9 @@
         <ListView
             android:id="@+id/comment_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:dividerHeight="5dp"
+            android:divider="@android:color/transparent">
         </ListView>
     </LinearLayout>
 </LinearLayout>

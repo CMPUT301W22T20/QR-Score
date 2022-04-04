@@ -23,8 +23,6 @@ import com.example.qrscore.controller.ProfileController;
  * - Posts comment when OK pressed
  *
  * Outstanding issues:
- * TODO: Connect to firebase
- * TODO: UI tests
  */
 public class AddCommentFragment extends DialogFragment {
     private EditText commentText;
@@ -66,8 +64,7 @@ public class AddCommentFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String newComment = commentText.getText().toString();
-                        // TODO: Replace Player1 with profile player name when possible
-                        listener.onOkPressed(new Comment(profileController.getProfile().getFirstName(), newComment, qrID));
+                        listener.onOkPressed(new Comment(profileController.getProfile().getUserUID(), newComment, qrID));
                     }
                 }).create();
     }
