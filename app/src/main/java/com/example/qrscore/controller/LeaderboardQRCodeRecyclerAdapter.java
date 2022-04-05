@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.qrscore.R;
 import com.example.qrscore.activity.QRCodeActivity;
+import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -150,6 +151,11 @@ public class LeaderboardQRCodeRecyclerAdapter extends RecyclerView.Adapter<Leade
             popupMenu.inflate(R.menu.leaderboard_qrcode_menu);
             popupMenu.show();
         }
+    }
+
+    public void updateList(ArrayList<QRCode> qrCodes) {
+        qrCodes = qrCodes;
+        notifyDataSetChanged();
     }
 
 
