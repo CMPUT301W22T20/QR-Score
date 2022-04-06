@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.qrscore.controller.LeaderboardQRCodeRecyclerAdapter;
 import com.example.qrscore.R;
+import com.example.qrscore.model.Account;
 import com.example.qrscore.model.QRCode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,19 +44,6 @@ public class LeaderboardQRcodeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         populateQRCodeArrayList();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference qrCodeRef = db.collection("QRCode");
-        qrCodeListener = qrCodeRef
-            .addSnapshotListener((value, error) -> {
-                qrCodes.clear();
-                for (QueryDocumentSnapshot documentSnapshot : value) {
-                    String hash = documentSnapshot.getString("hash");
-                    QRCode code = new QRCode(hash);
-                    qrCodes.add(code);
-                    leaderboardRA.notifyDataSetChanged();
-                }
-            });
     }
 
     @Override
@@ -64,7 +52,6 @@ public class LeaderboardQRcodeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_leaderboard_qrcode_fragment, container, false);
         qrCodeRecyclerView = view.findViewById(R.id.leaderboard_qr_code_recyclerview);
         setAdapter();
-
         return view;
     }
 
@@ -73,18 +60,19 @@ public class LeaderboardQRcodeFragment extends Fragment {
      */
     private void populateQRCodeArrayList() {
         qrCodes = new ArrayList<QRCode>();
+        qrCodes.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference accountRef = db.collection("QRCode");
-        accountRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                    String hash = documentSnapshot.getString("hash");
-                    String score = documentSnapshot.get("qrscore").toString();
-                    qrCodes.add(new QRCode(hash));
-                    leaderboardRA.notifyDataSetChanged();
-                }
-            }
-        });
+        CollectionReference qrCodeRef = db.collection("QRCode");
+        qrCodeListener = qrCodeRef
+                .addSnapshotListener((value, error) -> {
+                    qrCodes.clear();
+                    for (QueryDocumentSnapshot documentSnapshot: value)  {
+                        String hash = documentSnapshot.getString("hash");
+                        String score = documentSnapshot.get("qrscore").toString();
+                        qrCodes.add(new QRCode(hash));
+                        leaderboardRA.updateList(qrCodes);
+                    }
+                });
     }
 
     /**
