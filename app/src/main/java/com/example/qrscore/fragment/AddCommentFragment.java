@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.qrscore.model.Comment;
 import com.example.qrscore.R;
 import com.example.qrscore.controller.ProfileController;
+import com.example.qrscore.model.Profile;
 
 /**
  * Purpose:
@@ -64,7 +65,18 @@ public class AddCommentFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String newComment = commentText.getText().toString();
-                        listener.onOkPressed(new Comment(profileController.getProfile().getUserUID(), newComment, qrID));
+                        Profile profile = profileController.getProfile();
+                        String name = profile.getUserUID();
+
+                        if (profile.getFirstName() != null) {
+                            name = profile.getFirstName();
+
+                            if (profile.getLastName() != null) {
+                                name = name + " " + profile.getLastName();
+                            }
+                        }
+
+                        listener.onOkPressed(new Comment(name, newComment, qrID));
                     }
                 }).create();
     }
