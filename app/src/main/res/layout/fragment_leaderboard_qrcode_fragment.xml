@@ -6,22 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.LeaderboardQRcodeFragment">
 
-    <TextView
-        android:id="@+id/top_qr_codes_textView"
-        android:layout_width="380dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/round_box_background"
-        android:backgroundTint="@color/green"
-        android:gravity="center"
-        android:text="@string/leaderboard_top_qr_codes"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <View
         android:id="@+id/leaderboard_qr_code_recyclerview_box"
         android:layout_width="380dp"
@@ -31,7 +15,7 @@
         app:layout_constraintBottom_toTopOf="@+id/leaderboard_qr_code_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_qr_codes_textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/leaderboard_qr_code_recyclerview"

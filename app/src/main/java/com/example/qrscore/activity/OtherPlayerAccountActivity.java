@@ -34,7 +34,6 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     private CollectionReference qrCodeRef;
     private QRCodeAdapter qrCodesAdapter;
     private ArrayList<QRCode> qrCodes;
-    private TextView usernameTextView;
     private TextView qrCodeTitleTextView;
     private TextView hiscoreTextView;
     private TextView scannedCodesTextView;
@@ -71,11 +70,9 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         hiscoreRankTextView = findViewById(R.id.hiscore_rank_text_view);
         totalScannedRankTextView = findViewById(R.id.scanned_rank_text_view);
         totalScoreRankTextView = findViewById(R.id.total_score_rank_text_view);
-        usernameTextView = findViewById(R.id.username_text_view);
         qrCodeTitleTextView = findViewById(R.id.qr_code_title_text_view);
 
         // Set username textviews
-        usernameTextView.setText(userUID);
         qrCodeTitleTextView.setText(userUID + "'s QR Codes");
 
         // get collection/document references

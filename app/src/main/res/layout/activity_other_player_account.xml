@@ -7,16 +7,6 @@
     android:background="@drawable/background_activity"
     tools:context=".activity.OtherPlayerAccountActivity">
 
-    <TextView
-        android:id="@+id/username_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Username"
-        android:textColor="@color/black"
-        android:textSize="45sp"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
