@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Purpose: Animate function to hide scan FABs when clicked outside FABs.
      */
-    private void hideFab(View view){
+    public void hideFab(View view){
         if (isfabOpen) {
             closeScanFab();
         }
