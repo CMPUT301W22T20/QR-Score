@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.qrscore.R;
 import com.example.qrscore.controller.QRCodeAdapter;
 import com.example.qrscore.model.QRCode;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,6 +31,7 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     final String TAG = "OTHER_PLAYER_ACTIVITY";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference accountRef;
+    private DocumentReference profileRef;
     private CollectionReference qrCodeRef;
     private QRCodeAdapter qrCodesAdapter;
     private ArrayList<QRCode> qrCodes;
@@ -47,6 +48,9 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
     private String rankTotalScore;
     private String rankTotalScanned;
     private String rankHiscore;
+
+    private String firstName;
+    private String lastName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +76,35 @@ public class OtherPlayerAccountActivity extends AppCompatActivity {
         totalScoreRankTextView = findViewById(R.id.total_score_rank_text_view);
         qrCodeTitleTextView = findViewById(R.id.qr_code_title_text_view);
 
-        // Set username textviews
-        qrCodeTitleTextView.setText(userUID + "'s QR Codes");
-
         // get collection/document references
         accountRef = db.collection("Account").document(userUID);
         qrCodeRef = db.collection("QRCode");
+        profileRef = db.collection("Profile").document(userUID);
+
+        firstName = null;
+        lastName = null;
+
+        profileRef
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        if (doc.exists()) {
+                            firstName = doc.getString("firstName");
+                            lastName = doc.getString("lastName");
+
+                            if (firstName != null && lastName == null) {
+                                qrCodeTitleTextView.setText(firstName + "'s QR Codes" );
+                            }
+                            else if (firstName != null && lastName != null) {
+                                qrCodeTitleTextView.setText(firstName + " " + lastName + "'s QR Codes");
+                            }
+                            else{
+                                qrCodeTitleTextView.setText(userUID + "'s QR Codes");
+                            }
+                        }
+                    }
+                });
 
         loadQRCodes();
     }

@@ -92,6 +92,9 @@ public class HomeFragment extends Fragment {
     private String rankTotalScore;
     private String rankTotalScanned;
     private String rankHiscore;
+    private String firstName;
+    private String lastName;
+    private String usernamesQRCodesString;
 
     private HomeFragmentQRCodeRecyclerAdapter HomeFragQRCodeRA;
     private RecyclerView QRCodeRecyclerView;
@@ -115,6 +118,8 @@ public class HomeFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         userUID = profileController.getProfile().getUserUID();
+        firstName = profileController.getProfile().getFirstName();
+        lastName = profileController.getProfile().getLastName();
 
         myAccount = new Account(userUID);
         myAccount.setProfile(profileController.getProfile());
@@ -220,17 +225,24 @@ public class HomeFragment extends Fragment {
         qrCodesList = view.findViewById(R.id.qr_codes_list_view);
         qrCodesList.setAdapter(qrCodesAdapter);
 
-
         // **This class is being constructed before the HFRA is initialized.
         sortByButton = view.findViewById(R.id.home_fragment_sort_by_button);
 
         // Instantiate Textview classes to fill layout parameters
         TextView usernamesQRCodes = (TextView) view.findViewById(R.id.home_fragment_qr_code_title_text_view);
 
-        String usernamesQRCodesString = (myAccount.getUserUID() + "'s QR Codes");
+        usernamesQRCodesString = profileController.getProfile().getUserUID();
 
         // Set username TextViews
-        usernamesQRCodes.setText(usernamesQRCodesString);
+        if (firstName != null && lastName == null) {
+            usernamesQRCodes.setText(firstName + "'s QR Codes" );
+        }
+        else if (firstName != null && lastName != null) {
+            usernamesQRCodes.setText(firstName + " " + lastName + "'s QR Codes");
+        }
+        else{
+            usernamesQRCodes.setText(usernamesQRCodesString + "'s QR Codes");
+        }
 
         profileQRButton = view.findViewById(R.id.home_fragment_actionbar_qr_code);
         profileQRButton.setOnClickListener(new profileGeneratorButtonListener(userUID));

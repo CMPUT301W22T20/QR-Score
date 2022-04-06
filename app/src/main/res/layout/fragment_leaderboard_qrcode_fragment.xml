@@ -9,7 +9,7 @@
     <View
         android:id="@+id/leaderboard_qr_code_recyclerview_box"
         android:layout_width="380dp"
-        android:layout_height="470dp"
+        android:layout_height="540dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/round_box_background"
         app:layout_constraintBottom_toTopOf="@+id/leaderboard_qr_code_guideline"
@@ -20,7 +20,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/leaderboard_qr_code_recyclerview"
         android:layout_width="350dp"
-        android:layout_height="440dp"
+        android:layout_height="530dp"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/leaderboard_qr_code_recyclerview_box"
         app:layout_constraintEnd_toEndOf="@+id/leaderboard_qr_code_recyclerview_box"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.88"
+        app:layout_constraintGuide_percent="0.86"
         app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
